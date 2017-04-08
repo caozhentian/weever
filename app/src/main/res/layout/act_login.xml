@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@color/colorPrimary"
+    android:padding="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
+    tools:context="cn.people.weever.activity.login.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dim48"
+            android:gravity="center"
+            android:text="用户名："/>
+
+        <EditText
+            android:id="@+id/edtUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dim48"
+            android:background="@drawable/shape_rec_normal"
+            android:ems="10"
+            android:hint="请输入用户名"
+            android:inputType="textPersonName"
+            android:maxLength="20"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dim48"
+            android:gravity="center"
+            android:text="密码："/>
+
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dim48"
+            android:background="@drawable/shape_rec_normal"
+            android:ems="10"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:maxLength="20"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dim48"
+            android:gravity="center"
+            android:text="车辆编号："
+            />
+
+        <Spinner
+            android:id="@+id/spnCarNum"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim48"/>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim48"
+        android:text="登录"
+        />
+</LinearLayout>
