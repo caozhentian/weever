@@ -10,6 +10,7 @@
         android:clickable="true"/>
 
     <LinearLayout
+        android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -17,7 +18,8 @@
         android:paddingLeft="@dimen/dim10"
         android:paddingRight="@dimen/dim10"
         android:background="@color/white"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:visibility="gone">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dim48">
@@ -53,18 +55,19 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dim48">
             <TextView
+                android:id="@+id/txtAllWaitTime"
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="等待时间"/>
             <TextView
-                android:id="@+id/txtAllWaitTime"
+                android:id="@+id/txtAllWaitAmount"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="20km"/>
+                android:text="20"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="3"
@@ -115,6 +118,7 @@
                         android:text="出发地"/>
 
                     <EditText
+                        android:id="@+id/edtSrc"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -134,6 +138,7 @@
                         android:text="目的地"/>
 
                     <EditText
+                        android:id="@+id/edtDest"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -146,7 +151,7 @@
             <ImageView
                 android:layout_width="@dimen/dim48"
                 android:layout_height="match_parent"
-                android:src="@mipmap/ic_action_turn_left"/>
+                android:src="@drawable/ic_action_turn_left"/>
         </LinearLayout>
 
         <RadioGroup
