@@ -59,11 +59,17 @@
         </activity>
         <activity
             android:name=".activity.login.LoginActivity"
+            android:label="登录"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.car.MainActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".activity.car.AddressSelectionActivity"
+            android:label="@string/title_activity_address_selection"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
