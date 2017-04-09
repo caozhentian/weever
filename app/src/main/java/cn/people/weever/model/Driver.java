@@ -6,6 +6,9 @@ package cn.people.weever.model;
 
 
 public class Driver extends WeeverBean {
+
+    public static final String USER_KEY = "USER_KEY";
+
     private String mUserName ;
 
     private String mPassword   ;

@@ -142,7 +142,7 @@ public class LocationActivity extends Activity {
 				sb.append("\nlocType : ");// 定位类型
 				sb.append(location.getLocType());
 				sb.append("\nlocType description : ");// *****对应的定位类型说明*****
-                sb.append(location.getLocTypeDescription());
+                //sb.append(location.getLocTypeDescription());
 				sb.append("\nlatitude : ");// 纬度
 				sb.append(location.getLatitude());
 				sb.append("\nlontitude : ");// 经度
@@ -164,7 +164,7 @@ public class LocationActivity extends Activity {
 				sb.append("\naddr : ");// 地址信息
 				sb.append(location.getAddrStr());
 				sb.append("\nUserIndoorState: ");// *****返回用户室内外判断结果*****
-				sb.append(location.getUserIndoorState());
+				//sb.append(location.getUserIndoorState());
 				sb.append("\nDirection(not all devices have value): ");
 				sb.append(location.getDirection());// 方向
 				sb.append("\nlocationdescribe: ");
@@ -184,7 +184,7 @@ public class LocationActivity extends Activity {
 					sb.append("\nheight : ");
 					sb.append(location.getAltitude());// 海拔高度 单位：米
 					sb.append("\ngps status : ");
-                    sb.append(location.getGpsAccuracyStatus());// *****gps质量判断*****
+                    //sb.append(location.getGpsAccuracyStatus());// *****gps质量判断*****
 					sb.append("\ndescribe : ");
 					sb.append("gps定位成功");
 				} else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果

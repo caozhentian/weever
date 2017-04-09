@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
+        android:name=".application.WeeverApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -47,14 +48,22 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activity.LogoActivity">
+        <activity
+            android:name=".activity.LogoActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.login.LoginActivity">
+        <activity
+            android:name=".activity.login.LoginActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".activity.car.MainActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
