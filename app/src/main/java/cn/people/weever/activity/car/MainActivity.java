@@ -3,7 +3,7 @@ package cn.people.weever.activity.car;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,24 +19,46 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.RouteLine;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.route.BikingRouteResult;
+import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
+import com.baidu.mapapi.search.route.DrivingRouteResult;
+import com.baidu.mapapi.search.route.IndoorRouteResult;
+import com.baidu.mapapi.search.route.MassTransitRouteResult;
+import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRouteResult;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
+import cn.people.weever.activity.SubcribeCreateDestroyActivity;
+import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener {
 
+    private static final LatLng GEO_XIAN = new LatLng( 34.265725 ,108.95346);
     private static final int accuracyCircleFillColor = 0xAAFFFF88;
     private static final int accuracyCircleStrokeColor = 0xAA00FF00;
     public MyLocationListener myListener = new MyLocationListener();
 
+    // 搜索相关
+    RoutePlanSearch mSearch = null;    // 搜索模块，也可去掉地图模块独立使用
+    RouteLine mRouteLine = null;
     // 定位相关
     LocationClient mLocClient;
     BitmapDescriptor mCurrentMarker;
@@ -86,6 +108,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void initData() {
+        // 初始化搜索模块，注册事件监听
+        mSearch = RoutePlanSearch.newInstance();
+        mSearch.setOnGetRoutePlanResultListener(this);
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
@@ -103,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
+        MapStatusUpdate u2 = MapStatusUpdateFactory.newLatLng(GEO_XIAN);
+        mBaiduMap.setMapStatus(u2);
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
         // 定位初始化
@@ -119,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
                         accuracyCircleFillColor, accuracyCircleStrokeColor));
         mLocClient.setLocOption(option);
         mLocClient.start();
+        initView();
+        initData();
     }
 
     @Override
@@ -148,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
     public void onViewClickedOperate(View view) {
         switch (view.getId()) {
             case R.id.btnStart:
-                mLlTop.setVisibility(View.VISIBLE);
+                start();
                 break;
             case R.id.btnWait:
                 break;
@@ -159,6 +197,25 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btnCompute:
                 break;
         }
+    }
+
+    private void start(){
+        String startNodeStr = mEdtSrc.getEditableText().toString()   ;
+        String endNodeStr   = mEdtDest.getEditableText().toString() ;
+        if(TextUtils.isEmpty(startNodeStr)){
+            showToast("出发地不能为空");
+            return ;
+        }
+        if(TextUtils.isEmpty(endNodeStr)){
+            showToast("目的地不能为空");
+            return ;
+        }
+        // 设置起终点信息，对于tranist search 来说，城市名无意义
+        PlanNode stNode = PlanNode.withCityNameAndPlaceName("西安", startNodeStr);
+        PlanNode enNode = PlanNode.withCityNameAndPlaceName("西安", endNodeStr);
+        mSearch.drivingSearch((new DrivingRoutePlanOption())
+                .from(stNode).to(enNode));
+        mLlTop.setVisibility(View.VISIBLE);
     }
 
     @OnClick({R.id.edtSrc, R.id.edtDest})
@@ -173,6 +230,76 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
+
+    }
+
+    @Override
+    public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
+
+    }
+
+    @Override
+    public void onGetMassTransitRouteResult(MassTransitRouteResult massTransitRouteResult) {
+
+    }
+
+    @Override
+    public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
+
+        if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
+            showToast("抱歉，未找到结果" )  ;
+        }
+        if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+            // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
+            // result.getSuggestAddrInfo()
+            return;
+        }
+        if (drivingRouteResult.getRouteLines().size() > 1 ) {
+            mRouteLine = drivingRouteResult.getRouteLines().get(0);
+            DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
+            //routeOverlay = overlay;
+            mBaiduMap.setOnMarkerClickListener(overlay);
+            overlay.setData(drivingRouteResult.getRouteLines().get(0));
+            overlay.addToMap();
+            overlay.zoomToSpan();
+        }
+    }
+
+    @Override
+    public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {
+
+    }
+
+    @Override
+    public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
+
+    }
+
+    // 定制RouteOverly
+    private class MyDrivingRouteOverlay extends DrivingRouteOverlay {
+
+        public MyDrivingRouteOverlay(BaiduMap baiduMap) {
+            super(baiduMap);
+        }
+
+        @Override
+        public BitmapDescriptor getStartMarker() {
+//            if (useDefaultIcon) {
+//                return BitmapDescriptorFactory.fromResource(R.drawable.icon_st);
+//            }
+            return null;
+        }
+
+        @Override
+        public BitmapDescriptor getTerminalMarker() {
+//            if (useDefaultIcon) {
+//                return BitmapDescriptorFactory.fromResource(R.drawable.icon_en);
+//            }
+            return null;
+        }
+    }
 
     /**
      * 定位SDK监听函数
@@ -185,8 +312,8 @@ public class MainActivity extends AppCompatActivity {
             if (location == null || location.getLocType() == BDLocation.TypeServerError || mMapView == null) {
                 return;
             }
-            String street = location.getStreet();
-            mEdtSrc.setText(street) ;
+            String addrStr = location.getAddrStr();
+            mEdtSrc.setText(addrStr) ;
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360
@@ -202,5 +329,10 @@ public class MainActivity extends AppCompatActivity {
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void process(Object o){
+
     }
 }
