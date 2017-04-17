@@ -25,6 +25,9 @@ import cn.people.weever.R;
 
 public class AddressSelectionActivity extends AppCompatActivity {
 
+    private static final String ARG_LATITUDE   =  "arg_latitude"  ;
+    private static final String ARG_LONGITUDE  =  "arg_longitude" ;
+    private static final String ARG_ADDRESS    =   "arg_address"   ;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -40,8 +43,11 @@ public class AddressSelectionActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    public static final Intent newIntent(Context packageContext){
+    public static final Intent newIntent(Context packageContext , String latitude, String longitude , String address){
         Intent   intent = new Intent(packageContext , AddressSelectionActivity.class) ;
+        intent.putExtra(ARG_LATITUDE, latitude);
+        intent.putExtra(ARG_LONGITUDE, longitude);
+        intent.putExtra(ARG_ADDRESS, address);
         return  intent ;
     }
 
