@@ -23,7 +23,7 @@
                 android:textColor="@color/t0b0b0b"
                 android:singleLine="true"
                 android:textSize="16sp"
-                android:text="深圳文化创意园"/>
+                android:text=""/>
             <TextView
                 android:id="@+id/tv_address"
                 android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
                 android:layout_marginTop="@dimen/dim5"
                 android:singleLine="true"
                 android:textSize="12sp"
-                android:text="广东省深圳市福田区福强路"/>
+                android:text=""/>
 
         </LinearLayout>
         <ImageView

@@ -222,10 +222,10 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
     public void onViewClickedAddress(View view) {
         switch (view.getId()) {
             case R.id.edtSrc:
-                startActivity(AddressSelectionActivity.newIntent(this));
+                //startActivity(AddressSelectionActivity.newIntent(this));
                 break;
             case R.id.edtDest:
-                startActivity(AddressSelectionActivity.newIntent(this));
+                //startActivity(AddressSelectionActivity.newIntent(this));
                 break;
         }
     }
