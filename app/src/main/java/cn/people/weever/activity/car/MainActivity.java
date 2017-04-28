@@ -148,6 +148,7 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
         option.setScanSpan(1000);
+        //option.setIsNeedLocationPoiList(true);
         option.setIsNeedAddress(true);
         mBaiduMap
                 .setMyLocationConfigeration(new MyLocationConfiguration(
@@ -211,6 +212,8 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
             return ;
         }
         // 设置起终点信息，对于tranist search 来说，城市名无意义
+        startNodeStr = "科技六路" ;
+        endNodeStr   = "金宇蓝苑" ;
         PlanNode stNode = PlanNode.withCityNameAndPlaceName("西安", startNodeStr);
         PlanNode enNode = PlanNode.withCityNameAndPlaceName("西安", endNodeStr);
         mSearch.drivingSearch((new DrivingRoutePlanOption())
@@ -313,7 +316,10 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
                 return;
             }
             String addrStr = location.getAddrStr();
-            mEdtSrc.setText(addrStr) ;
+            //使用街道
+            //List<Poi> poiList = location.getPoiList() ;
+            //Poi poi = poiList.get(0) ;
+            //mEdtSrc.setText(poi.getName()) ;
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360
