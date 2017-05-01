@@ -86,7 +86,7 @@
     <!--底部操作按钮-->
     <LinearLayout
         android:id="@+id/ll_bottom"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="80dip"
@@ -195,7 +195,7 @@
         </RadioGroup>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/dim48"
             android:layout_margin="@dimen/dim10">
 
@@ -203,14 +203,16 @@
                 android:id="@+id/btnStart"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/dim5"
                 android:layout_weight="1"
-                android:text="计费"/>
+                android:text="计费" />
 
             <Button
                 android:id="@+id/btnWait"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_marginRight="@dimen/dim5"
                 android:text="等待"/>
 
             <Button
@@ -218,12 +220,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_marginRight="@dimen/dim5"
                 android:text="回程"/>
 
             <Button
                 android:id="@+id/btnRestart"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/dim5"
                 android:layout_weight="1"
                 android:text="再出发"/>
 
@@ -232,7 +236,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="结算"/>
+                android:text="结算" />
         </LinearLayout>
     </LinearLayout>
 
