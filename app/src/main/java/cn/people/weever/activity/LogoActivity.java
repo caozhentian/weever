@@ -13,6 +13,6 @@ public class LogoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_logo);
         startActivity(LoginActivity.newIntent(this));
-
+        finish();
     }
 }

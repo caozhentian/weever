@@ -16,6 +16,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.MapStatus;
@@ -41,6 +42,8 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -148,7 +151,7 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
         option.setScanSpan(1000);
-        //option.setIsNeedLocationPoiList(true);
+        option.setIsNeedLocationPoiList(true);
         option.setIsNeedAddress(true);
         mBaiduMap
                 .setMyLocationConfigeration(new MyLocationConfiguration(
@@ -212,8 +215,8 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
             return ;
         }
         // 设置起终点信息，对于tranist search 来说，城市名无意义
-        startNodeStr = "科技六路" ;
-        endNodeStr   = "金宇蓝苑" ;
+        //startNodeStr = "科技六路" ;
+        //endNodeStr   = "金宇蓝苑" ;
         PlanNode stNode = PlanNode.withCityNameAndPlaceName("西安", startNodeStr)  ;
         PlanNode enNode = PlanNode.withCityNameAndPlaceName("西安", endNodeStr)    ;
         mSearch.drivingSearch((new DrivingRoutePlanOption())
@@ -253,6 +256,7 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
 
         if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
             showToast("抱歉，未找到结果" )  ;
+            return ;
         }
         if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
             // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
@@ -261,6 +265,8 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
         }
         if (drivingRouteResult.getRouteLines().size() > 1 ) { //使用其中一条路线
             mRouteLine = drivingRouteResult.getRouteLines().get(0);
+            mRouteLine.getDistance() ;
+            mRouteLine.getDuration();
             DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
             //routeOverlay = overlay;
             mBaiduMap.setOnMarkerClickListener(overlay);
@@ -317,9 +323,11 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
             }
             String addrStr = location.getAddrStr();
             //使用街道
-            //List<Poi> poiList = location.getPoiList() ;
-            //Poi poi = poiList.get(0) ;
-            //mEdtSrc.setText(poi.getName()) ;
+            List<Poi> poiList = location.getPoiList() ;
+            if(poiList != null && poiList.size() > 1) {
+                Poi poi = poiList.get(0);
+                mEdtSrc.setText(poi.getName());
+            }
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360

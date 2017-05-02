@@ -19,7 +19,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="ButtonStyle" parent="@android:style/Widget.Button">
-        <item name="android:background">@color/icons</item>
+        <item name="android:background">@color/primary_light</item>
         <item name="android:textColor">@android:color/holo_green_dark</item>
     </style>
 

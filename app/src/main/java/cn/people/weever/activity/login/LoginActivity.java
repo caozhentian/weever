@@ -54,6 +54,12 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
     public void initData() {
         mLoginViewModel = new LoginViewModel() ;
         mDriverService =  new DriverService() ;
+        //tetst
+        Driver driver = new Driver() ;
+        driver.setId("111");
+        driver.setMUserName("55");
+        driver.setPassword("8989");
+        mDriverService.save(driver);
         mCarService     = new CarService()     ;
         //查询车辆编号
         mCarService.query();
@@ -116,6 +122,8 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
             if(baseModel.isSuccess()){
                 Driver driver = baseModel.getData() ;
                 mDriverService.save(driver);
+                startActivity(MainActivity.newIntent(this));
+                finish() ;
             }
             else{
                 ToastUtil.showToast(baseModel.getMessage());
@@ -125,6 +133,15 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void processCarNumEvent(@Nullable BaseModel<Car> baseModel){
+        if(baseModel.getApiOperationCode() == APIOperationCode.TO_CAR_NUM){
+            if(baseModel.isSuccess()){
+                Car car = baseModel.getData() ;
+
+            }
+            else{
+                ToastUtil.showToast(baseModel.getMessage());
+            }
+        }
 
     }
 //    @Subscribe(threadMode = ThreadMode.MAIN)

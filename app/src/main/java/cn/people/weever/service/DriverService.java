@@ -17,10 +17,10 @@ public class DriverService {
             throw new IllegalArgumentException("参数值为null") ;
         }
         if(TextUtils.isEmpty(loginViewModel.getUserName())){
-            throw new IllegalArgumentException("用户名不能为空") ;
+            throw new IllegalArgumentException("请输入用户名") ;
         }
         if(TextUtils.isEmpty(loginViewModel.getPassword())){
-            throw new IllegalArgumentException("密码不能为空") ;
+            throw new IllegalArgumentException("请输入密码") ;
         }
     }
 
