@@ -34,4 +34,8 @@ public class DriverService {
     public Driver getCurDriver(){
         return WeeverApplication.getCurUser() ;
     }
+
+    public void loginOut(){
+        WeeverApplication.setCurUser(null)    ;
+    }
 }

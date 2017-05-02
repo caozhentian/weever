@@ -41,9 +41,9 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
     Button mBtnLogin;
 
     private String[] carNums ;
-    private LoginViewModel mLoginViewModel  ;
-    private DriverService  mDriverService   ;
-    private CarService     mCarService       ;
+    private LoginViewModel mLoginViewModel   ;
+    private DriverService  mDriverService    ;
+    private CarService     mCarService        ;
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, LoginActivity.class);

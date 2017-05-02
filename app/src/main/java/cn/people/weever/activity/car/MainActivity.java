@@ -214,8 +214,8 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
         // 设置起终点信息，对于tranist search 来说，城市名无意义
         startNodeStr = "科技六路" ;
         endNodeStr   = "金宇蓝苑" ;
-        PlanNode stNode = PlanNode.withCityNameAndPlaceName("西安", startNodeStr);
-        PlanNode enNode = PlanNode.withCityNameAndPlaceName("西安", endNodeStr);
+        PlanNode stNode = PlanNode.withCityNameAndPlaceName("西安", startNodeStr)  ;
+        PlanNode enNode = PlanNode.withCityNameAndPlaceName("西安", endNodeStr)    ;
         mSearch.drivingSearch((new DrivingRoutePlanOption())
                 .from(stNode).to(enNode));
         mLlTop.setVisibility(View.VISIBLE);
@@ -259,7 +259,7 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
             // result.getSuggestAddrInfo()
             return;
         }
-        if (drivingRouteResult.getRouteLines().size() > 1 ) {
+        if (drivingRouteResult.getRouteLines().size() > 1 ) { //使用其中一条路线
             mRouteLine = drivingRouteResult.getRouteLines().get(0);
             DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
             //routeOverlay = overlay;

@@ -2,16 +2,15 @@ package cn.people.weever.application;
 
 import android.app.Application;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.model.LatLng;
 
-import cn.people.weever.common.util.PreferencesUtil;
+import org.greenrobot.greendao.database.Database;
+import org.greenrobot.greendao.query.QueryBuilder;
+
+import java.util.List;
+
+import cn.people.weever.model.DaoMaster;
+import cn.people.weever.model.DaoSession;
 import cn.people.weever.model.Driver;
 
 /**
@@ -23,6 +22,8 @@ public class WeeverApplication extends Application {
     private static WeeverApplication sWeeverApplication ;
 
     private static Driver sCurDriver;
+
+    private static DaoSession sDaoSession ;
     private  boolean  isFirstLoc = true;
     public static String city_name = "";
     public static  int height;
@@ -62,16 +63,31 @@ public class WeeverApplication extends Application {
     public static Driver getCurUser(){
         if(sCurDriver != null)
             return sCurDriver ;
-        Driver user  =  PreferencesUtil.getPreferences(sWeeverApplication , Driver.USER_KEY) ;
-        return user ;
+        //Driver user  =  PreferencesUtil.getPreferences(sWeeverApplication , Driver.USER_KEY) ;
+        QueryBuilder<Driver> driverQueryBuilder = sDaoSession.getDriverDao().queryBuilder();
+        List<Driver> driverList = driverQueryBuilder.limit(1).list() ;
+        if(driverList != null && driverList.size() > 0){
+            sCurDriver =  driverList.get(0) ;
+        }
+        return sCurDriver ;
     }
 
     public static void setCurUser(Driver curUser) {
+        //内存信息 持久化信息
         WeeverApplication.sCurDriver = curUser;
-        PreferencesUtil.setPreferences(sWeeverApplication,Driver.USER_KEY,curUser);
+        //PreferencesUtil.setPreferences(sWeeverApplication,Driver.USER_KEY,curUser);
+        if(curUser == null) {
+            sDaoSession.getDriverDao().deleteAll();
+        }
+        else{
+            sDaoSession.insertOrReplace(curUser) ;
+        }
     }
 
     private void initdb(){
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db");
+        Database db = helper.getWritableDb();
+        sDaoSession = new DaoMaster(db).newSession();
 //        locationClient = new LocationClient(this);
 //        locationClient.registerLocationListener(listener);
 //        /**
