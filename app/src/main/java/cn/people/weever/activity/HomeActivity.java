@@ -120,15 +120,6 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -283,8 +274,8 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
     }
 
     private void start(){
-        String startNodeStr = mEdtSrc.getEditableText().toString()   ;
-        String endNodeStr   = mEdtDest.getEditableText().toString() ;
+        String startNodeStr = mEdtSrc.getText().toString()   ;
+        String endNodeStr   = mEdtDest.getText().toString() ;
         if(TextUtils.isEmpty(startNodeStr)){
             showToast("出发地不能为空");
             return ;

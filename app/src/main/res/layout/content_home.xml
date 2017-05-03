@@ -1,17 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cn.people.weever.activity.HomeActivity"
-    tools:showIn="@layout/app_bar_home">
+    android:layout_height="match_parent">
 
-    <include
-        layout="@layout/act_main"
-        android:layout_width="344dp"
-        android:layout_height="495dp"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp" />
-</android.support.constraint.ConstraintLayout>
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white"
+        android:clickable="true"/>
+
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dim10"
+        android:paddingRight="@dimen/dim10"
+        android:background="@color/white"
+        android:layout_alignParentTop="true"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim30">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="公里数"/>
+            <TextView
+                android:id="@+id/txtAllDistance"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="20km"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="总耗时"/>
+            <TextView
+                android:id="@+id/txtAllTime"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="20M"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim30">
+            <TextView
+                android:id="@+id/txtAllWaitTime"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="等待时间"/>
+            <TextView
+                android:id="@+id/txtAllWaitAmount"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text=""/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="等待金额"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text=""/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--底部操作按钮-->
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:minWidth="100dip"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dim10"
+                android:layout_marginRight="@dimen/dim10"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dim30"
+                    android:layout_marginBottom="@dimen/dim5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="出发地"/>
+
+                    <TextView
+                        android:id="@+id/edtSrc"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/dim10"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/txt12"
+                        android:background="@drawable/shape_rec_normal"
+                        android:hint="请选择出发地"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dim30">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="目的地"/>
+
+                    <TextView
+                        android:id="@+id/edtDest"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/dim10"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/txt12"
+                        android:background="@drawable/shape_rec_normal"
+                        android:hint="请选择目的地"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="@dimen/dim48"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_action_turn_left"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim5"
+            android:contentDescription="定位icon"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioBtnHalfDayUse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dim10"
+                android:background="@drawable/shape_rec_normal"
+                android:checked="true"
+                android:text="半日租">
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/radioBtnDayUse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dim10"
+                android:background="@drawable/shape_rec_normal"
+                android:checked="true"
+                android:text="日租">
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/radioBtnTransfer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dim10"
+                android:background="@drawable/shape_rec_normal"
+                android:checked="true"
+                android:text="接送机">
+            </RadioButton>
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dim36"
+            android:layout_margin="@dimen/dim10">
+
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/dim5"
+                android:layout_weight="1"
+                android:text="计费" />
+
+            <Button
+                android:id="@+id/btnWait"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/dim5"
+                android:text="等待"/>
+
+            <Button
+                android:id="@+id/btnReturn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="@dimen/dim5"
+                android:text="回程"/>
+
+            <Button
+                android:id="@+id/btnRestart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/dim5"
+                android:layout_weight="1"
+                android:text="再出发"/>
+
+            <Button
+                android:id="@+id/btnCompute"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="结算" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
