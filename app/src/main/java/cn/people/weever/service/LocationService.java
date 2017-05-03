@@ -1,10 +1,11 @@
 package cn.people.weever.service;
 
+import android.content.Context;
+
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
-import android.content.Context;
 
 /**
  * 
@@ -19,7 +20,10 @@ public class LocationService {
 	private LocationClientOption mOption,DIYoption;
 	private Object  objLock = new Object();
 
-	public static LocationService getLocationService() {
+	public static LocationService getLocationService(Context locationContext) {
+		if(sLocationService == null ){
+			sLocationService = new LocationService(locationContext);
+		}
 		return sLocationService;
 	}
 
@@ -31,10 +35,11 @@ public class LocationService {
 	 * 
 	 * @param locationContext
 	 */
-	public LocationService(Context locationContext){
+	private LocationService(Context locationContext){
 		synchronized (objLock) {
-			if(client == null){
-				client = new LocationClient(locationContext);
+			if(sLocationService == null){
+				sLocationService = new LocationService(locationContext) ;
+				sLocationService.client = new LocationClient(locationContext);
 				client.setLocOption(getDefaultLocationClientOption());
 			}
 		}

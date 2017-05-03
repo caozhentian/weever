@@ -14,6 +14,7 @@ import cn.people.weever.BuildConfig;
 import cn.people.weever.model.DaoMaster;
 import cn.people.weever.model.DaoSession;
 import cn.people.weever.model.Driver;
+import cn.people.weever.service.LocationService;
 
 /**
  * Created by ztcao on 2016/12/20.
@@ -34,16 +35,13 @@ public class WeeverApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        if(ProductMode.DEV_MODE){
-//            Stetho.initializeWithDefaults(this)      ; //for dubug
-//        }
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
         //注意该方法要再setContentView方法之前实现
         if(BuildConfig.DEBUG){
             Stetho.initializeWithDefaults(this);
         }
-        SDKInitializer.initialize(this);
         sWeeverApplication = this ;
+        initMap() ;
         initdb();
 
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -95,5 +93,12 @@ public class WeeverApplication extends Application {
         sDaoSession = new DaoMaster(db).newSession();
     }
 
+    private void initMap(){
+        /***
+         * 初始化定位sdk，建议在Application中创建
+         */
+        LocationService locationService = new LocationService(getApplicationContext());
+        SDKInitializer.initialize(this);
+    }
 
 }
