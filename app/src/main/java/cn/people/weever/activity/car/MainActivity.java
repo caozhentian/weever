@@ -50,11 +50,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
+import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 
 public class MainActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener {
 
-    private static final LatLng GEO_XIAN = new LatLng( 34.265725 ,108.95346);
+
     private static final int accuracyCircleFillColor = 0xAAFFFF88;
     private static final int accuracyCircleStrokeColor = 0xAA00FF00;
     public MyLocationListener myListener = new MyLocationListener();
@@ -140,7 +141,7 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
-        MapStatusUpdate u2 = MapStatusUpdateFactory.newLatLng(GEO_XIAN);
+        MapStatusUpdate u2 = MapStatusUpdateFactory.newLatLng(CityConstant.GEO_XIAN);
         mBaiduMap.setMapStatus(u2);
         mBaiduMap.setTrafficEnabled(true) ;
         // 开启定位图层

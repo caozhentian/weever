@@ -45,16 +45,17 @@ dependencies {
     })
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/eventbus-3.0.0.jar')
+    compile files('libs/baidumapapi_base_v4_2_1.jar')
+    compile files('libs/baidumapapi_map_v4_2_1.jar')
+    compile files('libs/baidumapapi_cloud_v4_2_1.jar')
+    // add library
+    compile 'com.facebook.stetho:stetho:1.5.0'
+    //compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'org.greenrobot:greendao:3.2.2'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile files('libs/baidumapapi_base_v4_2_1.jar')
-    compile files('libs/baidumapapi_map_v4_2_1.jar')
-    compile files('libs/baidumapapi_cloud_v4_2_1.jar')
-    compile 'org.greenrobot:greendao:3.2.2' // add library
-    //compile 'com.facebook.stetho:stetho:1.5.0'
-    //compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 }

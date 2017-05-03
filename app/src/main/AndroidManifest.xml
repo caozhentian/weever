@@ -49,14 +49,23 @@
         </service>
 
         <activity
-            android:name=".activity.LogoActivity"
+            android:name=".activity.PoiSearchActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!--<activity-->
+            <!--android:name=".activity.LogoActivity"-->
+            <!--android:screenOrientation="portrait">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
         <activity
             android:name=".activity.login.LoginActivity"
             android:label="登录"
@@ -71,6 +80,8 @@
             android:label="@string/title_activity_address_selection"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <!--<activity android:name=".activity.PoiSearchActivity">-->
+        <!--</activity>-->
     </application>
 
 </manifest>

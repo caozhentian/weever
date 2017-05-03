@@ -3,6 +3,7 @@ package cn.people.weever.application;
 import android.app.Application;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.facebook.stetho.Stetho;
 
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -39,7 +40,7 @@ public class WeeverApplication extends Application {
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
         //注意该方法要再setContentView方法之前实现
         if(BuildConfig.DEBUG){
-            //Stetho.initializeWithDefaults(this);
+            Stetho.initializeWithDefaults(this);
         }
         SDKInitializer.initialize(this);
         sWeeverApplication = this ;
