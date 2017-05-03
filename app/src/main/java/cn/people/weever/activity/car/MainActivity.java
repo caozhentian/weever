@@ -142,6 +142,7 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
         mBaiduMap = mMapView.getMap();
         MapStatusUpdate u2 = MapStatusUpdateFactory.newLatLng(GEO_XIAN);
         mBaiduMap.setMapStatus(u2);
+        mBaiduMap.setTrafficEnabled(true) ;
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
         // 定位初始化
@@ -265,8 +266,8 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
         }
         if (drivingRouteResult.getRouteLines().size() > 1 ) { //使用其中一条路线
             mRouteLine = drivingRouteResult.getRouteLines().get(0);
-            mRouteLine.getDistance() ;
-            mRouteLine.getDuration();
+
+
             DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
             //routeOverlay = overlay;
             mBaiduMap.setOnMarkerClickListener(overlay);
@@ -276,6 +277,16 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
         }
     }
 
+    private void setRelativeInfo(){
+        long  time = mRouteLine.getDuration();
+        if ( time / 3600 == 0 ) {
+            mTxtAllTime.setText( "" + time / 60 + "分钟" );
+        } else {
+            mTxtAllTime.setText( "" + time / 3600 + "小时" + (time % 3600) / 60 + "分钟" );
+        }
+        int  distance = mRouteLine.getDistance() ;
+        mTxtAllDistance.setText(distance+"米") ;
+    }
     @Override
     public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {
 
