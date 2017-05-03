@@ -37,11 +37,8 @@ public class LocationService {
 	 */
 	private LocationService(Context locationContext){
 		synchronized (objLock) {
-			if(sLocationService == null){
-				sLocationService = new LocationService(locationContext) ;
-				sLocationService.client = new LocationClient(locationContext);
+				client = new LocationClient(locationContext);
 				client.setLocOption(getDefaultLocationClientOption());
-			}
 		}
 	}
 	

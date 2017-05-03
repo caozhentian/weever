@@ -23,30 +23,30 @@
         android:visibility="gone">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dim48">
+            android:layout_height="@dimen/dim30">
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="公里数"/>
             <TextView
                 android:id="@+id/txtAllDistance"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="20km"/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="总耗时"/>
             <TextView
                 android:id="@+id/txtAllTime"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="20M"/>
@@ -54,33 +54,33 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dim48">
+            android:layout_height="@dimen/dim30">
             <TextView
                 android:id="@+id/txtAllWaitTime"
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="等待时间"/>
             <TextView
                 android:id="@+id/txtAllWaitAmount"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="20"/>
+                android:text=""/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="等待金额"/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="20M"/>
+                android:text=""/>
         </LinearLayout>
     </LinearLayout>
 
@@ -90,7 +90,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="80dip"
         android:minWidth="100dip"
         android:orientation="vertical"
         android:background="@color/white"
@@ -106,11 +105,13 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:layout_marginLeft="@dimen/dim10"
+                android:layout_marginRight="@dimen/dim10"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dim48">
+                    android:layout_height="@dimen/dim30"
+                    android:layout_marginBottom="@dimen/dim5">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -118,19 +119,21 @@
                         android:gravity="center"
                         android:text="出发地"/>
 
-                    <EditText
+                    <TextView
                         android:id="@+id/edtSrc"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:layout_marginLeft="@dimen/dim10"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/txt12"
                         android:background="@drawable/shape_rec_normal"
-                        android:hint="请输入出发地"/>
+                        android:hint="请选择出发地"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dim48">
+                    android:layout_height="@dimen/dim30">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -138,28 +141,31 @@
                         android:gravity="center"
                         android:text="目的地"/>
 
-                    <EditText
+                    <TextView
                         android:id="@+id/edtDest"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:layout_marginLeft="@dimen/dim10"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/txt12"
                         android:background="@drawable/shape_rec_normal"
-                        android:hint="请输入目的地"/>
+                        android:hint="请选择目的地"/>
                 </LinearLayout>
             </LinearLayout>
 
             <ImageView
                 android:layout_width="@dimen/dim48"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_action_turn_left"/>
+                android:src="@drawable/ic_action_turn_left"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim10"
+            android:layout_marginTop="@dimen/dim5"
             android:contentDescription="定位icon"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
@@ -197,7 +203,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dim48"
+            android:layout_height="@dimen/dim36"
             android:layout_margin="@dimen/dim10">
 
             <Button

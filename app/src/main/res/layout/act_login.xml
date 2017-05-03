@@ -60,7 +60,8 @@
         <Spinner
             android:id="@+id/spnCarNum"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dim48" />
+            android:layout_height="@dimen/dim48"
+            android:background="@color/icons"/>
 
     </LinearLayout>
 

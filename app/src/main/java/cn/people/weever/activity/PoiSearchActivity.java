@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.search.core.CityInfo;
 import com.baidu.mapapi.search.core.PoiInfo;
@@ -53,7 +56,7 @@ public class PoiSearchActivity extends AppCompatActivity implements
     private BaiduMap mBaiduMap = null;
     private List<String> suggest;
 
-    public final Intent newIntent(Context packageContext){
+    public static final Intent newIntent(Context packageContext){
         Intent intent   =  new Intent(packageContext , PoiSearchActivity.class) ;
         return intent  ;
     }
@@ -77,6 +80,8 @@ public class PoiSearchActivity extends AppCompatActivity implements
         mSearchkey.setThreshold(1);
         mBaiduMap = ((SupportMapFragment) (getSupportFragmentManager()
                 .findFragmentById(R.id.map))).getBaiduMap();
+        MapStatusUpdate u2 = MapStatusUpdateFactory.newLatLng(CityConstant.GEO_XIAN);
+        mBaiduMap.setMapStatus(u2);
 
         /**
          * 当输入关键字变化时，动态更新建议列表

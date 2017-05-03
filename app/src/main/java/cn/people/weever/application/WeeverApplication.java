@@ -97,7 +97,7 @@ public class WeeverApplication extends Application {
         /***
          * 初始化定位sdk，建议在Application中创建
          */
-        LocationService locationService = new LocationService(getApplicationContext());
+        LocationService locationService = LocationService.getLocationService(this);
         SDKInitializer.initialize(this);
     }
 
