@@ -57,11 +57,15 @@
             android:gravity="center"
             android:text="车辆编号：" />
 
+			<LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="#496454">
         <Spinner
             android:id="@+id/spnCarNum"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dim48"
             android:background="@color/icons"/>
+			</LinearLayout>
 
     </LinearLayout>
 
