@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
+import cn.people.weever.activity.HomeActivity;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.activity.car.MainActivity;
 import cn.people.weever.common.constant.APIOperationCode;
@@ -110,7 +111,7 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         mLoginViewModel.setCardNum(carNum);
         try {
             mDriverService.login(mLoginViewModel);
-            startActivity(MainActivity.newIntent(this));
+            startActivity(HomeActivity.newIntent(this));
         }catch(IllegalArgumentException e){
             ToastUtil.showToast(e.getMessage());
         }
@@ -122,7 +123,7 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
             if(baseModel.isSuccess()){
                 Driver driver = baseModel.getData() ;
                 mDriverService.save(driver);
-                startActivity(MainActivity.newIntent(this));
+                startActivity(HomeActivity.newIntent(this));
                 finish() ;
             }
             else{
