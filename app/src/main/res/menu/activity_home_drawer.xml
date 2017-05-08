@@ -13,16 +13,13 @@
             android:title="设置" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="路线">
         <menu>
+
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_nav"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="导航" />
         </menu>
     </item>
 

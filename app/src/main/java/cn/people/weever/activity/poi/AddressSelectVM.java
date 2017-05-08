@@ -1,4 +1,4 @@
-package baidumapsdk.demo.search.poi;
+package cn.people.weever.activity.poi;
 
 import com.baidu.mapapi.search.core.PoiInfo;
 

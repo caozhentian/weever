@@ -49,7 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
-import cn.people.weever.activity.PoiSearchActivity;
+
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
@@ -232,10 +232,10 @@ public class MainActivity extends SubcribeCreateDestroyActivity implements OnGet
     public void onViewClickedAddress(View view) {
         switch (view.getId()) {
             case R.id.edtSrc:
-                startActivity(PoiSearchActivity.newIntent(this));
+                //startActivity(PoiSearchActivity.newIntent(this));
                 break;
             case R.id.edtDest:
-                startActivity(PoiSearchActivity.newIntent(this));
+                //startActivity(PoiSearchActivity.newIntent(this));
                 break;
         }
     }

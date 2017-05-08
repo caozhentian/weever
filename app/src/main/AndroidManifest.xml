@@ -82,7 +82,7 @@
             android:name=".activity.car.AddressSelectionActivity"
             android:label="@string/title_activity_address_selection"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".activity.PoiSearchActivity"></activity>
+        <activity android:name=".activity.poi.PoiSearchActivity"></activity>
         <!-- <activity -->
         <!-- android:name=".activity.PoiSearchActivity" -->
         <!-- android:screenOrientation="portrait"> -->

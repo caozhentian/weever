@@ -24,14 +24,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="dem01"
+                android:text="常用地址"
                 android:textColor="@color/sl_address_tabs"
                 android:textSize="15sp" />
 
             <View
                 android:id="@+id/view_going"
                 android:layout_width="60dp"
-                android:layout_height="1dp"
+                android:layout_height="3dp"
                 android:background="#09BB07"
                 android:visibility="visible" />
         </LinearLayout>
@@ -54,14 +54,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="dem02"
+                android:text="公司地址"
                 android:textColor="@color/sl_address_tabs"
                 android:textSize="15sp" />
 
             <View
                 android:id="@+id/view_completed"
                 android:layout_width="60dp"
-                android:layout_height="1dp"
+                android:layout_height="3dp"
                 android:background="#09BB07"
                 android:visibility="invisible" />
         </LinearLayout>
