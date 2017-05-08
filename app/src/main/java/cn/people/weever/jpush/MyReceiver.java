@@ -1,4 +1,4 @@
-package cn.people.weever.jpush;
+package cn.people.weever.jpush ;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
