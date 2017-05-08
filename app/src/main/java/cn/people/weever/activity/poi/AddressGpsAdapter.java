@@ -1,16 +1,15 @@
-package baidumapsdk.demo.search.poi;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import baidumapsdk.demo.R;
 
 import com.baidu.mapapi.search.core.PoiInfo;
 
-
 import java.util.List;
+
+import cn.people.weever.R;
+import cn.people.weever.adapter.BaseListAdapter;
 
 /**
  *   gps 定位数据适配器
@@ -21,7 +20,7 @@ public class AddressGpsAdapter extends BaseListAdapter<PoiInfo> {
     private  Context mcontext;
 
     public AddressGpsAdapter(Context context, List<PoiInfo> list) {
-        super(context, list, NO_DEFAULT);
+        super(context, list, 0);
         this.mcontext = context;
     }
 

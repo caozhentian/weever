@@ -1,7 +1,4 @@
-package baidumapsdk.demo.search.poi;
-
-import java.util.LinkedList;
-import java.util.List;
+package cn.people.weever.activity.poi;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,7 +15,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import baidumapsdk.demo.R;
+
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
 import com.baidu.mapapi.navi.BaiduMapNavigation;
@@ -32,6 +29,12 @@ import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.utils.OpenClientUtil;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import cn.people.weever.R;
+import cn.people.weever.activity.car.AddressGpsAdapter;
 
 /**
  * 演示poi搜索功能
@@ -211,7 +214,7 @@ public class PoiSearchActivity extends FragmentActivity implements
     /**
      * 响应城市内搜索按钮点击事件
      *
-     * @param v
+     * @param
      */
     public void searchButtonProcess() {
         String citystr = editCity.getText().toString();

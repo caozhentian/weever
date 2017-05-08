@@ -5,17 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:background="@color/colorPrimary"
-    android:padding="@dimen/activity_horizontal_margin"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
     tools:context="cn.people.weever.activity.login.LoginActivity">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_login"
-        android:layout_margin="@dimen/dim10"/>
+        android:layout_margin="@dimen/dim10"
+        android:src="@drawable/ic_login"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dim36"
             android:gravity="center"
-            android:text="用户名：" />
+            android:text="用户名："/>
 
         <EditText
             android:id="@+id/edtUserName"
@@ -36,16 +36,16 @@
             android:background="@drawable/shape_rec_normal"
             android:ems="10"
             android:hint="请输入用户名"
-            android:textSize="@dimen/txt12"
             android:inputType="textPersonName"
-            android:maxLength="20" />
+            android:maxLength="20"
+            android:textSize="@dimen/txt12"/>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dim36"
             android:gravity="center"
-            android:text="密码：" />
+            android:text="密码："/>
 
         <EditText
             android:id="@+id/edtPassword"
@@ -54,37 +54,26 @@
             android:background="@drawable/shape_rec_normal"
             android:ems="10"
             android:hint="请输入密码"
-            android:textSize="@dimen/txt12"
             android:inputType="textPassword"
-            android:maxLength="20" />
+            android:maxLength="20"
+            android:textSize="@dimen/txt12"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dim36"
             android:gravity="center"
-            android:text="车辆编号：" />
+            android:text="车辆编号："/>
 
-<<<<<<< HEAD
-			<LinearLayout android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:background="#496454">
-        <Spinner
-            android:id="@+id/spnCarNum"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dim48"
-            android:background="@color/icons"/>
-			</LinearLayout>
-=======
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_rec_normal">
-        <Spinner
-            android:id="@+id/spnCarNum"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dim36" />
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:background="#496454">
+            <Spinner
+                android:id="@+id/spnCarNum"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim48"
+                android:background="@color/icons"/>
         </LinearLayout>
->>>>>>> 95cafcb2a70f86803fb96e96c45ddbdff718bcde
+
 
     </LinearLayout>
 
@@ -94,5 +83,5 @@
         android:layout_height="@dimen/dim48"
         android:layout_margin="@dimen/dim48"
         android:text="登录"
-        />
+    />
 </LinearLayout>
