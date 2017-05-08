@@ -224,8 +224,8 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         int id = item.getItemId();
 
         if (id == R.id.nav_nav) {
-            startNavi(srcLating , mEdtSrc.getEditableText().toString() ,
-                      destLating , mEdtDest.getEditableText().toString()) ;
+            startNavi(srcLating , mEdtSrc.getText().toString() ,
+                      destLating , mEdtDest.getText().toString()) ;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
