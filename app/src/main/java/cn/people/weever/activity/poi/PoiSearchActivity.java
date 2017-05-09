@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -30,16 +29,19 @@ import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.utils.OpenClientUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import cn.people.weever.R;
+import cn.people.weever.activity.BaseActivity;
 import cn.people.weever.activity.car.AddressGpsAdapter;
 
 /**
  * 演示poi搜索功能
  */
-public class PoiSearchActivity extends FragmentActivity implements
+public class PoiSearchActivity extends BaseActivity implements
         OnGetPoiSearchResultListener {
 
 	public static final String SRC  =  "src" ;
@@ -80,7 +82,12 @@ public class PoiSearchActivity extends FragmentActivity implements
         initView() ;
     }
 
-    private void initView(){
+    @Override
+    public void initData() {
+
+    }
+
+    public void initView(){
 
     	 mSrc = getIntent().getBooleanExtra(SRC, false) ;
     	 if(mSrc){
@@ -180,7 +187,8 @@ public class PoiSearchActivity extends FragmentActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	PoiInfo poiInfo = mPoiInfoList.get(position) ;
-            	finish() ;
+                EventBus.getDefault().post(new AddressSelectVM(mSrc ,poiInfo ));
+                finish() ;
             }
         });
     }

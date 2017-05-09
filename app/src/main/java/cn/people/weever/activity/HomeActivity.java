@@ -1,6 +1,8 @@
 package cn.people.weever.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -35,6 +37,9 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
+import com.baidu.mapapi.navi.BaiduMapNavigation;
+import com.baidu.mapapi.navi.NaviParaOption;
 import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.BikingRouteResult;
@@ -47,6 +52,7 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.baidu.mapapi.utils.OpenClientUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -58,6 +64,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.car.MainActivity;
+import cn.people.weever.activity.poi.AddressSelectVM;
+import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 
@@ -114,6 +122,9 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
     TextView mEdtDest;
     private MyLocationConfiguration.LocationMode mCurrentMode;
 
+    private LatLng srcLating ;
+    private LatLng destLating ;
+
     public static final Intent newIntent(Context packageContext){
         Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
         return intent ;
@@ -135,14 +146,6 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-
-        // 修改为自定义marker
-//        mCurrentMarker = BitmapDescriptorFactory
-//                .fromResource(R.drawable.icon_geo);
-//        mBaiduMap
-//                .setMyLocationConfigeration(new MyLocationConfiguration(
-//                        mCurrentMode, true, mCurrentMarker,
-//                        accuracyCircleFillColor, accuracyCircleStrokeColor));
 
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
@@ -220,20 +223,10 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
-
+        if (id == R.id.nav_nav) {
+            startNavi(srcLating , mEdtSrc.getText().toString() ,
+                      destLating , mEdtDest.getText().toString()) ;
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -293,8 +286,8 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         // 设置起终点信息，对于tranist search 来说，城市名无意义
         //startNodeStr = "科技六路" ;
         //endNodeStr   = "金宇蓝苑" ;
-        PlanNode stNode = PlanNode.withCityNameAndPlaceName(CityConstant.CITY , startNodeStr)  ;
-        PlanNode enNode = PlanNode.withCityNameAndPlaceName(CityConstant.CITY , endNodeStr)    ;
+        PlanNode stNode = PlanNode.withLocation(srcLating)   ;
+        PlanNode enNode = PlanNode.withLocation(destLating)  ;
         mBaiduMap.clear();
         mSearch.drivingSearch((new DrivingRoutePlanOption())
                 .from(stNode).to(enNode));
@@ -305,10 +298,10 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
     public void onViewClickedAddress(View view) {
         switch (view.getId()) {
             case R.id.edtSrc:
-                startActivity(PoiSearchActivity.newIntent(this));
+                startActivity(PoiSearchActivity.newIntent(this,true));
                 break;
             case R.id.edtDest:
-                startActivity(PoiSearchActivity.newIntent(this));
+                startActivity(PoiSearchActivity.newIntent(this,false));
                 break;
         }
     }
@@ -407,13 +400,7 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
             if (location == null || location.getLocType() == BDLocation.TypeServerError || mMapView == null) {
                 return;
             }
-            String addrStr = location.getAddrStr();
-            //使用街道
-            List<Poi> poiList = location.getPoiList() ;
-            if(poiList != null && poiList.size() > 1) {
-                Poi poi = poiList.get(0);
-                mEdtSrc.setText(poi.getName());
-            }
+
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360
@@ -422,8 +409,15 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
             mBaiduMap.setMyLocationData(locData);
             if (isFirstLoc) {
                 isFirstLoc = false;
+                //使用街道
+                List<Poi> poiList = location.getPoiList() ;
+                if(poiList != null && poiList.size() > 1) {
+                    Poi poi = poiList.get(0);
+                    mEdtSrc.setText(poi.getName());
+                }
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
+                srcLating = ll ;
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(12.0f);
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
@@ -432,7 +426,60 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void process(Object o){
+    public void process(AddressSelectVM o){
+        if(o.isSrc()){
+            mEdtSrc.setText(o.getmPoiInfo().name)   ;
+            srcLating = o.getmPoiInfo().location   ;
+        }
+        else{
+            mEdtDest.setText(o.getmPoiInfo().name)  ;
+            destLating = o.getmPoiInfo().location  ;
+        }
+    }
+
+    /**
+     * 启动百度地图导航(Native)
+     */
+    public void startNavi(LatLng srcLatLng ,   String src ,
+                          LatLng destLatLng ,  String dest ) {
+
+        // 构建 导航参数
+        NaviParaOption para = new NaviParaOption()
+                .startPoint(srcLatLng).endPoint(destLatLng)
+                .startName(src).endName(dest);
+
+        try {
+            BaiduMapNavigation.openBaiduMapNavi(para, this);
+        } catch (BaiduMapAppNotSupportNaviException e) {
+            e.printStackTrace();
+            showDialog();
+        }
+
+    }
+
+    /**
+     * 提示未安装百度地图app或app版本过低
+     */
+    public void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("您尚未安装百度地图app或app版本过低，点击确认安装？");
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                OpenClientUtil.getLatestBaiduMapApp(HomeActivity.this);
+            }
+        });
+
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
 
     }
 }
