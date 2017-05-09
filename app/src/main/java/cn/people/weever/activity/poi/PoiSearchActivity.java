@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -14,7 +15,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
 import com.baidu.mapapi.navi.BaiduMapNavigation;
@@ -50,7 +53,8 @@ public class PoiSearchActivity extends BaseActivity implements
   
     List<PoiInfo>        mPoiInfoList          ;
     private ImageView    iv_clear_searchtext   ;
-    
+    private ImageView    img_back ;
+    private TextView     tv_title ;
     private View         ll_tabs ,ll_going,ll_completed  ,
                          view_going ,  view_completed ,tv_going ;
     /**
@@ -88,13 +92,23 @@ public class PoiSearchActivity extends BaseActivity implements
     }
 
     public void initView(){
-
-    	 mSrc = getIntent().getBooleanExtra(SRC, false) ;
-    	 if(mSrc){
-    		 
-    	 }
-    	 else{
-    		 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        tv_title = (TextView) findViewById(R.id.tv_title);
+        img_back  = (ImageView) findViewById(R.id.img_back);
+        img_back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        mSrc = getIntent().getBooleanExtra(SRC, false) ;
+        if(mSrc){
+            tv_title.setText("选择出发地");
+        }
+        else{
+            tv_title.setText("选择目的地");
     	 }
     	 ll_tabs      = findViewById(R.id.ll_tabs)  ;
     	 ll_going     = findViewById(R.id.ll_going) ;

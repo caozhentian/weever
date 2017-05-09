@@ -1,4 +1,4 @@
-package com.example.administrator.firstapplication.tabs;
+package cn.people.weever.activity.order;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,14 +9,21 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-
-import com.example.administrator.firstapplication.R;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.Arrays;
 
-public class MyOrdersActivity extends AppCompatActivity {
+import cn.people.weever.R;
+import cn.people.weever.activity.BaseActivity;
 
-    public static final Intent newInteng(Context packageContext){
+public class MyOrdersActivity extends BaseActivity {
+
+    private ImageView    img_back ;
+    private TextView     tv_title ;
+
+    public static final Intent newIntent(Context packageContext){
         Intent intent    =  new  Intent(packageContext , MyOrdersActivity.class) ;
         return intent   ;
     }
@@ -36,16 +43,27 @@ public class MyOrdersActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_orders);
+    public void initData() {
 
+    }
+
+    @Override
+    public void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        tv_title = (TextView) findViewById(R.id.tv_title);
+        tv_title.setText("我的订单");
+        img_back  = (ImageView) findViewById(R.id.img_back);
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        String[] aa = {"TEST1" , "TEST2" ,"TEST3" , "TESTTEST4"} ;
+        String[] aa = {"全部" , "待处理", "已完成" ,"已拒绝" ,} ;
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), Arrays.asList(aa));
 
         // Set up the ViewPager with the sections adapter.
@@ -54,7 +72,15 @@ public class MyOrdersActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        setTitle("study");
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my_orders);
+        initView()  ;
+        initData()  ;
     }
 
     @Override

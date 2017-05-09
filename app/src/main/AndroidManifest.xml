@@ -78,11 +78,12 @@
         <activity
             android:name=".activity.car.MainActivity"
             android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".activity.car.AddressSelectionActivity"
-            android:label="@string/title_activity_address_selection"
+
+        <activity android:name=".activity.poi.PoiSearchActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".activity.poi.PoiSearchActivity"></activity>
+        <activity android:name=".activity.order.MyOrdersActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        MyOrdersActivity
         <!-- <activity -->
         <!-- android:name=".activity.PoiSearchActivity" -->
         <!-- android:screenOrientation="portrait"> -->

@@ -1,4 +1,4 @@
-package com.example.administrator.firstapplication.tabs;
+package cn.people.weever.activity.order;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.administrator.firstapplication.R;
+import cn.people.weever.R;
 
 
 /**
