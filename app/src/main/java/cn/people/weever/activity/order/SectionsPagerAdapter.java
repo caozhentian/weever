@@ -1,4 +1,4 @@
-package com.example.administrator.firstapplication.tabs;
+package cn.people.weever.activity.order;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
