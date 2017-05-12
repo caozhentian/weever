@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="worktime">
+        <item>白班</item>
+        <item>夜班</item>
+    </string-array>
+</resources>
