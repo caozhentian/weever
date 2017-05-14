@@ -6,6 +6,8 @@ package cn.people.weever.model;
 
 public class BaseOrder extends WeeverBean {
 
+    public static String ORDER_ID = "orderId" ;
+
     //乘车人
     private String mPassenger            ;
 

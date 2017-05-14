@@ -65,10 +65,12 @@ import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.car.MainActivity;
 import cn.people.weever.activity.order.MyOrdersActivity;
+import cn.people.weever.activity.order.OrderClearingActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
+import cn.people.weever.model.BaseOrder;
 
 public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
        ,NavigationView.OnNavigationItemSelectedListener {
@@ -275,6 +277,7 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
             case R.id.btnRestart:
                 break;
             case R.id.btnCompute:
+                startActivity(OrderClearingActivity.newIntent(this , new BaseOrder()));
                 break;
         }
     }

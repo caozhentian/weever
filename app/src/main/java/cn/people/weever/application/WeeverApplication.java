@@ -27,10 +27,6 @@ public class WeeverApplication extends Application {
     private static Driver sCurDriver;
 
     private static DaoSession sDaoSession ;
-    private  boolean  isFirstLoc = true;
-    public static String city_name = "";
-    public static  int height;
-    public static  int width;
 
     @Override
     public void onCreate() {
