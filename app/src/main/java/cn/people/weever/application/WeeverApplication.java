@@ -27,6 +27,27 @@ public class WeeverApplication extends Application {
     private static Driver sCurDriver;
 
     private static DaoSession sDaoSession ;
+	
+	/**
+     * 轨迹客户端
+     */
+    public LBSTraceClient mClient = null;
+
+    /**
+     * 轨迹服务
+     */
+    public Trace mTrace = null;
+
+    /**
+     * 轨迹服务ID
+     */
+    public long serviceId = 0;
+
+    /**
+     * Entity标识
+     */
+    public String entityName = "myTrace";
+
 
     @Override
     public void onCreate() {
@@ -97,4 +118,8 @@ public class WeeverApplication extends Application {
         SDKInitializer.initialize(this);
     }
 
+	private void initTrace(){
+		mClient = new LBSTraceClient(mContext);
+        mTrace = new Trace(serviceId, entityName);
+	}
 }
