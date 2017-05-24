@@ -104,16 +104,15 @@
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-                android:name=".activity.car.TrackQueryActivity"
-                android:screenOrientation="portrait"/>
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN"/> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
-            <!-- </intent-filter> -->
+            android:name=".activity.car.TrackQueryActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
         </activity>
-
+        <activity android:name=".activity.order.OrderClearingActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"></activity>
         <!-- Rich push 核心功能 since 2.0.6 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
@@ -214,7 +213,6 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="af0f2185725cbbbed952eeab" /> <!-- </>值来自开发者平台取得的AppKey -->
-        <activity android:name=".activity.order.OrderClearingActivity"></activity>
     </application>
 
 </manifest>

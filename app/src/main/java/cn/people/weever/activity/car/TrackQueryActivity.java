@@ -1,7 +1,12 @@
 package cn.people.weever.activity.car;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
@@ -28,10 +33,14 @@ import com.baidu.trace.model.TransportMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.constant.TraceConstants;
+import cn.people.weever.common.util.BitmapUtil;
 import cn.people.weever.common.util.CommonUtil;
 import cn.people.weever.common.util.MapUtil;
 
@@ -41,6 +50,12 @@ import cn.people.weever.common.util.MapUtil;
 public class TrackQueryActivity extends BaseActivity
         implements CompoundButton.OnCheckedChangeListener {
 
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.img_back)
+    ImageView imgBack;
+    @BindView(R.id.imgBtn_track_analysis)
+    ImageButton mImgBtnTrackAnalysis;
     private WeeverApplication trackApp = null;
 
     /**
@@ -66,7 +81,7 @@ public class TrackQueryActivity extends BaseActivity
     /**
      * 轨迹分析详情框布局
      */
-   // private TrackAnalysisInfoLayout trackAnalysisInfoLayout = null;
+    // private TrackAnalysisInfoLayout trackAnalysisInfoLayout = null;
 
     /**
      * 当前轨迹分析详情框对应的marker
@@ -91,12 +106,12 @@ public class TrackQueryActivity extends BaseActivity
     /**
      * 查询轨迹的开始时间
      */
-    private long startTime = CommonUtil.getCurrentTime();
+    private long startTime = CommonUtil.getLongTime("2017-05-24 18:10:00");
 
     /**
      * 查询轨迹的结束时间
      */
-    private long endTime = CommonUtil.getCurrentTime();
+    private long endTime = CommonUtil.getLongTime("2017-05-24 19:20:00");
 
     /**
      * 轨迹点集合
@@ -190,6 +205,11 @@ public class TrackQueryActivity extends BaseActivity
      */
     private long lastQueryTime = 0;
 
+    public static final Intent newIntent(Context packageContext) {
+        Intent intent = new Intent(packageContext, TrackQueryActivity.class);
+        return intent;
+    }
+
     @Override
     public void initData() {
 
@@ -204,9 +224,10 @@ public class TrackQueryActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trackquery);
-        setTitle("");
+        ButterKnife.bind(this);
+        tvTitle.setText("路线轨迹");
         trackApp = (WeeverApplication) getApplicationContext();
-        pageIndex = 1 ;
+        pageIndex = 1;
         init();
     }
 
@@ -220,6 +241,8 @@ public class TrackQueryActivity extends BaseActivity
         mapUtil.setCenter(trackApp);
         //trackAnalysisInfoLayout = new TrackAnalysisInfoLayout(this, mapUtil.baiduMap);
         initListener();
+        BitmapUtil.init();
+        queryHistoryTrack();
     }
 
     /**
@@ -462,7 +485,7 @@ public class TrackQueryActivity extends BaseActivity
                 if (StatusCodes.SUCCESS != response.getStatus()) {
                     showToast(response.getMessage());
                 } else if (0 == total) {
-                    showToast( "无数据");
+                    showToast("无数据");
                 } else {
                     List<TrackPoint> points = response.getTrackPoints();
                     if (null != points) {
@@ -513,7 +536,7 @@ public class TrackQueryActivity extends BaseActivity
             public void onDrivingBehaviorCallback(DrivingBehaviorResponse response) {
                 if (StatusCodes.SUCCESS != response.getStatus()) {
                     lastQueryTime = 0;
-                    showToast( response.getMessage());
+                    showToast(response.getMessage());
                     return;
                 }
 
@@ -685,4 +708,8 @@ public class TrackQueryActivity extends BaseActivity
         mapUtil.clear();
     }
 
+    @OnClick(R.id.img_back)
+    public void onViewClicked() {
+        finish();
+    }
 }

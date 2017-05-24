@@ -207,4 +207,14 @@ public class CommonUtil {
         return imei;
     }
 
+    public static long getLongTime(String formateDate){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date date = simpleDateFormat.parse(formateDate) ;
+            return date.getTime()/1000 ;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0 ;
+    }
 }
