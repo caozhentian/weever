@@ -1,18 +1,21 @@
 package cn.people.weever.application;
 
 import android.app.Application;
+import android.util.DisplayMetrics;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.trace.LBSTraceClient;
 import com.baidu.trace.Trace;
 import com.baidu.trace.api.entity.OnEntityListener;
 import com.baidu.trace.api.track.OnTrackListener;
+import com.baidu.trace.model.BaseRequest;
 import com.facebook.stetho.Stetho;
 
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.people.weever.BuildConfig;
 import cn.people.weever.model.DaoMaster;
@@ -45,13 +48,20 @@ public class WeeverApplication extends Application {
     /**
      * 轨迹服务ID
      */
-    public long serviceId = 140822;
+    public static long serviceId = 140822;
 
     /**
      * Entity标识
      */
     public String entityName = "myTrace";
 
+    public static boolean isRegisterPower = false;
+
+    public static int screenWidth = 0;
+
+    public static int screenHeight = 0;
+
+    private static  AtomicInteger mSequenceGenerator = new AtomicInteger();
 
     @Override
     public void onCreate() {
@@ -62,6 +72,7 @@ public class WeeverApplication extends Application {
             Stetho.initializeWithDefaults(this);
         }
         sWeeverApplication = this ;
+        getScreenSize() ;
         initMap()   ;
         initTrace() ;
         initdb();
@@ -159,5 +170,33 @@ public class WeeverApplication extends Application {
 //        } else {
 //            mClient.queryRealTimeLoc(locRequest, entityListener);
 //        }
+    }
+
+    /**
+     * 获取屏幕尺寸
+     */
+    private void getScreenSize() {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        screenHeight = dm.heightPixels;
+        screenWidth = dm.widthPixels;
+    }
+
+    /**
+     * 初始化请求公共参数
+     *
+     * @param request
+     */
+    public static  void initRequest(BaseRequest request) {
+        request.setTag(getTag());
+        request.setServiceId(serviceId);
+    }
+
+    /**
+     * 获取请求标识
+     *
+     * @return
+     */
+    public static  int getTag() {
+        return mSequenceGenerator.incrementAndGet();
     }
 }

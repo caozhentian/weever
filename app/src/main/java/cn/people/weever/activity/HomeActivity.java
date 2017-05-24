@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -56,6 +58,8 @@ import com.baidu.trace.api.entity.OnEntityListener;
 import com.baidu.trace.api.track.LatestPointResponse;
 import com.baidu.trace.api.track.OnTrackListener;
 import com.baidu.trace.model.OnTraceListener;
+import com.baidu.trace.model.PushMessage;
+import com.baidu.trace.model.StatusCodes;
 import com.baidu.trace.model.TraceLocation;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -75,6 +79,7 @@ import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.receiver.PowerReceiver;
 
 public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
        ,NavigationView.OnNavigationItemSelectedListener {
@@ -114,7 +119,11 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
 
     private RealTimeLocRunnable realTimeLocRunnable = null;
 
-    private int notifyId = 0;
+    private PowerManager powerManager = null;
+
+    private PowerManager.WakeLock wakeLock = null;
+
+    private PowerReceiver powerReceiver = null;
 
     /**
      * 打包周期
@@ -577,7 +586,64 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
             public void onReceiveLocation(TraceLocation location) {
 
             }} ;
+        traceListener = new OnTraceListener() {
+            @Override
+            public void onStartTraceCallback(int errorNo, String message) {
+                if (StatusCodes.SUCCESS == errorNo || StatusCodes.START_TRACE_NETWORK_CONNECT_FAILED <= errorNo) {
+//                    trackApp.isTraceStarted = true;
+//                    SharedPreferences.Editor editor = trackApp.trackConf.edit();
+//                    editor.putBoolean("is_trace_started", true);
+//                    editor.apply();
+//                    setTraceBtnStyle();
+                    registerPowerReceiver();
+                }
+                showToast(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+            }
 
+            @Override
+            public void onStopTraceCallback(int errorNo, String message) {
+                if (StatusCodes.SUCCESS == errorNo || StatusCodes.CACHE_TRACK_NOT_UPLOAD == errorNo) {
+//                    trackApp.isTraceStarted = false;
+//                    trackApp.isGatherStarted = false;
+//                    // 停止成功后，直接移除is_trace_started记录（便于区分用户没有停止服务，直接杀死进程的情况）
+//                    SharedPreferences.Editor editor = trackApp.trackConf.edit();
+//                    editor.remove("is_trace_started");
+//                    editor.remove("is_gather_started");
+//                    editor.apply();
+//                    setTraceBtnStyle();
+//                    setGatherBtnStyle();
+                    unregisterPowerReceiver();
+                }
+                showToast( String.format("onStopTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+            }
+
+            @Override
+            public void onStartGatherCallback(int errorNo, String message) {
+                if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STARTED == errorNo) {
+//                    trackApp.isGatherStarted = true;
+//                    SharedPreferences.Editor editor = trackApp.trackConf.edit();
+//                    editor.putBoolean("is_gather_started", true);
+//                    editor.apply();
+                }
+                showToast(String.format("onStartGatherCallback, errorNo:%d, message:%s ", errorNo, message));
+            }
+
+            @Override
+            public void onStopGatherCallback(int errorNo, String message) {
+                if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STOPPED == errorNo) {
+//                    trackApp.isGatherStarted = false;
+//                    SharedPreferences.Editor editor = trackApp.trackConf.edit();
+//                    editor.remove("is_gather_started");
+//                    editor.apply();
+                }
+                showToast( String.format("onStopGatherCallback, errorNo:%d, message:%s ", errorNo, message));
+            }
+
+            @Override
+            public void onPushCallback(byte messageType, PushMessage pushMessage) {
+
+            }
+        };
     }
     
 	private void startTrace(){
@@ -589,5 +655,38 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
         }
+    }
+
+    /**
+     * 注册电源锁广播
+     */
+    private void registerPowerReceiver() {
+        if (WeeverApplication.isRegisterPower) {
+            return;
+        }
+
+        if (null == wakeLock) {
+            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "track upload");
+        }
+        if (null == powerReceiver) {
+            powerReceiver = new PowerReceiver(wakeLock);
+        }
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        registerReceiver(powerReceiver, filter);
+        WeeverApplication.isRegisterPower = true;
+    }
+
+    private void unregisterPowerReceiver() {
+        if (!WeeverApplication.isRegisterPower) {
+            return;
+        }
+        if (null != powerReceiver) {
+            unregisterReceiver(powerReceiver);
+        }
+        WeeverApplication.isRegisterPower = false;
     }
 }
