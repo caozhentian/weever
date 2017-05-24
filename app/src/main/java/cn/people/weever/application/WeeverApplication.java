@@ -3,6 +3,10 @@ package cn.people.weever.application;
 import android.app.Application;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.trace.LBSTraceClient;
+import com.baidu.trace.Trace;
+import com.baidu.trace.api.entity.OnEntityListener;
+import com.baidu.trace.api.track.OnTrackListener;
 import com.facebook.stetho.Stetho;
 
 import org.greenrobot.greendao.database.Database;
@@ -31,17 +35,17 @@ public class WeeverApplication extends Application {
 	/**
      * 轨迹客户端
      */
-    public LBSTraceClient mClient = null;
+    public static LBSTraceClient mClient = null;
 
     /**
      * 轨迹服务
      */
-    public Trace mTrace = null;
+    public static Trace mTrace = null;
 
     /**
      * 轨迹服务ID
      */
-    public long serviceId = 0;
+    public long serviceId = 140822;
 
     /**
      * Entity标识
@@ -58,7 +62,8 @@ public class WeeverApplication extends Application {
             Stetho.initializeWithDefaults(this);
         }
         sWeeverApplication = this ;
-        initMap() ;
+        initMap()   ;
+        initTrace() ;
         initdb();
 
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -119,7 +124,40 @@ public class WeeverApplication extends Application {
     }
 
 	private void initTrace(){
-		mClient = new LBSTraceClient(mContext);
+		mClient = new LBSTraceClient(this);
+        // 定位周期(单位:秒)
+        int gatherInterval = 5;
+        // 打包回传周期(单位:秒)
+        int packInterval = 10;
+        // 设置定位和打包周期
+        mClient.setInterval(gatherInterval, packInterval);
         mTrace = new Trace(serviceId, entityName);
+        // 初始化轨迹服务监听器
+        // 开启服务
+        //mClient.startTrace(mTrace, null) ;
 	}
+
+	public static final void exitApp(){
+        mClient.stopTrace(mTrace ,null);
+    }
+    /**
+     * 获取当前位置
+     */
+    public void getCurrentLocation(OnEntityListener entityListener, OnTrackListener trackListener) {
+        // 网络连接正常，开启服务及采集，则查询纠偏后实时位置；否则进行实时定位
+//        if (NetUtil.isNetworkAvailable(mContext)
+//                && trackConf.contains("is_trace_started")
+//                && trackConf.contains("is_gather_started")
+//                && trackConf.getBoolean("is_trace_started", false)
+//                && trackConf.getBoolean("is_gather_started", false)) {
+//            LatestPointRequest request = new LatestPointRequest(getTag(), serviceId, entityName);
+//            ProcessOption processOption = new ProcessOption();
+//            processOption.setNeedDenoise(true);
+//            processOption.setRadiusThreshold(100);
+//            request.setProcessOption(processOption);
+//            mClient.queryLatestPoint(request, trackListener);
+//        } else {
+//            mClient.queryRealTimeLoc(locRequest, entityListener);
+//        }
+    }
 }

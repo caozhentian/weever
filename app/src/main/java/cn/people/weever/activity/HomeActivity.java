@@ -5,18 +5,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.text.TextUtils;
-import android.view.View;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -53,6 +52,11 @@ import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.OpenClientUtil;
+import com.baidu.trace.api.entity.OnEntityListener;
+import com.baidu.trace.api.track.LatestPointResponse;
+import com.baidu.trace.api.track.OnTrackListener;
+import com.baidu.trace.model.OnTraceListener;
+import com.baidu.trace.model.TraceLocation;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -63,11 +67,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
-import cn.people.weever.activity.car.MainActivity;
 import cn.people.weever.activity.order.MyOrdersActivity;
 import cn.people.weever.activity.order.OrderClearingActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.poi.PoiSearchActivity;
+import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.BaseOrder;
@@ -88,6 +92,34 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
     MapView mMapView;
     BaiduMap mBaiduMap;
     boolean isFirstLoc = true; // 是否首次定位
+
+    /**
+     * 轨迹服务监听器
+     */
+    private OnTraceListener traceListener = null;
+
+    /**
+     * 轨迹监听器(用于接收纠偏后实时位置回调)
+     */
+    private OnTrackListener trackListener = null;
+
+    /**
+     * Entity监听器(用于接收实时定位回调)
+     */
+    private OnEntityListener entityListener = null;
+    /**
+     * 实时定位任务
+     */
+    private RealTimeHandler realTimeHandler = new RealTimeHandler();
+
+    private RealTimeLocRunnable realTimeLocRunnable = null;
+
+    private int notifyId = 0;
+
+    /**
+     * 打包周期
+     */
+    public int packInterval = 5;
     //UI相关
     @BindView(R.id.txtAllTime)
     TextView mTxtAllTime;
@@ -175,6 +207,8 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         mLocClient.start();
         initView();
         initData();
+        startTrace() ;
+        initListener();
     }
 
     @Override
@@ -277,11 +311,15 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
             case R.id.btnRestart:
                 break;
             case R.id.btnCompute:
-                startActivity(OrderClearingActivity.newIntent(this , new BaseOrder()));
+                compute() ;
                 break;
         }
     }
 
+	private void compute(){
+        WeeverApplication.mClient.stopGather(traceListener);
+        startActivity(OrderClearingActivity.newIntent(this , new BaseOrder()));
+	}
     private void start(){
         String startNodeStr = mEdtSrc.getText().toString()   ;
         String endNodeStr   = mEdtDest.getText().toString() ;
@@ -302,6 +340,7 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         mSearch.drivingSearch((new DrivingRoutePlanOption())
                 .from(stNode).to(enNode));
         mLlTop.setVisibility(View.VISIBLE);
+		WeeverApplication.mClient.startGather(traceListener);
     }
 
     @OnClick({R.id.edtSrc, R.id.edtDest})
@@ -491,5 +530,64 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
 
         builder.create().show();
 
+    }
+	
+	/**
+     * 实时定位任务
+     *
+     * @author baidu
+     */
+    class RealTimeLocRunnable implements Runnable {
+
+        private int interval = 0;
+
+        public RealTimeLocRunnable(int interval) {
+            this.interval = interval;
+        }
+
+        @Override
+        public void run() {
+            WeeverApplication.getInstance().getCurrentLocation(entityListener, trackListener);
+            realTimeHandler.postDelayed(this, interval * 1000);
+        }
+    }
+	
+	public void startRealTimeLoc(int interval) {
+        realTimeLocRunnable = new RealTimeLocRunnable(interval);
+        realTimeHandler.post(realTimeLocRunnable);
+    }
+
+    public void stopRealTimeLoc() {
+        if (null != realTimeHandler && null != realTimeLocRunnable) {
+            realTimeHandler.removeCallbacks(realTimeLocRunnable);
+            realTimeLocRunnable = null;
+        }
+    }
+	private void initListener() {
+
+        trackListener = new OnTrackListener() {
+            @Override
+            public void onLatestPointCallback(LatestPointResponse response) {
+
+            }};
+
+        entityListener = new OnEntityListener() {
+
+            @Override
+            public void onReceiveLocation(TraceLocation location) {
+
+            }} ;
+
+    }
+    
+	private void startTrace(){
+        WeeverApplication.mClient.startTrace(WeeverApplication.mTrace, traceListener);
+	}
+
+    static class RealTimeHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
     }
 }

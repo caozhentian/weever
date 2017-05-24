@@ -1,12 +1,12 @@
-package cn.com.metro.dialog;
-
+package cn.people.weever.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import cn.com.metro.R;
+import cn.people.weever.R;
+
 
 public class CustomProgressDialog extends Dialog {
 
