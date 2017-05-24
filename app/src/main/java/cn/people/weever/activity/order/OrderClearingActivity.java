@@ -13,7 +13,7 @@ import cn.people.weever.model.BaseOrder;
 public class OrderClearingActivity extends BaseActivity {
 
     public static final Intent newIntent(Context context , BaseOrder baseOrder){
-        Intent intent = new Intent() ;
+        Intent intent = new Intent(context , OrderClearingActivity.class) ;
         intent.putExtra(BaseOrder.ORDER_ID ,baseOrder ) ;
         return intent ;
     }

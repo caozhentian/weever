@@ -4,4 +4,9 @@
         <item>白班</item>
         <item>夜班</item>
     </string-array>
+    <string-array name="settlement">
+        <item>现金</item>
+        <item>月票</item>
+        <item>记账</item>
+    </string-array>
 </resources>

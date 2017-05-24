@@ -14,4 +14,5 @@
     <dimen name="txt12">12sp</dimen>
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="dim1">1dp</dimen>
 </resources>
