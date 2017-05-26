@@ -15,7 +15,12 @@ public class Car extends WeeverBean {
     车辆类型分为5座型和7座型
      */
     protected  String type ;
-
+	
+	/*
+	车辆表述
+	*/
+    protected  String  description ;
+	
     public String getNum() {
         return num;
     }
