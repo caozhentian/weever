@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical"
     tools:context="cn.people.weever.activity.order.OrderClearingActivity">
 
@@ -18,34 +17,36 @@
         <include layout="@layout/inc_toolbar_title"></include>
 
     </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dim15"
         android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:orientation="vertical">
             <!-- 路线-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
 
                     <include
                         layout="@layout/inc_line"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dim1"></include>
-                </RelativeLayout>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -53,13 +54,13 @@
                     android:layout_marginLeft="@dimen/dim5"
                     android:layout_marginRight="@dimen/dim5"
                     android:gravity="center"
-                    android:text="계산하다" />
+                    android:text="계산하다"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
 
                     <include
                         layout="@layout/inc_line"
@@ -84,10 +85,25 @@
 
                         <TextView
                             android:id="@+id/src"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="西北工业大学" />
+                            android:gravity="right|center"
+                            android:text="西北工业大学"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/dim15"
+                        android:paddingRight="@dimen/dim15">
+
+                        <include
+                            layout="@layout/inc_line"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/dim1"
+                            android:layout_weight="1"></include>
                     </LinearLayout>
 
                     <LinearLayout
@@ -100,7 +116,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:text="西安城市公园" />
+                            android:text="西安城市公园"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -114,23 +130,25 @@
                 android:layout_height="@dimen/dim48">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="半日租费用/한나절 임대" />
+                    android:layout_weight="1"
+                    android:gravity="left|center"
+                    android:text="半日租费用/한나절 임대:"/>
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:minWidth="@dimen/dim36"
-                    android:text="300" />
+                    android:text="300"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="RMB" />
+                    android:text="RMB"/>
             </LinearLayout>
 
             <LinearLayout
@@ -138,23 +156,25 @@
                 android:layout_height="@dimen/dim48">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="日租费用/나절 임대" />
+                    android:layout_weight="1"
+                    android:gravity="left|center"
+                    android:text="日租费用/나절 임대:"/>
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:minWidth="@dimen/dim36"
-                    android:text="500" />
+                    android:text="500"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="RMB" />
+                    android:text="RMB"/>
             </LinearLayout>
 
             <LinearLayout
@@ -162,23 +182,25 @@
                 android:layout_height="@dimen/dim48">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="半日租费用/한나절 임대" />
+                    android:layout_weight="1"
+                    android:gravity="left|center"
+                    android:text="接送机费用/한나절 임대:"/>
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:minWidth="@dimen/dim36"
-                    android:text="200" />
+                    android:text="200"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="RMB" />
+                    android:text="RMB"/>
             </LinearLayout>
 
             <LinearLayout
@@ -191,64 +213,87 @@
                     android:layout_height="@dimen/dim48"
                     android:gravity="center"
                     android:text="150RMB"
-                    android:textColor="@color/red" />
+                    android:textColor="@color/red"
+                    android:textSize="20sp"/>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dim48">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:text="起步费用/스타트도 가격"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="起步费用/스타트도 가격" />
+                        android:text="15"
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
                         android:gravity="center"
-                        android:text="15RMB" />
-                </RelativeLayout>
+                        android:text="RMB"/>
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dim48">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:text="公里数/이정 비용（50킬로미터）"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="公里数/이정 비용（50킬로미터）" />
+                        android:text="100"
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
                         android:gravity="center"
-                        android:text="100RMB" />
-                </RelativeLayout>
+                        android:text="RMB"/>
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dim48">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:text="超时费用/초과 요금（35Minute）"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="超时费用/초과 요금（35Minute）" />
+                        android:text="35"
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
                         android:gravity="center"
-                        android:text="35RMB" />
-                </RelativeLayout>
+                        android:text="RMB"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <!-- 计价-->
@@ -263,20 +308,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dim36"
                     android:gravity="center"
-                    android:text="结算方式/결제 방법" />
+                    android:text="结算方式/결제 방법"/>
 
                 <Spinner
                     android:id="@+id/spn_settlement_first"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dim36"
-                    android:entries="@array/settlement" />
+                    android:entries="@array/settlement"/>
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+"
-                android:textColor="@color/red" />
+                android:textColor="@color/red"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -287,16 +332,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dim36"
                     android:gravity="center"
-                    android:text="结算方式/결제 방법" />
+                    android:text="结算方式/결제 방법"/>
 
                 <Spinner
                     android:id="@+id/spn_settlement_second"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dim36"
-                    android:entries="@array/settlement" />
+                    android:entries="@array/settlement"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
 
     <LinearLayout
         android:layout_width="match_parent"

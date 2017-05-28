@@ -58,7 +58,7 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         //tetst
         Driver driver = new Driver() ;
         driver.setId("111");
-        driver.setMUserName("55");
+        driver.setUserName("55");
         driver.setPassword("8989");
         mDriverService.save(driver);
         mCarService     = new CarService()     ;

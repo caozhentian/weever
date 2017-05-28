@@ -19,6 +19,7 @@ public class Driver extends WeeverBean {
     public static final String USER_KEY = "USER_KEY";
 
     @Id
+    @Property(nameInDb = "ID")
     private String mId ;
 
     //用户名
@@ -33,9 +34,11 @@ public class Driver extends WeeverBean {
 
     //车辆编号
     @SerializedName("cardNum") //JSON序列化的字段名
+    @Property(nameInDb = "CARD_NUM")
     private String mCardNum         ;
 
     //班次 具体字段值服务器端可定义
+    @Property(nameInDb = "WORKTIME_TYPE")
     @SerializedName("workTimeType") //JSON序列化的字段名
     private String  mWorkTimeType  ;
 
@@ -50,6 +53,16 @@ public class Driver extends WeeverBean {
     }
 
     public Driver() {
+    }
+
+    @Generated(hash = 1174434292)
+    public Driver(String mId, String mUserName, String mCardNum,
+            String mWorkTimeType, String mToken) {
+        this.mId = mId;
+        this.mUserName = mUserName;
+        this.mCardNum = mCardNum;
+        this.mWorkTimeType = mWorkTimeType;
+        this.mToken = mToken;
     }
 
     public String getId() {
@@ -98,5 +111,45 @@ public class Driver extends WeeverBean {
 
     public void setToken(String token) {
         mToken = token;
+    }
+
+    public String getMId() {
+        return this.mId;
+    }
+
+    public void setMId(String mId) {
+        this.mId = mId;
+    }
+
+    public String getMUserName() {
+        return this.mUserName;
+    }
+
+    public void setMUserName(String mUserName) {
+        this.mUserName = mUserName;
+    }
+
+    public String getMCardNum() {
+        return this.mCardNum;
+    }
+
+    public void setMCardNum(String mCardNum) {
+        this.mCardNum = mCardNum;
+    }
+
+    public String getMWorkTimeType() {
+        return this.mWorkTimeType;
+    }
+
+    public void setMWorkTimeType(String mWorkTimeType) {
+        this.mWorkTimeType = mWorkTimeType;
+    }
+
+    public String getMToken() {
+        return this.mToken;
+    }
+
+    public void setMToken(String mToken) {
+        this.mToken = mToken;
     }
 }
