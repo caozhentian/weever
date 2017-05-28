@@ -1,5 +1,7 @@
 package cn.people.weever.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Property;
@@ -17,33 +19,45 @@ public class Driver extends WeeverBean {
     public static final String USER_KEY = "USER_KEY";
 
     @Id
-    private String id ;
+    private String mId ;
+
+    //用户名
     @Property(nameInDb = "USERNAME")
+    @SerializedName("userName") //JSON序列化的字段名
     private String mUserName  ;
 
+    //密码
     @Transient
-    private String mPassword   ;
+    @SerializedName("password") //JSON序列化的字段名
+    private String mPassword       ;
 
+    //车辆编号
+    @SerializedName("cardNum") //JSON序列化的字段名
+    private String mCardNum         ;
+
+    //班次 具体字段值服务器端可定义
+    @SerializedName("workTimeType") //JSON序列化的字段名
+    private String  mWorkTimeType  ;
+
+    //token 服务器返回
     @Property(nameInDb = "TOKEN")
     private String mToken   ;
 
-    @Generated(hash = 1037267353)
     public Driver(String id, String mUserName, String mToken) {
-        this.id = id;
+        this.mId = id;
         this.mUserName = mUserName;
         this.mToken = mToken;
     }
 
-    @Generated(hash = 911393595)
     public Driver() {
     }
 
     public String getId() {
-        return id;
+        return mId;
     }
 
     public void setId(String id) {
-        this.id = id;
+        mId = id;
     }
 
     public String getUserName() {
@@ -62,27 +76,27 @@ public class Driver extends WeeverBean {
         mPassword = password;
     }
 
+    public String getCardNum() {
+        return mCardNum;
+    }
+
+    public void setCardNum(String cardNum) {
+        mCardNum = cardNum;
+    }
+
+    public String getWorkTimeType() {
+        return mWorkTimeType;
+    }
+
+    public void setWorkTimeType(String workTimeType) {
+        mWorkTimeType = workTimeType;
+    }
+
     public String getToken() {
         return mToken;
     }
 
     public void setToken(String token) {
         mToken = token;
-    }
-
-    public String getMUserName() {
-        return this.mUserName;
-    }
-
-    public void setMUserName(String mUserName) {
-        this.mUserName = mUserName;
-    }
-
-    public String getMToken() {
-        return this.mToken;
-    }
-
-    public void setMToken(String mToken) {
-        this.mToken = mToken;
     }
 }
