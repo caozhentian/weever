@@ -279,6 +279,9 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         else if(id == R.id.nav_gallery){
             startActivity(MyOrdersActivity.newIntent(this));
         }
+        else if(id == R.id.nav_home){
+
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

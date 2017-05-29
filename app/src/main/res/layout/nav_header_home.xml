@@ -12,25 +12,29 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="@dimen/dim48"
-        android:layout_height="@dimen/dim48"
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="@dimen/dim_64"
+        android:layout_height="@dimen/dim_64"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/white"/>
 
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="张三"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="1324567XXXX" />
 
 </LinearLayout>
