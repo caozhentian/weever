@@ -83,5 +83,5 @@
             android:gravity="center_vertical"
             android:text="预约中"/>
     </LinearLayout>
-
+    <include layout="@layout/inc_line"></include>
 </LinearLayout>

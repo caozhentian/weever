@@ -214,7 +214,8 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="af0f2185725cbbbed952eeab"/> <!-- </>值来自开发者平台取得的AppKey -->
-        <activity android:name=".activity.order.OrderDetailsActivity">
+        <activity android:name=".activity.order.OrderDetailsActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
