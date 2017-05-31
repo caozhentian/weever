@@ -43,7 +43,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'de.hdodenhof:circleimageview:2.1.0'
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/eventbus-3.0.0.jar')
     compile files('libs/baidumapapi_base_v4_2_1.jar')
@@ -52,6 +51,7 @@ dependencies {
     // add library
     //compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     compile files('libs/bos-android-sdk-1.0.2.jar')
+    compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'

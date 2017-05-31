@@ -8,6 +8,9 @@ public class BaseOrder extends WeeverBean {
 
     public static String ORDER_ID = "orderId" ;
 
+    public static String USE_CAR_TYPE = ""     ;
+
+
 	protected  String mOrderId ;
 	
     //乘车人
@@ -33,17 +36,17 @@ public class BaseOrder extends WeeverBean {
     /*
 	实际总时间
 	*/
-    private String mTotalExpenses  ;
+    private String mTotalExpenses         ;
 
 	/**
 	超出时间
 	*/
-    private String mOvertimeCost      ;
+    private String mOvertimeCost           ;
 
 	/*
 	超出里程
 	*/
-    private String mMileageCost          ;
+    private String mMileageCost            ;
 
     public String getPassenger() {
         return mPassenger;

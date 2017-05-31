@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -63,7 +64,12 @@ public class PlaceholderFragment extends Fragment {
         mBaseOrderList.add(new BaseOrder()) ;
         mOrderAdapter = new OrderAdapter(this.getContext() , mBaseOrderList) ;
         mLv.setAdapter(mOrderAdapter);
-
+        mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(OrderDetailsActivity.newIntent(getContext()));
+            }
+        });
         return rootView;
     }
 
