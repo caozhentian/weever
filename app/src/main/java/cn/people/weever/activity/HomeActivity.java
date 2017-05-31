@@ -600,7 +600,8 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
 //                    setTraceBtnStyle();
                     registerPowerReceiver();
                 }
-                showToast(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                //showToast(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                //showToast(String.format("%s", message));
             }
 
             @Override
@@ -617,7 +618,7 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
 //                    setGatherBtnStyle();
                     unregisterPowerReceiver();
                 }
-                showToast( String.format("onStopTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                //showToast( String.format("onStopTraceCallback, errorNo:%d, message:%s ", errorNo, message));
             }
 
             @Override
@@ -628,7 +629,8 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
 //                    editor.putBoolean("is_gather_started", true);
 //                    editor.apply();
                 }
-                showToast(String.format("onStartGatherCallback, errorNo:%d, message:%s ", errorNo, message));
+                //showToast(String.format("onStartGatherCallback, errorNo:%d, message:%s ", errorNo, message));
+                showToast( "轨迹采集开始");
             }
 
             @Override
@@ -639,7 +641,8 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
 //                    editor.remove("is_gather_started");
 //                    editor.apply();
                 }
-                showToast( String.format("onStopGatherCallback, errorNo:%d, message:%s ", errorNo, message));
+                //showToast( String.format("onStopGatherCallback, errorNo:%d, message:%s ", errorNo, message));
+                showToast( "轨迹采集结束");
             }
 
             @Override
