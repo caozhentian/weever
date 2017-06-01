@@ -194,6 +194,8 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
+        MyLocationConfiguration configuration = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true,null);
+        mBaiduMap.setMyLocationConfigeration(configuration);
         MapStatusUpdate u2 = MapStatusUpdateFactory.newLatLng(CityConstant.GEO_XIAN);
         mBaiduMap.setMapStatus(u2);
         mBaiduMap.setTrafficEnabled(true) ;
