@@ -1,4 +1,4 @@
-package cn.people.weever.model;
+package com.example.administrator.firstapplication.model;
 
 /**订单 的基类
  * Created by weever on 2017/4/6.
@@ -6,125 +6,60 @@ package cn.people.weever.model;
 
 public class BaseOrder extends WeeverBean {
 
-    public static String ORDER_ID = "orderId" ;
+    public static String ORDER_ID      =  "orderId" ;
 
-    public static String USE_CAR_TYPE = ""     ;
+    public static String USE_CAR_TYPE  =  ""     ;
 
 
-	protected  String mOrderId ;
+	protected  String mOrderId                   ;
+
+    //订单状态
+    private int status                            ;
+    //订单类型
+    private int type                              ;
 	
-    //乘车人
-    private String mPassenger            ;
+    //预约人 subscribePerson
+    private String mSubscribePerson              ;
 
-    //上车时间
-    private String mPlanboardingTime    ;
+    //公司
+    private Company mCompany  ;
 	
-    //下车地点
-    private String mPlanDropOffArea     ;
-
+    //预约上车信息
+    private TripNode mPlanboardingTripNode    ;
+    //预约下车信息
+    private TripNode mPlanDropOffTripNode     ;
     //预计总时间
-    private String mPlanTotalTime          ;
-	
-	//实际上车时间
+    private String mPlanTotalTime              ;
 
-    private String mActualBoardingTime    ;
-	//实际下车地点
-    private String mActualBoardingArea    ;
-	
-    private String mActualDropOffArea     ;
-
-    /*
-	实际总时间
-	*/
-    private String mTotalExpenses         ;
-
-	/**
-	超出时间
-	*/
-    private String mOvertimeCost           ;
-
+	//实际上车信息
+    private TripNode mActualBoardingTripNode    ;
+	//实际下车信息
+    private String mActualDropOffTripNode       ;
 	/*
-	超出里程
+	实际乘车时间
 	*/
-    private String mMileageCost            ;
+    private String mActualRideTime             ;
+    /*
+	实际乘车时间费用
+	*/
+    private int mActualRideTimeCost    ;
 
-    public String getPassenger() {
-        return mPassenger;
-    }
+	//实际等待时间
+	private String mWaitTime              ; 
+	/**
+     实际等待时间费用
+	*/
+    private int mWaitTimeCost           ;
 
-    public void setPassenger(String passenger) {
-        mPassenger = passenger;
-    }
+	//实际总里程
+	private String mActualMileage                ;
+	/*
+	实际总里程费用
+	*/
+    private int mActualMileageCost            ;
+	
 
-    public String getPlanboardingTime() {
-        return mPlanboardingTime;
-    }
 
-    public void setPlanboardingTime(String planboardingTime) {
-        mPlanboardingTime = planboardingTime;
-    }
 
-    public String getPlanDropOffArea() {
-        return mPlanDropOffArea;
-    }
 
-    public void setPlanDropOffArea(String planDropOffArea) {
-        mPlanDropOffArea = planDropOffArea;
-    }
-
-    public String getPlanTotalTime() {
-        return mPlanTotalTime;
-    }
-
-    public void setPlanTotalTime(String planTotalTime) {
-        mPlanTotalTime = planTotalTime;
-    }
-
-    public String getActualBoardingTime() {
-        return mActualBoardingTime;
-    }
-
-    public void setActualBoardingTime(String actualBoardingTime) {
-        mActualBoardingTime = actualBoardingTime;
-    }
-
-    public String getActualBoardingArea() {
-        return mActualBoardingArea;
-    }
-
-    public void setActualBoardingArea(String actualBoardingArea) {
-        mActualBoardingArea = actualBoardingArea;
-    }
-
-    public String getActualDropOffArea() {
-        return mActualDropOffArea;
-    }
-
-    public void setActualDropOffArea(String actualDropOffArea) {
-        mActualDropOffArea = actualDropOffArea;
-    }
-
-    public String getTotalExpenses() {
-        return mTotalExpenses;
-    }
-
-    public void setTotalExpenses(String totalExpenses) {
-        mTotalExpenses = totalExpenses;
-    }
-
-    public String getOvertimeCost() {
-        return mOvertimeCost;
-    }
-
-    public void setOvertimeCost(String overtimeCost) {
-        mOvertimeCost = overtimeCost;
-    }
-
-    public String getMileageCost() {
-        return mMileageCost;
-    }
-
-    public void setMileageCost(String mileageCost) {
-        mMileageCost = mileageCost;
-    }
 }

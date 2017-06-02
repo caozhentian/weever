@@ -1,4 +1,4 @@
-package cn.people.weever.model;
+package com.example.administrator.firstapplication.model;
 
 import java.io.Serializable;
 
