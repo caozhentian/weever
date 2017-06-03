@@ -1,4 +1,6 @@
-package com.example.administrator.firstapplication.model;
+package cn.people.weever.model;
+
+import cn.people.weever.model.Address;
 
 /**
  * Created by Administrator on 2017/6/2.

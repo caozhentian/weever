@@ -76,6 +76,7 @@ import cn.people.weever.activity.order.OrderClearingActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.common.util.NumberFormat;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.BaseOrder;
@@ -416,8 +417,9 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         } else {
             mTxtAllTime.setText( "" + time / 3600 + "小时" + (time % 3600) / 60 + "分钟" );
         }
-        int  distance = mRouteLine.getDistance() ;
-        mTxtAllDistance.setText(distance+"米") ;
+        double  distance = mRouteLine.getDistance() ;
+
+        mTxtAllDistance.setText(NumberFormat.getdouble(distance/1000, 1)+"公里") ;
     }
     @Override
     public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {

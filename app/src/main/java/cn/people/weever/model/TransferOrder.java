@@ -6,7 +6,10 @@ package cn.people.weever.model;
 
 public class TransferOrder {
 
-    private String mFlightNumber ;
+    //接送机费用
+    private int mTransfer           ;
+
+    private String mFlightNumber    ;
 
     public String getFlightNumber() {
         return mFlightNumber;

@@ -1,4 +1,8 @@
-package com.example.administrator.firstapplication.model;
+package cn.people.weever.model;
+
+import cn.people.weever.model.Company;
+import cn.people.weever.model.TripNode;
+import cn.people.weever.model.WeeverBean;
 
 /**订单 的基类
  * Created by weever on 2017/4/6.
@@ -13,10 +17,11 @@ public class BaseOrder extends WeeverBean {
 
 	protected  String mOrderId                   ;
 
-    //订单状态
-    private int status                            ;
-    //订单类型
-    private int type                              ;
+    //订单状态 1 待接单  2  3 已取消  4 待付款 5 已完成
+    private int status
+            ;
+    //订单类型 1：日租 2 半日租 3 接机 4 送机 5 固定时间租车
+    private int type                               ;
 	
     //预约人 subscribePerson
     private String mSubscribePerson              ;
@@ -57,9 +62,6 @@ public class BaseOrder extends WeeverBean {
 	实际总里程费用
 	*/
     private int mActualMileageCost            ;
-	
-
-
 
 
 }
