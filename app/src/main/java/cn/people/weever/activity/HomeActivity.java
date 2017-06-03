@@ -244,6 +244,7 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         // 初始化搜索模块，注册事件监听
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(this);
+        powerManager =  (PowerManager) getSystemService(Context.POWER_SERVICE);
     }
 
     @Override
@@ -669,7 +670,7 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
      * 注册电源锁广播
      */
     private void registerPowerReceiver() {
-        if (WeeverApplication.isRegisterPower) {
+        if (WeeverApplication.isRegisterPower || powerManager == null) {
             return;
         }
 
