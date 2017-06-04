@@ -1,15 +1,15 @@
 package cn.people.weever.model;
 
-/** 接送机订单详情
+/** 接送机订单
  * Created by Administrator on 2017/4/8.
  */
 
 public class TransferOrder {
 
     //接送机费用
-    private int mTransfer           ;
+    private int mTransferCost           ;
 
-    private String mFlightNumber    ;
+    private String mFlightNumber         ;
 
     public String getFlightNumber() {
         return mFlightNumber;
