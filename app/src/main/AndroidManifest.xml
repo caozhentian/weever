@@ -92,7 +92,6 @@
         <activity
             android:name=".activity.order.MyOrdersActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        MyOrdersActivity
         <!-- <activity -->
         <!-- android:name=".activity.PoiSearchActivity" -->
         <!-- android:screenOrientation="portrait"> -->
@@ -112,6 +111,10 @@
         </activity>
         <activity
             android:name=".activity.order.OrderClearingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+			 <activity
+            android:name=".activity.nav.BNDemoGuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <!-- Rich push 核心功能 since 2.0.6 -->

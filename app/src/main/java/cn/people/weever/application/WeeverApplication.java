@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.people.weever.BuildConfig;
+import cn.people.weever.config.FileConfig;
 import cn.people.weever.model.DaoMaster;
 import cn.people.weever.model.DaoSession;
 import cn.people.weever.model.Driver;
@@ -73,6 +74,7 @@ public class WeeverApplication extends Application {
         }
         sWeeverApplication = this ;
         getScreenSize() ;
+        FileConfig.initDirs() ;
         initMap()   ;
         initTrace() ;
         initdb();
