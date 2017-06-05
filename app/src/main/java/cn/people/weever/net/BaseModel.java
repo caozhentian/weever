@@ -17,13 +17,21 @@ public class BaseModel<T> {
 	public static final String SUCCESS = "success" ;
 	public static final String FAIL     = "fail"    ;
 
-	//fail:失败；success:成功
+	//取值 fail:失败；success:成功
 	protected String status ;
-	//失败原因/成功描述！
+
+	//status值为success，如果需要 可进一步说明成功 子状态
+	protected int subSuccessStatus   ;
+
+	//status值为fail ，如果需要 可进一步说失败的子状态
+	protected int subFailStatus       ;
+
+	//失败原因或者成功描述信息！
 	protected String message;
+	//status值为success，成功数据，如果status值为fail ，可以返回null
 	protected T data;
 
-	//接口的对应的操作码
+	//仅客户端本地使用， 接口的对应的操作码
 	protected int mApiOperationCode ;
 
 	public String getMessage() {
@@ -67,5 +75,19 @@ public class BaseModel<T> {
 		}
 	}
 
+	public int getSubSuccessStatus() {
+		return subSuccessStatus;
+	}
 
+	public void setSubSuccessStatus(int subSuccessStatus) {
+		this.subSuccessStatus = subSuccessStatus;
+	}
+
+	public int getSubFailStatus() {
+		return subFailStatus;
+	}
+
+	public void setSubFailStatus(int subFailStatus) {
+		this.subFailStatus = subFailStatus;
+	}
 }

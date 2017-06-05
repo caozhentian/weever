@@ -42,7 +42,7 @@ public class Driver extends WeeverBean {
     @SerializedName("workTimeType") //JSON序列化的字段名
     private String  mWorkTimeType  ;
 
-    //token 服务器返回
+    //token ,服务器返回值
     @Property(nameInDb = "TOKEN")
     private String mToken   ;
 
