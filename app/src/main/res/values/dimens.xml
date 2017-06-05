@@ -17,4 +17,8 @@
     <dimen name="dim1">1dp</dimen>
     <dimen name="dim_64">64dp</dimen>
     <dimen name="dim96">96dp</dimen>
+    <dimen name="dim24">24dp</dimen>
+    <dimen name="dim25">25dp</dimen>
+    <dimen name="dim75">75dp</dimen>
+    <dimen name="dim54">54dp</dimen>
 </resources>
