@@ -737,8 +737,8 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         }
         BNRoutePlanNode sNode = null;
         BNRoutePlanNode eNode = null;
-        sNode = new BNRoutePlanNode(srcLating.longitude, srcLating.latitude, mEdtSrc.getEditableText().toString(), null, BNRoutePlanNode.CoordinateType.BD09LL);
-        eNode = new BNRoutePlanNode(destLating.longitude, destLating.latitude, mEdtDest.getEditableText().toString(), null, BNRoutePlanNode.CoordinateType.BD09LL);
+        sNode = new BNRoutePlanNode(srcLating.longitude, srcLating.latitude, mEdtSrc.getText().toString(), null, BNRoutePlanNode.CoordinateType.BD09LL);
+        eNode = new BNRoutePlanNode(destLating.longitude, destLating.latitude, mEdtDest.getText().toString(), null, BNRoutePlanNode.CoordinateType.BD09LL);
         if (sNode != null && eNode != null) {
             List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
             list.add(sNode);

@@ -15,6 +15,19 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
     <uses-permission android:name="android.permission.READ_LOGS"/>
 
+	<!-- 手机震动权限 -->
+    <uses-permission android:name="android.permission.BODY_SENSORS"/>
+	<uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
+	<uses-permission android:name="android.permission.ACCES_MOCK_LOCATION" />
+	<uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+	<uses-permission android:name="android.permission.ACCESS_GPS" />
+	<uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <!-- 来电消音 -->
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 摄影机 -->
+    <uses-permission android:name="android.permission.CAMERA" />
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
@@ -55,7 +68,9 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="cIaDfTdABtxGBkZnQMQipix1znFDVSeZ"/> <!-- http://lbsyun.baidu.com/apiconsole/key -->
-
+        <meta-data
+            android:name="BaiduMobAd_STAT_ID"
+            android:value="48ae76de3f" />
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
