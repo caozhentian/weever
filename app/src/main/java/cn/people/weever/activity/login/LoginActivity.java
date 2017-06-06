@@ -24,6 +24,7 @@ import cn.people.weever.common.constant.APIOperationCode;
 import cn.people.weever.model.Car;
 import cn.people.weever.model.Driver;
 import cn.people.weever.net.BaseModel;
+import cn.people.weever.net.CarApiService;
 import cn.people.weever.service.CarService;
 import cn.people.weever.service.DriverService;
 import cn.people.weever.common.util.ToastUtil;
@@ -147,7 +148,7 @@ public class LoginActivity extends SubcribeResumeStopActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void processCarNumEvent(@Nullable BaseModel<Car> baseModel){
-        if(baseModel.getApiOperationCode() == APIOperationCode.TO_CAR_NUM){
+        if(baseModel.getApiOperationCode() == CarApiService.TO_CAR){
             if(baseModel.isSuccess()){
                 Car car = baseModel.getData() ;
 
