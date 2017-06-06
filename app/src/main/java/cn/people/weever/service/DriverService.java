@@ -2,6 +2,7 @@ package cn.people.weever.service;
 
 import android.text.TextUtils;
 
+import cn.people.weever.MockData.MockLoginService;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.model.Driver;
 import cn.people.weever.respositoty.DriverRepository;
@@ -31,6 +32,11 @@ public class DriverService {
         }
         if(TextUtils.isEmpty(driver.getPassword())){
             throw new IllegalArgumentException("请输入密码") ;
+        }
+        if(MockLoginService.DEBUG_MOCK){
+            MockLoginService mockLoginService = new MockLoginService() ;
+            mockLoginService.getJsonData() ;
+            return ;
         }
         mDriverRepository.login(driver);
     }

@@ -5,7 +5,7 @@ package cn.people.weever.config;
  */
 public class IpConfig {
 
-	public final static String BASIC_URL = "";
+	public final static String BASIC_URL = "http://show.tv.com:8016/";
 	//public final static String BASIC_URL = "http://show.3tichina.com:8016/";
 
 }

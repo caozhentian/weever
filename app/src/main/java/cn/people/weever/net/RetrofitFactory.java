@@ -22,7 +22,8 @@ public class RetrofitFactory {
 		OkHttpClient.Builder builder = new OkHttpClient().newBuilder() ;
 		OkHttpClient client = null ;
 		if(BuildConfig.DEBUG){
-//			client = builder.addInterceptor(new LoggingInterceptor()).build();
+            //client = builder.addInterceptor(new LoggingInterceptor()).build();
+			client = builder.build();
 		}
 		else{
 			client =  builder.build();

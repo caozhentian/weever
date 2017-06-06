@@ -28,7 +28,7 @@ public class DriverRepository extends RespoisitoryBase {
            return ;
        }
         Call<BaseModel<Driver>> call   =  mDriverApiService.login(RequestBodyCreator.CreateRequestBodyJSON(driver)) ;
-        call.enqueue(new BaseCallback<Driver>(DriverApiService.TO_USER));
+        call.enqueue(new BaseCallback<Driver>(DriverApiService.TO_USER_LOGIN));
     }
 
 

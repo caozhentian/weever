@@ -12,8 +12,8 @@ import retrofit2.http.GET;
 
 public  interface DriverApiService {
 
-    //车辆编号
-    public static final int TO_USER                 =   100  ;
+    //用户登录事件
+    public static final int TO_USER_LOGIN                 =   1  ;
     @GET("//")
     Call<BaseModel<Driver>> login(@Body RequestBody route);
 }

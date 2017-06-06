@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,6 +27,7 @@ import cn.people.weever.model.Car;
 import cn.people.weever.model.Driver;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.CarApiService;
+import cn.people.weever.net.DriverApiService;
 import cn.people.weever.service.CarService;
 import cn.people.weever.service.DriverService;
 import cn.people.weever.common.util.ToastUtil;
@@ -70,10 +73,7 @@ public class LoginActivity extends SubcribeResumeStopActivity {
 
     @Override
     public void initView() {
-        // 建立数据源
-        carNums = new String[3] ;
-        carNums[0] = "001" ; carNums[1] = "002" ;carNums[2] = "003" ;
-        initCardNum() ;
+
         mSpnWorkTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
@@ -125,7 +125,7 @@ public class LoginActivity extends SubcribeResumeStopActivity {
         mLoginViewModel.setCardNum(carNum);
         try {
             mDriverService.login(mLoginViewModel);
-            startActivity(HomeActivity.newIntent(this));
+            //startActivity(HomeActivity.newIntent(this));
         }catch(IllegalArgumentException e){
             ToastUtil.showToast(e.getMessage());
         }
@@ -133,31 +133,25 @@ public class LoginActivity extends SubcribeResumeStopActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void processLoginEvent(@Nullable BaseModel<Driver> baseModel){
-        if(baseModel.getApiOperationCode() == APIOperationCode.TO_USER_LOGIN){
-            if(baseModel.isSuccess()){
-                Driver driver = baseModel.getData() ;
-                mDriverService.save(driver);
-                startActivity(HomeActivity.newIntent(this));
-                finish() ;
-            }
-            else{
-                ToastUtil.showToast(baseModel.getMessage());
-            }
+        if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_LOGIN){
+            Driver driver = baseModel.getData() ;
+            mDriverService.save(driver);
+            startActivity(HomeActivity.newIntent(this));
+            finish() ;
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void processCarNumEvent(@Nullable BaseModel<Car> baseModel){
+    public void processCarNumEvent(@Nullable BaseModel<List<Car>> baseModel){
         if(baseModel.getApiOperationCode() == CarApiService.TO_CAR){
-            if(baseModel.isSuccess()){
-                Car car = baseModel.getData() ;
-
+                List<Car> cars = baseModel.getData()  ;
+                carNums = new String[cars.size()] ;
+                for(int index = 0 ; index < cars.size() ; index++){
+                    carNums[index] = cars.get(index).getNum() ;
+                }
+                initCardNum() ;
             }
-            else{
-                ToastUtil.showToast(baseModel.getMessage());
-            }
-        }
-
     }
+
 
 }

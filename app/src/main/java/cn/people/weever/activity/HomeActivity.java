@@ -206,7 +206,7 @@ public class HomeActivity extends   SubcribeResumeStopActivity implements OnGetR
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
-        MyLocationConfiguration configuration = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true,null);
+        MyLocationConfiguration configuration = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true,null);
         mBaiduMap.setMyLocationConfigeration(configuration);
         MapStatusUpdate u2 = MapStatusUpdateFactory.newLatLng(CityConstant.GEO_XIAN);
         mBaiduMap.setMapStatus(u2);

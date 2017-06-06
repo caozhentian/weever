@@ -53,7 +53,6 @@ public abstract class SubcribeResumeStopActivity extends BaseActivity{
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void processNetRequestPostEvent(@Nullable NetRequestPostEvent netRequestPostEvent){
-		mCustomProgressDialog = new CustomProgressDialog(this , R.style.progress_dialog) ;
 		mCustomProgressDialog.cancel();
 	}
 
