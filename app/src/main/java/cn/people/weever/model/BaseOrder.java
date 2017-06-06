@@ -2,10 +2,6 @@ package cn.people.weever.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import cn.people.weever.model.Company;
-import cn.people.weever.model.TripNode;
-import cn.people.weever.model.WeeverBean;
-
 /**订单 的基类
  * Created by weever on 2017/4/6.
  */
@@ -22,17 +18,17 @@ public class BaseOrder extends WeeverBean {
 
     //订单类型 常量定义
     public static final int  ORDER_TYPE_DAY           = 0x01 ;             //日租
-    public static final int  ORDER_STAUS_DAY_HALF    = 0x02 ;             //半日租
-    public static final int  ORDER_STAUS_PICK_UP     = 0x03;              //接机
-    public static final int  ORDER_STAUS_AIRPORT_CONVEYOR     = 0x04;   //送机Fixed time
-    public static final int  ORDER_STAUS_AIRPORT_FIXED_TIME   = 0x05;  //固定时间租车
+    public static final int  ORDER_TYPE_DAY_HALF    = 0x02 ;             //半日租
+    public static final int  ORDER_TYPE_PICK_UP     = 0x03;              //接机
+    public static final int  ORDER_TYPE_AIRPORT_CONVEYOR     = 0x04;   //送机Fixed time
+    public static final int  ORDER_TYPE_AIRPORT_FIXED_TIME   = 0x05;  //固定时间租车
 
     public static final String ORDER_ID      =  "orderId" ;
 
 
     //订单ID
     @SerializedName("orderId") //JSON序列化的字段名
-	protected  String mOrderId                   ;
+	protected String mOrderId                   ;
     //订单状态 具体取值见订单状态的定义
     @SerializedName("status")
     protected int mStatus;
@@ -62,14 +58,14 @@ public class BaseOrder extends WeeverBean {
     protected TripNode mActualBoardingTripNode    ;
 	//实际下车信息
     @SerializedName("actualDropOffTripNode")
-    protected String mActualDropOffTripNode       ;
+    protected TripNode mActualDropOffTripNode       ;
 
 
 	/*
 	实际乘车时间 6小时
 	*/
     @SerializedName("actualRideTime")
-    protected String  mActualRideTime             ;
+    protected String mActualRideTime             ;
     /*
 	实际乘车时间费用
 	*/
@@ -78,7 +74,7 @@ public class BaseOrder extends WeeverBean {
 
 	//实际等待时间 30分钟
     @SerializedName("waitTime")
-	protected String mWaitTime              ; 
+	protected String mWaitTime              ;
 	/**
      实际等待时间费用
 	*/
@@ -94,5 +90,131 @@ public class BaseOrder extends WeeverBean {
     @SerializedName("actualMileageCost")
     protected int mActualMileageCost            ;
 
+    public String getOrderId() {
+        return mOrderId;
+    }
 
+    public void setOrderId(String orderId) {
+        mOrderId = orderId;
+    }
+
+    public int getStatus() {
+        return mStatus;
+    }
+
+    public void setStatus(int status) {
+        mStatus = status;
+    }
+
+    public int getType() {
+        return mType;
+    }
+
+    public void setType(int type) {
+        mType = type;
+    }
+
+    public String getSubscribePerson() {
+        return mSubscribePerson;
+    }
+
+    public void setSubscribePerson(String subscribePerson) {
+        mSubscribePerson = subscribePerson;
+    }
+
+    public Company getCompany() {
+        return mCompany;
+    }
+
+    public void setCompany(Company company) {
+        mCompany = company;
+    }
+
+    public TripNode getPlanboardingTripNode() {
+        return mPlanboardingTripNode;
+    }
+
+    public void setPlanboardingTripNode(TripNode planboardingTripNode) {
+        mPlanboardingTripNode = planboardingTripNode;
+    }
+
+    public TripNode getPlanDropOffTripNode() {
+        return mPlanDropOffTripNode;
+    }
+
+    public void setPlanDropOffTripNode(TripNode planDropOffTripNode) {
+        mPlanDropOffTripNode = planDropOffTripNode;
+    }
+
+    public String getPlanTotalTime() {
+        return mPlanTotalTime;
+    }
+
+    public void setPlanTotalTime(String planTotalTime) {
+        mPlanTotalTime = planTotalTime;
+    }
+
+    public TripNode getActualBoardingTripNode() {
+        return mActualBoardingTripNode;
+    }
+
+    public void setActualBoardingTripNode(TripNode actualBoardingTripNode) {
+        mActualBoardingTripNode = actualBoardingTripNode;
+    }
+
+    public TripNode getActualDropOffTripNode() {
+        return mActualDropOffTripNode;
+    }
+
+    public void setActualDropOffTripNode(TripNode actualDropOffTripNode) {
+        mActualDropOffTripNode = actualDropOffTripNode;
+    }
+
+    public String getActualRideTime() {
+        return mActualRideTime;
+    }
+
+    public void setActualRideTime(String actualRideTime) {
+        mActualRideTime = actualRideTime;
+    }
+
+    public int getActualRideTimeCost() {
+        return mActualRideTimeCost;
+    }
+
+    public void setActualRideTimeCost(int actualRideTimeCost) {
+        mActualRideTimeCost = actualRideTimeCost;
+    }
+
+    public String getWaitTime() {
+        return mWaitTime;
+    }
+
+    public void setWaitTime(String waitTime) {
+        mWaitTime = waitTime;
+    }
+
+    public int getWaitTimeCost() {
+        return mWaitTimeCost;
+    }
+
+    public void setWaitTimeCost(int waitTimeCost) {
+        mWaitTimeCost = waitTimeCost;
+    }
+
+    public String getActualMileage() {
+        return mActualMileage;
+    }
+
+    public void setActualMileage(String actualMileage) {
+        mActualMileage = actualMileage;
+    }
+
+    public int getActualMileageCost() {
+        return mActualMileageCost;
+    }
+
+    public void setActualMileageCost(int actualMileageCost) {
+        mActualMileageCost = actualMileageCost;
+    }
 }
