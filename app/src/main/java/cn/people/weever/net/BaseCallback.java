@@ -4,8 +4,8 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
-import cn.people.weever.Event.NetRequestPostEvent;
-import cn.people.weever.Event.NetRequestPreEvent;
+import cn.people.weever.event.NetRequestPostEvent;
+import cn.people.weever.event.NetRequestPreEvent;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

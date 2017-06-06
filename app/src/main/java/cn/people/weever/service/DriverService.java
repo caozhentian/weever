@@ -2,7 +2,6 @@ package cn.people.weever.service;
 
 import android.text.TextUtils;
 
-import cn.people.weever.activity.login.LoginViewModel;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.model.Driver;
 
@@ -12,7 +11,7 @@ import cn.people.weever.model.Driver;
 
 public class DriverService {
 
-    public void login(LoginViewModel loginViewModel){
+    public void login(Driver loginViewModel){
         if(loginViewModel == null){
             throw new IllegalArgumentException("参数值为null") ;
         }

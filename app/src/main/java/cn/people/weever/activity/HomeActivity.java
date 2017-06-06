@@ -32,6 +32,7 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -92,7 +93,7 @@ import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.receiver.PowerReceiver;
 
-public class HomeActivity extends SubcribeResumeStopActivity implements OnGetRoutePlanResultListener
+public class HomeActivity extends   SubcribeResumeStopActivity implements OnGetRoutePlanResultListener
        ,NavigationView.OnNavigationItemSelectedListener {
 
     private static final int accuracyCircleFillColor = 0xAAFFFF88;
@@ -221,9 +222,11 @@ public class HomeActivity extends SubcribeResumeStopActivity implements OnGetRou
         option.setScanSpan(1000);
         option.setIsNeedLocationPoiList(true);
         option.setIsNeedAddress(true);
+		BitmapDescriptor currentMarker = BitmapDescriptorFactory
+                            .fromResource(R.drawable.ic_gprs_blue);
         mBaiduMap
                 .setMyLocationConfigeration(new MyLocationConfiguration(
-                        mCurrentMode, true, null,
+                        mCurrentMode, true, currentMarker,
                         accuracyCircleFillColor, accuracyCircleStrokeColor));
         mLocClient.setLocOption(option);
         mLocClient.start();

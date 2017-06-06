@@ -1,5 +1,7 @@
 package cn.people.weever.respositoty;
 
+import cn.people.weever.MockData.MockLoginService;
+import cn.people.weever.MockData.MockService;
 import cn.people.weever.activity.login.LoginViewModel;
 import cn.people.weever.net.DriverApiService;
 
@@ -16,7 +18,10 @@ public class DriverRepository extends RespoisitoryBase {
     }
 
     public void login(LoginViewModel loginViewModel){
-
+       if(MockService.DEBUG_MOCK){
+           MockLoginService mockLoginService = new MockLoginService() ;
+           mockLoginService.getJsonData() ;
+       }
     }
 
 

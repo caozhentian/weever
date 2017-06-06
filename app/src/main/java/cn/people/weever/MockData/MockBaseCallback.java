@@ -4,8 +4,8 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
-import cn.people.weever.Event.NetRequestPostEvent;
-import cn.people.weever.Event.NetRequestPreEvent;
+import cn.people.weever.event.NetRequestPostEvent;
+import cn.people.weever.event.NetRequestPreEvent;
 import cn.people.weever.net.APIError;
 import cn.people.weever.net.APIFail;
 import cn.people.weever.net.BaseModel;

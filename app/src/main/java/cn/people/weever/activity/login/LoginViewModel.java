@@ -6,11 +6,13 @@ package cn.people.weever.activity.login;
 
 public class LoginViewModel {
 
-    private String mUserName ;
+    private String  mUserName ;
 
-    private String mPassword   ;
+    private String  mPassword   ;
 
-    private String mCardNum      ;
+    private String  mCardNum      ;
+
+    private int    mWorkTime        ;
 
     public String getUserName() {
         return mUserName;
@@ -34,5 +36,13 @@ public class LoginViewModel {
 
     public void setCardNum(String cardNum) {
         mCardNum = cardNum;
+    }
+
+    public int getWorkTime() {
+        return mWorkTime;
+    }
+
+    public void setWorkTime(int workTime) {
+        mWorkTime = workTime;
     }
 }

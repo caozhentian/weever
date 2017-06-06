@@ -7,10 +7,13 @@ import cn.people.weever.model.Driver;
  */
 
 public class MockLoginService extends MockService {
+
+
     @Override
     public MockResponse getJsonData() {
         MockResponse mockResponse = getSuccessResponse() ;
         Driver driver = new Driver() ;
+        driver.setToken("dfdfdffda2434");
         mockResponse.getModel().setData(driver);
         MockBaseCallback<Driver> mockBaseCallback = new  MockBaseCallback<Driver>(1 , mockResponse) ;
         mockBaseCallback.onResponse();

@@ -4,7 +4,10 @@ package cn.people.weever.MockData;
 import cn.people.weever.net.BaseModel;
 
 public abstract class MockService {
-	public abstract MockResponse getJsonData();
+
+	public static final boolean DEBUG_MOCK = true ;
+
+	public  abstract MockResponse getJsonData();
 	
 	public MockResponse getSuccessResponse() {
 		MockResponse mockResponse = new MockResponse();

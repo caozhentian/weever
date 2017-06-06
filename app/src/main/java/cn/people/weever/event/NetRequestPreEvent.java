@@ -1,13 +1,13 @@
-package cn.people.weever.Event;
+package cn.people.weever.event;
 
 /**
  * Created by Administrator on 2017/6/6.
  */
 
-public class NetRequestPostEvent {
+public class NetRequestPreEvent {
     private int mApiOperationCode ;
 
-    public NetRequestPostEvent(int apiOperationCode) {
+    public NetRequestPreEvent(int apiOperationCode) {
         mApiOperationCode = apiOperationCode;
     }
 

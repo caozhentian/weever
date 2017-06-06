@@ -37,11 +37,13 @@ public class LoginActivity extends SubcribeResumeStopActivity {
     EditText mEdtPassword;
     @BindView(R.id.spnCarNum)
     Spinner mSpnCarNum;
+    @BindView(R.id.spnWorkTime)
+    Spinner mSpnWorkTime;
     @BindView(R.id.btnLogin)
     Button mBtnLogin;
 
     private String[] carNums ;
-    private LoginViewModel mLoginViewModel   ;
+    private Driver mLoginViewModel   ;
     private DriverService  mDriverService    ;
     private CarService     mCarService        ;
 
@@ -52,7 +54,7 @@ public class LoginActivity extends SubcribeResumeStopActivity {
 
     @Override
     public void initData() {
-        mLoginViewModel = new LoginViewModel() ;
+        mLoginViewModel = new Driver() ;
         mDriverService =  new DriverService() ;
         //tetst
         Driver driver = new Driver() ;
@@ -71,6 +73,18 @@ public class LoginActivity extends SubcribeResumeStopActivity {
         carNums = new String[3] ;
         carNums[0] = "001" ; carNums[1] = "002" ;carNums[2] = "003" ;
         initCardNum() ;
+        mSpnWorkTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mLoginViewModel.setWorkTimeType(position );
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void initCardNum(){

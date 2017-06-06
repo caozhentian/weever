@@ -2,28 +2,25 @@ package cn.people.weever.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Transient;
-import org.greenrobot.greendao.annotation.Generated;
 
 /** 司机
  * Created by weever on 2017/4/6.
  */
 
 
-@Entity
+//@Entity
 public class Driver extends WeeverBean {
 
     public static final String USER_KEY = "USER_KEY";
 
-    @Id
-    @Property(nameInDb = "ID")
+    //@Id
+    //@Property(nameInDb = "ID")
     private String mId ;
 
     //用户名
-    @Property(nameInDb = "USERNAME")
+    //@Property(nameInDb = "USERNAME")
     @SerializedName("userName") //JSON序列化的字段名
     private String mUserName  ;
 
@@ -33,17 +30,18 @@ public class Driver extends WeeverBean {
     private String mPassword       ;
 
     //车辆编号
-    @SerializedName("cardNum") //JSON序列化的字段名
+    //@SerializedName("cardNum") //JSON序列化的字段名
     @Property(nameInDb = "CARD_NUM")
     private String mCardNum         ;
 
     //班次 具体字段值服务器端可定义
-    @Property(nameInDb = "WORKTIME_TYPE")
+    //@Property(nameInDb = "WORKTIME_TYPE")
     @SerializedName("workTimeType") //JSON序列化的字段名
-    private String  mWorkTimeType  ;
+    private int  mWorkTimeType  ;
 
     //token ,服务器返回值
-    @Property(nameInDb = "TOKEN")
+    //@Property(nameInDb = "TOKEN")
+    @SerializedName("token") //JSON序列化的字段名
     private String mToken   ;
 
     public Driver(String id, String mUserName, String mToken) {
@@ -55,9 +53,8 @@ public class Driver extends WeeverBean {
     public Driver() {
     }
 
-    @Generated(hash = 1174434292)
     public Driver(String mId, String mUserName, String mCardNum,
-            String mWorkTimeType, String mToken) {
+            int mWorkTimeType, String mToken) {
         this.mId = mId;
         this.mUserName = mUserName;
         this.mCardNum = mCardNum;
@@ -97,11 +94,11 @@ public class Driver extends WeeverBean {
         mCardNum = cardNum;
     }
 
-    public String getWorkTimeType() {
+    public int getWorkTimeType() {
         return mWorkTimeType;
     }
 
-    public void setWorkTimeType(String workTimeType) {
+    public void setWorkTimeType(int workTimeType) {
         mWorkTimeType = workTimeType;
     }
 
@@ -113,43 +110,8 @@ public class Driver extends WeeverBean {
         mToken = token;
     }
 
-    public String getMId() {
-        return this.mId;
-    }
 
-    public void setMId(String mId) {
-        this.mId = mId;
-    }
 
-    public String getMUserName() {
-        return this.mUserName;
-    }
 
-    public void setMUserName(String mUserName) {
-        this.mUserName = mUserName;
-    }
 
-    public String getMCardNum() {
-        return this.mCardNum;
-    }
-
-    public void setMCardNum(String mCardNum) {
-        this.mCardNum = mCardNum;
-    }
-
-    public String getMWorkTimeType() {
-        return this.mWorkTimeType;
-    }
-
-    public void setMWorkTimeType(String mWorkTimeType) {
-        this.mWorkTimeType = mWorkTimeType;
-    }
-
-    public String getMToken() {
-        return this.mToken;
-    }
-
-    public void setMToken(String mToken) {
-        this.mToken = mToken;
-    }
 }

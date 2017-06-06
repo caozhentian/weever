@@ -9,8 +9,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import cn.people.weever.Event.NetRequestPostEvent;
-import cn.people.weever.Event.NetRequestPreEvent;
+import cn.people.weever.event.NetRequestPostEvent;
+import cn.people.weever.event.NetRequestPreEvent;
 import cn.people.weever.R;
 import cn.people.weever.dialog.CustomProgressDialog;
 import cn.people.weever.net.APIError;

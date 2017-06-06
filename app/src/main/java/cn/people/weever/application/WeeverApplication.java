@@ -11,16 +11,11 @@ import com.baidu.trace.api.track.OnTrackListener;
 import com.baidu.trace.model.BaseRequest;
 import com.facebook.stetho.Stetho;
 
-import org.greenrobot.greendao.database.Database;
-import org.greenrobot.greendao.query.QueryBuilder;
-
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.people.weever.BuildConfig;
+import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.config.FileConfig;
-import cn.people.weever.model.DaoMaster;
-import cn.people.weever.model.DaoSession;
 import cn.people.weever.model.Driver;
 import cn.people.weever.service.LocationService;
 
@@ -34,7 +29,7 @@ public class WeeverApplication extends Application {
 
     private static Driver sCurDriver;
 
-    private static DaoSession sDaoSession ;
+    //private static DaoSession sDaoSession ;
 	
 	/**
      * 轨迹客户端
@@ -101,31 +96,31 @@ public class WeeverApplication extends Application {
     public static Driver getCurUser(){
         if(sCurDriver != null)
             return sCurDriver ;
-        //Driver user  =  PreferencesUtil.getPreferences(sWeeverApplication , Driver.USER_KEY) ;
-        QueryBuilder<Driver> driverQueryBuilder = sDaoSession.getDriverDao().queryBuilder();
-        List<Driver> driverList = driverQueryBuilder.limit(1).list() ;
-        if(driverList != null && driverList.size() > 0){
-            sCurDriver =  driverList.get(0) ;
-        }
+        sCurDriver  =  PreferencesUtil.getPreferences(sWeeverApplication , Driver.USER_KEY) ;
+//        QueryBuilder<Driver> driverQueryBuilder = sDaoSession.getDriverDao().queryBuilder();
+//        List<Driver> driverList = driverQueryBuilder.limit(1).list() ;
+//        if(driverList != null && driverList.size() > 0){
+//            sCurDriver =  driverList.get(0) ;
+//        }
         return sCurDriver ;
     }
 
     public static void setCurUser(Driver curUser) {
         //内存信息 持久化信息
         WeeverApplication.sCurDriver = curUser;
-        //PreferencesUtil.setPreferences(sWeeverApplication,Driver.USER_KEY,curUser);
-        if(curUser == null) {
-            sDaoSession.getDriverDao().deleteAll();
-        }
-        else{
-            sDaoSession.insertOrReplace(curUser) ;
-        }
+        PreferencesUtil.setPreferences(sWeeverApplication,Driver.USER_KEY,curUser);
+//        if(curUser == null) {
+//            sDaoSession.getDriverDao().deleteAll();
+//        }
+//        else{
+//            sDaoSession.insertOrReplace(curUser) ;
+//        }
     }
 
     private void initdb(){
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db");
-        Database db = helper.getWritableDb();
-        sDaoSession = new DaoMaster(db).newSession();
+//        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db");
+//        Database db = helper.getWritableDb();
+//        sDaoSession = new DaoMaster(db).newSession();
     }
 
     private void initMap(){
