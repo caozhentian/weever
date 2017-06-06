@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -50,11 +49,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
 
-import cn.people.weever.activity.SubcribeCreateDestroyActivity;
+import cn.people.weever.activity.SubcribeResumeStopActivity;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 
-public class MainActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener {
+public class MainActivity extends SubcribeResumeStopActivity implements OnGetRoutePlanResultListener {
 
 
     private static final int accuracyCircleFillColor = 0xAAFFFF88;

@@ -92,7 +92,7 @@ import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.receiver.PowerReceiver;
 
-public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
+public class HomeActivity extends SubcribeResumeStopActivity implements OnGetRoutePlanResultListener
        ,NavigationView.OnNavigationItemSelectedListener {
 
     private static final int accuracyCircleFillColor = 0xAAFFFF88;
@@ -884,7 +884,7 @@ public class HomeActivity extends   SubcribeCreateDestroyActivity implements OnG
         BNaviSettingManager.setIsAutoQuitWhenArrived(true);
         Bundle bundle = new Bundle();
         // 必须设置APPID，否则会静音
-        bundle.putString(BNCommonSettingParam.TTS_APP_ID, "9354030");
+        bundle.putString(BNCommonSettingParam.TTS_APP_ID, "9458069");
         BNaviSettingManager.setNaviSdkParam(bundle);
     }
 

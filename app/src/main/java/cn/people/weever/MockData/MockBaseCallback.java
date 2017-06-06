@@ -1,4 +1,4 @@
-package cn.people.weever.net;
+package cn.people.weever.MockData;
 
 import android.util.Log;
 
@@ -6,44 +6,42 @@ import org.greenrobot.eventbus.EventBus;
 
 import cn.people.weever.Event.NetRequestPostEvent;
 import cn.people.weever.Event.NetRequestPreEvent;
+import cn.people.weever.net.APIError;
+import cn.people.weever.net.APIFail;
+import cn.people.weever.net.BaseModel;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
- * Created by ztcao on 2017/2/4.
+ * Created by Administrator on 2017/6/6.
  */
 
-public class BaseCallback<T> implements Callback<BaseModel<T>> {
-
+public class MockBaseCallback<T> {
     public static final String TAG = "BaseCallback" ;
 
     //区分是哪个网络接口的请求
     private int mApiOperationCode ;
 
-    public BaseCallback() {
-    }
+    private MockResponse<T> mResponse ;
 
-    public BaseCallback(int apiOperationCode) {
+    public MockBaseCallback(int apiOperationCode  , MockResponse<T> response) {
         mApiOperationCode = apiOperationCode;
+        mResponse = response ;
         //通知网络请求开始 UI层收到可展现进度条
         postEvent(new NetRequestPreEvent(apiOperationCode));
     }
 
 
-    @Override
-    public void onResponse(Call<BaseModel<T>> call, Response<BaseModel<T>> response) {
-        if (response.isSuccessful() && response.errorBody() == null) {
+    public void onResponse( ) {
+        MockResponse<T>  response = mResponse ;
+        if (response.isSuccess() ) {
             BaseModel<T> model = response.body();
             if (model == null) {
                 Log.e(TAG, "数据解析出现异常");
                 postEvent(new APIFail(mApiOperationCode ,response.code(), response.message()));
-                postEvent(new NetRequestPostEvent(mApiOperationCode));//网络请求结束
+                //postEvent(new NetRequestPostEvent(mApiOperationCode));//网络请求结束
                 return ;
-            } else if(!model.isSuccess()){ //业务逻辑错误
-                postEvent(new APIFail(mApiOperationCode ,response.code(), model.getMessage()));
-                postEvent(new NetRequestPostEvent(mApiOperationCode));//网络请求结束
-                return ;
+            } else {
+                Log.d(TAG, "成功----------------");
             }
             model.setApiOperationCode(mApiOperationCode);
             postEvent(model);
@@ -55,7 +53,6 @@ public class BaseCallback<T> implements Callback<BaseModel<T>> {
         postEvent(new NetRequestPostEvent(mApiOperationCode)); //网络请求结束
     }
 
-    @Override
     public void onFailure(Call call, Throwable throwable) { //网络异常
         Log.e(TAG, "onFailure            " + throwable.getMessage());
         throwable.printStackTrace();

@@ -6,11 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import cn.people.weever.dialog.CustomProgressDialog;
+
 /**
  * Created by ztcao on 2016/12/20. Activity的基类
  */
 public abstract class BaseActivity extends AppCompatActivity{
 
+	protected CustomProgressDialog mCustomProgressDialog;
 	public abstract void initData();
 	public abstract void initView();
 

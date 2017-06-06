@@ -19,8 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.HomeActivity;
-import cn.people.weever.activity.SubcribeCreateDestroyActivity;
-import cn.people.weever.activity.car.MainActivity;
+import cn.people.weever.activity.SubcribeResumeStopActivity;
 import cn.people.weever.common.constant.APIOperationCode;
 import cn.people.weever.model.Car;
 import cn.people.weever.model.Driver;
@@ -30,7 +29,7 @@ import cn.people.weever.service.DriverService;
 import cn.people.weever.common.util.ToastUtil;
 
 
-public class LoginActivity extends SubcribeCreateDestroyActivity {
+public class LoginActivity extends SubcribeResumeStopActivity {
 
     @BindView(R.id.edtUserName)
     EditText mEdtUserName;
@@ -145,21 +144,5 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         }
 
     }
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void processErrorEvent(@NonNull APIError apiErrorError) {
-//        if(apiErrorError.getTodo_code() != APIOperationCode.TO_GOODS_CLASSIFY_INFO){
-//            return ;
-//        }
-//        customProgressDialog.cancel();
-//        showToast("无网络连接");
-//    }
-//
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void processFailEvent(@NonNull APIFail apiFail) {
-//        if(apiFail.getTodo_code() != APIOperationCode.TO_GOODS_CLASSIFY_INFO){
-//            return ;
-//        }
-//        customProgressDialog.cancel();
-//        showToast(apiFail.getMessage());
-//    }
+
 }
