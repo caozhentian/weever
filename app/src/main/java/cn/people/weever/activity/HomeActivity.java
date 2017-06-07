@@ -92,7 +92,7 @@ import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.receiver.PowerReceiver;
 
-public class HomeActivity extends   SubcribeResumeStopActivity implements OnGetRoutePlanResultListener
+public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
        ,NavigationView.OnNavigationItemSelectedListener {
 
     private static final int accuracyCircleFillColor = 0xAAFFFF88;

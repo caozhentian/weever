@@ -37,8 +37,8 @@ public class DriverRepository extends RespoisitoryBase {
         if(driver == null){
             return ;
         }
-        Call<BaseModel<Object>> call   =  mDriverApiService.autoLogin(driver.getToken()) ;
-        call.enqueue(new BaseCallback<Object>(DriverApiService.TO_USER_AUTO_LOGIN))      ;
+        Call<BaseModel<Driver>> call   =  mDriverApiService.autoLogin(driver.getToken()) ;
+        call.enqueue(new BaseCallback<Driver>(DriverApiService.TO_USER_AUTO_LOGIN))      ;
     }
 
     public void loginOut(){

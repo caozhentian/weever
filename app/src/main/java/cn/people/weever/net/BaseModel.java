@@ -14,6 +14,9 @@ package cn.people.weever.net;
  * @param <T>
  */
 public class BaseModel<T> {
+
+	public static final int   SUB_FAIL_STATUS_TOKEN_EXPIRE  = 0x10000 ;
+
 	public static final String SUCCESS = "success" ;
 	public static final String FAIL     = "fail"    ;
 

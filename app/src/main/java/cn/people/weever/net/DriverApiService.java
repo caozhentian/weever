@@ -23,7 +23,7 @@ public  interface DriverApiService {
 
     @FormUrlEncoded
     @POST("driver/autoLogin")
-    Call<BaseModel<Object>> autoLogin(@Field("token") String token);
+    Call<BaseModel<Driver>> autoLogin(@Field("token") String token);
 
     @FormUrlEncoded
     @POST("driver/logout")

@@ -32,4 +32,15 @@ public class MockLoginService extends MockService {
         mockBaseCallback.onResponse();
         return  mockResponse ;
     }
+
+    public MockResponse getloginOutJsonData() {
+        MockResponse mockResponse = getSuccessResponse() ;
+        Driver driver = new Driver() ;
+        driver.setUserName("Demo");
+        driver.setToken("dfdfdffda2434");
+        mockResponse.getModel().setData(driver);
+        MockBaseCallback<Driver> mockBaseCallback = new  MockBaseCallback<Driver>(DriverApiService.TO_USER_LOGIN_OUT, mockResponse) ;
+        mockBaseCallback.onResponse();
+        return  mockResponse ;
+    }
 }

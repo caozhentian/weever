@@ -41,7 +41,7 @@ public class BaseCallback<T> implements Callback<BaseModel<T>> {
                 postEvent(new NetRequestPostEvent(mApiOperationCode));//网络请求结束
                 return ;
             } else if(!model.isSuccess()){ //业务逻辑错误
-                postEvent(new APIFail(mApiOperationCode ,response.code(), model.getMessage()));
+                postEvent(new APIFail(mApiOperationCode ,model.getSubFailStatus(), model.getMessage()));
                 postEvent(new NetRequestPostEvent(mApiOperationCode));//网络请求结束
                 return ;
             }

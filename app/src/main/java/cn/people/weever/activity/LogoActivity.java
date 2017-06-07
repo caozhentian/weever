@@ -13,7 +13,7 @@ import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.DriverApiService;
 import cn.people.weever.service.DriverService;
 
-public class LogoActivity extends SubcribeResumeStopActivity {
+public class LogoActivity extends SubcribeCreateDestroyActivity {
 
     private DriverService mDriverService ;
     @Override

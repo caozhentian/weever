@@ -1,6 +1,7 @@
 package cn.people.weever.application;
 
 import android.app.Application;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -49,7 +50,7 @@ public class WeeverApplication extends Application {
     /**
      * Entity标识
      */
-    public String entityName = "myTrace";
+    public static String entityName = "myTrace";
 
     public static boolean isRegisterPower = false;
 
@@ -195,5 +196,18 @@ public class WeeverApplication extends Application {
      */
     public static  int getTag() {
         return mSequenceGenerator.incrementAndGet();
+    }
+
+    public static String getEntityName() {
+        if(TextUtils.isEmpty(entityName)){
+            entityName = PreferencesUtil.getStringPreferences(sWeeverApplication , "CAR_KEY") ;
+        }
+        return entityName;
+    }
+
+    public static void setEntityName(String entityName) {
+        WeeverApplication.entityName = entityName;
+        PreferencesUtil.setPreferences(sWeeverApplication,"CAR_KEY",entityName);
+        mTrace.setEntityName(entityName);
     }
 }

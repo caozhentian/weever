@@ -21,8 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.HomeActivity;
-import cn.people.weever.activity.SubcribeResumeStopActivity;
-import cn.people.weever.common.constant.APIOperationCode;
+import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.model.Car;
 import cn.people.weever.model.Driver;
 import cn.people.weever.net.BaseModel;
@@ -33,7 +32,7 @@ import cn.people.weever.service.DriverService;
 import cn.people.weever.common.util.ToastUtil;
 
 
-public class LoginActivity extends SubcribeResumeStopActivity {
+public class LoginActivity extends SubcribeCreateDestroyActivity {
 
     @BindView(R.id.edtUserName)
     EditText mEdtUserName;
@@ -47,6 +46,8 @@ public class LoginActivity extends SubcribeResumeStopActivity {
     Button mBtnLogin;
 
     private String[] carNums ;
+    private List<Car> mCarList ;
+    private Car       mCurSelectCar    ;
     private Driver mLoginViewModel   ;
     private DriverService  mDriverService    ;
     private CarService     mCarService        ;
@@ -61,11 +62,11 @@ public class LoginActivity extends SubcribeResumeStopActivity {
         mLoginViewModel = new Driver() ;
         mDriverService =  new DriverService() ;
         //tetst
-        Driver driver = new Driver() ;
-        driver.setId("111");
-        driver.setUserName("55");
-        driver.setPassword("8989");
-        mDriverService.save(driver);
+//        Driver driver = new Driver() ;
+//        driver.setId("111");
+//        driver.setUserName("55");
+//        driver.setPassword("8989");
+//        mDriverService.save(driver);
         mCarService     = new CarService()     ;
         //查询车辆编号
         mCarService.query();
@@ -99,6 +100,7 @@ public class LoginActivity extends SubcribeResumeStopActivity {
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
                 mLoginViewModel.setCardNum(carNums[pos]);
+                mCurSelectCar = mCarList.get(pos) ;
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -144,10 +146,10 @@ public class LoginActivity extends SubcribeResumeStopActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void processCarNumEvent(@Nullable BaseModel<List<Car>> baseModel){
         if(baseModel.getApiOperationCode() == CarApiService.TO_CAR){
-                List<Car> cars = baseModel.getData()  ;
-                carNums = new String[cars.size()] ;
-                for(int index = 0 ; index < cars.size() ; index++){
-                    carNums[index] = cars.get(index).getNum() ;
+                mCarList = baseModel.getData()  ;
+                carNums = new String[mCarList.size()] ;
+                for(int index = 0 ; index < mCarList.size() ; index++){
+                    carNums[index] = mCarList.get(index).getNum() ;
                 }
                 initCardNum() ;
             }

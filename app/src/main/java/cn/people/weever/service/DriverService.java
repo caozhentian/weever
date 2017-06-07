@@ -51,6 +51,11 @@ public class DriverService {
     }
 
     public void loginOut(){
+        if(MockLoginService.DEBUG_MOCK){
+            MockLoginService mockLoginService = new MockLoginService() ;
+            mockLoginService.getloginOutJsonData();
+            return ;
+        }
         mDriverRepository.loginOut();
     }
 
@@ -58,7 +63,8 @@ public class DriverService {
         if(driver == null){
             return ;
         }
-        WeeverApplication.setCurUser(driver);
+        WeeverApplication.setCurUser(driver)                  ;
+        WeeverApplication.setEntityName(driver.getCardNum())  ;
     }
 
     public Driver getCurDriver(){
