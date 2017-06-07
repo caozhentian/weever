@@ -24,21 +24,12 @@ public class DriverRepository extends RespoisitoryBase {
     }
 
     public void login(Driver driver){
-       if(MockService.DEBUG_MOCK){
-           MockLoginService mockLoginService = new MockLoginService() ;
-           mockLoginService.getJsonData() ;
-           return ;
-       }
         Call<BaseModel<Driver>> call   =  mDriverApiService.login(RequestBodyCreator.CreateRequestBodyJSON(driver)) ;
         call.enqueue(new BaseCallback<Driver>(DriverApiService.TO_USER_LOGIN));
     }
 
     public void autoLogin(){
-        Driver driver = WeeverApplication.getCurUser() ;
-        if(driver == null){
-            return ;
-        }
-        Call<BaseModel<Driver>> call   =  mDriverApiService.autoLogin(driver.getToken()) ;
+        Call<BaseModel<Driver>> call   =  mDriverApiService.autoLogin() ;
         call.enqueue(new BaseCallback<Driver>(DriverApiService.TO_USER_AUTO_LOGIN))      ;
     }
 
@@ -47,7 +38,7 @@ public class DriverRepository extends RespoisitoryBase {
         if(driver == null){
             return ;
         }
-        Call<BaseModel<Object>> call   =  mDriverApiService.loginOut(TokenService.getToken() ,driver.getUserName()) ;
+        Call<BaseModel<Object>> call   =  mDriverApiService.loginOut(driver.getUserName()) ;
         call.enqueue(new BaseCallback<Object>(DriverApiService.TO_USER_LOGIN_OUT)) ;
     }
 

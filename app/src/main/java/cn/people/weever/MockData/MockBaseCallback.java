@@ -38,10 +38,12 @@ public class MockBaseCallback<T> {
             if (model == null) {
                 Log.e(TAG, "数据解析出现异常");
                 postEvent(new APIFail(mApiOperationCode ,response.code(), response.message()));
-                //postEvent(new NetRequestPostEvent(mApiOperationCode));//网络请求结束
+                postEvent(new NetRequestPostEvent(mApiOperationCode));//网络请求结束
                 return ;
-            } else {
-                Log.d(TAG, "成功----------------");
+            }  else if(!model.isSuccess()){ //业务逻辑错误
+                postEvent(new APIFail(mApiOperationCode ,model.getSubFailStatus(), model.getMessage()));
+                postEvent(new NetRequestPostEvent(mApiOperationCode));//网络请求结束
+                return ;
             }
             model.setApiOperationCode(mApiOperationCode);
             postEvent(model);

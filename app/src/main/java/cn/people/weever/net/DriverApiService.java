@@ -21,11 +21,10 @@ public  interface DriverApiService {
     @POST("driver/login")
     Call<BaseModel<Driver>> login(@Body RequestBody route);
 
-    @FormUrlEncoded
     @POST("driver/autoLogin")
-    Call<BaseModel<Driver>> autoLogin(@Field("token") String token);
+    Call<BaseModel<Driver>> autoLogin();
 
     @FormUrlEncoded
     @POST("driver/logout")
-    Call<BaseModel<Object>> loginOut(@Field("token") String token , @Field("userName") String userName);
+    Call<BaseModel<Object>> loginOut(@Field("driverUserName") String driverUserName);
 }

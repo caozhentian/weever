@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import java.net.SocketTimeoutException;
+
 import cn.people.weever.R;
 import cn.people.weever.activity.login.LoginActivity;
 import cn.people.weever.application.ActivityExitManage;
@@ -59,7 +61,12 @@ public abstract class BaseActivity extends AppCompatActivity{
 	}
 
 	public void processErrorEvent(@NonNull APIError apiErrorError) {
-		Toast.makeText(this,"无网络连接",Toast.LENGTH_SHORT).show();
+		if(apiErrorError.getThrowable() instanceof SocketTimeoutException){
+			Toast.makeText(this,"网络连接超时。请检查网络",Toast.LENGTH_SHORT).show();
+		}
+		else{
+			Toast.makeText(this,"未知错误",Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	public void processFailEvent(@NonNull APIFail apiFail) {

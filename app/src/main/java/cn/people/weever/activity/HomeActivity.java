@@ -84,6 +84,7 @@ import cn.people.weever.activity.order.MyOrdersActivity;
 import cn.people.weever.activity.order.OrderClearingActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.poi.PoiSearchActivity;
+import cn.people.weever.activity.setting.SettingUpActivity;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.NumberFormat;
 import cn.people.weever.config.FileConfig;
@@ -292,11 +293,12 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 return true;
             }
             routeplanToNavi() ;
-//            startNavi(srcLating , mEdtSrc.getText().toString() ,
-//                      destLating , mEdtDest.getText().toString()) ;
         }
         else if(id == R.id.nav_gallery){
             startActivity(MyOrdersActivity.newIntent(this));
+        }
+        else if(id == R.id.nav_manage){
+            startActivity(SettingUpActivity.newIntent(this));
         }
         else if(id == R.id.nav_home){
 
@@ -517,53 +519,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             destLating = o.getmPoiInfo().location  ;
         }
     }
-
-    /**
-     * 启动百度地图导航(Native)
-     */
-    public void startNavi(LatLng srcLatLng ,   String src ,
-                          LatLng destLatLng ,  String dest ) {
-
-        // 构建 导航参数
-        NaviParaOption para = new NaviParaOption()
-                .startPoint(srcLatLng).endPoint(destLatLng)
-                .startName(src).endName(dest);
-
-        try {
-            BaiduMapNavigation.openBaiduMapNavi(para, this);
-        } catch (BaiduMapAppNotSupportNaviException e) {
-            e.printStackTrace();
-            showDialog();
-        }
-
-    }
-
-    /**
-     * 提示未安装百度地图app或app版本过低
-     */
-    public void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("您尚未安装百度地图app或app版本过低，点击确认安装？");
-        builder.setTitle("提示");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                OpenClientUtil.getLatestBaiduMapApp(HomeActivity.this);
-            }
-        });
-
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        builder.create().show();
-
-    }
-	
 	/**
      * 实时定位任务
      *
@@ -579,7 +534,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
         @Override
         public void run() {
-            WeeverApplication.getInstance().getCurrentLocation(entityListener, trackListener);
             realTimeHandler.postDelayed(this, interval * 1000);
         }
     }
