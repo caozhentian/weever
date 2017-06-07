@@ -32,7 +32,6 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -220,13 +219,14 @@ public class HomeActivity extends   SubcribeResumeStopActivity implements OnGetR
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
         option.setScanSpan(1000);
+        option.setProdName("WeeverDemo");
         option.setIsNeedLocationPoiList(true);
         option.setIsNeedAddress(true);
-		BitmapDescriptor currentMarker = BitmapDescriptorFactory
-                            .fromResource(R.drawable.ic_gprs_blue);
+		//BitmapDescriptor currentMarker = BitmapDescriptorFactory
+        //                    .fromResource(R.drawable.ic_gprs_blue);
         mBaiduMap
                 .setMyLocationConfigeration(new MyLocationConfiguration(
-                        mCurrentMode, true, currentMarker,
+                        mCurrentMode, true, null,
                         accuracyCircleFillColor, accuracyCircleStrokeColor));
         mLocClient.setLocOption(option);
         mLocClient.start();
@@ -485,7 +485,7 @@ public class HomeActivity extends   SubcribeResumeStopActivity implements OnGetR
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(100).latitude(location.getLatitude())
+                    .direction(180).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
             mBaiduMap.setMyLocationData(locData);
             if (isFirstLoc) {

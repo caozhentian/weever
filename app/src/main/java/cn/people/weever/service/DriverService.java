@@ -41,6 +41,19 @@ public class DriverService {
         mDriverRepository.login(driver);
     }
 
+    public void autoLogin(){
+        if(MockLoginService.DEBUG_MOCK){
+            MockLoginService mockLoginService = new MockLoginService() ;
+            mockLoginService.getAutologinJsonData() ;
+            return ;
+        }
+        mDriverRepository.autoLogin();
+    }
+
+    public void loginOut(){
+        mDriverRepository.loginOut();
+    }
+
     public void save(Driver driver){
         if(driver == null){
             return ;
@@ -52,7 +65,4 @@ public class DriverService {
         return WeeverApplication.getCurUser() ;
     }
 
-    public void loginOut(){
-        WeeverApplication.setCurUser(null)    ;
-    }
 }

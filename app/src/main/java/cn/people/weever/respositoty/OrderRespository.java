@@ -33,26 +33,26 @@ public class OrderRespository {
     public void list(int type){
 
         Call<BaseModel<List<BaseOrder>>> call = mOrderApiService.list("" ,type ) ;
-        call.enqueue(new BaseCallback<List<BaseOrder>>(OrderApiService.TO_ORDER_LIST));
+        call.enqueue(new BaseCallback<List<BaseOrder>>(OrderApiService.TO_ORDER_LIST_ALL_NET_REQUST));
     }
    
     // 取消订单
     public void cancel(String orderId ,String reason ){
-        String sid = "" ;
-        Call<BaseModel<Object>> call = mOrderApiService.cancel(sid ,orderId ,reason  ) ;
-        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_CANCEL));
+//        String sid = "" ;
+//        Call<BaseModel<Object>> call = mOrderApiService.cancel(sid ,orderId ,reason  ) ;
+//        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_CANCEL));
     }
     // 确认收货
     public void confirmReceipt(){
-        String sid = "" ;
-        Call<BaseModel<Object>> call = mOrderApiService.confirmReceipt(sid ,"" ) ;
-        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_ADD));
+//        String sid = "" ;
+//        Call<BaseModel<Object>> call = mOrderApiService.confirmReceipt(sid ,"" ) ;
+//        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_SUBMIT));
     }
     // 订单详情
     public void getDetails(String id){
-        String sid = "" ;
-        Call<BaseModel<BaseOrder>> call = mOrderApiService.getDetails(sid ,id) ;
-        call.enqueue(new BaseCallback<BaseOrder>(OrderApiService.TO_ORDER_DETAILS));
+//        String sid = "" ;
+//        Call<BaseModel<BaseOrder>> call = mOrderApiService.getDetails(sid ,id) ;
+//        call.enqueue(new BaseCallback<BaseOrder>(OrderApiService.TO_ORDER_DETAILS));
     }
     
 
