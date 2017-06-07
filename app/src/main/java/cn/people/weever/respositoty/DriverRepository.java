@@ -8,6 +8,7 @@ import cn.people.weever.net.BaseCallback;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.DriverApiService;
 import cn.people.weever.net.RequestBodyCreator;
+import cn.people.weever.service.TokenService;
 import retrofit2.Call;
 
 /**
@@ -46,7 +47,7 @@ public class DriverRepository extends RespoisitoryBase {
         if(driver == null){
             return ;
         }
-        Call<BaseModel<Object>> call   =  mDriverApiService.loginOut(driver.getUserName()) ;
+        Call<BaseModel<Object>> call   =  mDriverApiService.loginOut(TokenService.getToken() ,driver.getUserName()) ;
         call.enqueue(new BaseCallback<Object>(DriverApiService.TO_USER_LOGIN_OUT)) ;
     }
 

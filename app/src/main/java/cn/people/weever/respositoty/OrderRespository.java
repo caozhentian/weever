@@ -22,16 +22,8 @@ public class OrderRespository {
         mOrderApiService = retrofit.create(OrderApiService.class);
     }
 
-    
-
-//    Call<ResponseBody> photoOrder(
-//            @Part("remark") RequestBody remark,
-//            @Part("address_id") RequestBody  addressId,
-//            @Part("address_id") RequestBody  type,
-//            @PartMap() Map<String, RequestBody> maps);
     // 订单列表
     public void list(int type){
-
         Call<BaseModel<List<BaseOrder>>> call = mOrderApiService.list("" ,type ) ;
         call.enqueue(new BaseCallback<List<BaseOrder>>(OrderApiService.TO_ORDER_LIST_ALL_NET_REQUST));
     }

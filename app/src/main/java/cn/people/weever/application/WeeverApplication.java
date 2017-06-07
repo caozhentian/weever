@@ -146,8 +146,10 @@ public class WeeverApplication extends Application {
         //mClient.startTrace(mTrace, null) ;
 	}
 
-	public static final void exitApp(){
+	public static final void exitLogin(){
         mClient.stopTrace(mTrace ,null);
+        setCurUser(null);
+        setEntityName("");
     }
     /**
      * 获取当前位置

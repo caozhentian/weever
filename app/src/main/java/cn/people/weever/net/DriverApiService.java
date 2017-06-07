@@ -27,5 +27,5 @@ public  interface DriverApiService {
 
     @FormUrlEncoded
     @POST("driver/logout")
-    Call<BaseModel<Object>> loginOut(@Field("userName") String userName);
+    Call<BaseModel<Object>> loginOut(@Field("token") String token , @Field("userName") String userName);
 }

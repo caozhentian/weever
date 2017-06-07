@@ -1,7 +1,5 @@
 package cn.people.weever.net;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -21,8 +19,11 @@ public class RetrofitFactory {
 
 		OkHttpClient.Builder builder = new OkHttpClient().newBuilder() ;
 		OkHttpClient client = null ;
+		builder.addInterceptor(new TokenInterceptor()) ;
 		if(BuildConfig.DEBUG){
-            //client = builder.addInterceptor(new LoggingInterceptor()).build();
+			HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+			logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            client = builder.addInterceptor(logging).build();
 			client = builder.build();
 		}
 		else{
