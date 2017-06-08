@@ -38,9 +38,8 @@ public class AboutWeActivity extends BaseActivity {
     @Override
     public void initView() {
 
-        iv_back = (ImageView)findViewById(R.id.iv_back);
+        iv_back = (ImageView)findViewById(R.id.img_back);
         tv_title = (TextView) findViewById(R.id.tv_title);
-//        tv_introduce = (TextView) findViewById(R.id.tv_introduce);
         wv_about_we = (WebView) findViewById(R.id.wv_about_we);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +48,6 @@ public class AboutWeActivity extends BaseActivity {
             }
         });
         tv_title.setText("关于我们");
-        wv_about_we.loadUrl("http://yhsj.3tichina.com/h5/about.php");
+        wv_about_we.loadUrl("http://www.163.com");
     }
 }
