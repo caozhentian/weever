@@ -5,6 +5,7 @@
     android:background="@color/white">
 
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,44 +14,14 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/dim10">
+        <include layout="@layout/inc_toolbar_title"></include>
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dim10"
-                 />
-
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="19sp" />
-
-            <ImageView
-                android:id="@+id/iv_right"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dim10" />
-        </LinearLayout>
-
-       <!-- <ImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dim54"
-            android:background="@drawable/ic_vesion_logo" />-->
+            android:background="@drawable/ic_launcher" />-->
         <WebView
             android:id="@+id/wv_about_we"
             android:layout_width="match_parent"

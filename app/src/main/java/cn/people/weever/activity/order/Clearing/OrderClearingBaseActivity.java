@@ -1,4 +1,4 @@
-package cn.people.weever.activity.order;
+package cn.people.weever.activity.order.Clearing;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,7 @@ import cn.people.weever.activity.BaseActivity;
 import cn.people.weever.activity.car.TrackQueryActivity;
 import cn.people.weever.model.BaseOrder;
 
-public class OrderClearingActivity extends BaseActivity {
+public abstract  class OrderClearingBaseActivity extends BaseActivity {
 
 
     @BindView(R.id.src)
@@ -38,7 +38,7 @@ public class OrderClearingActivity extends BaseActivity {
     ImageView mImgBack;
 
     public static final Intent newIntent(Context context, BaseOrder baseOrder) {
-        Intent intent = new Intent(context, OrderClearingActivity.class);
+        Intent intent = new Intent(context, OrderClearingBaseActivity.class);
         intent.putExtra(BaseOrder.ORDER_ID, baseOrder);
         return intent;
     }
@@ -76,5 +76,12 @@ public class OrderClearingActivity extends BaseActivity {
     @OnClick(R.id.img_back)
     public void onViewClicked() {
         finish();
+    }
+
+
+    abstract  protected <T extends BaseOrder> T queryOrderDetails(BaseOrder order)  ;
+
+    protected void  submitOrder(){
+
     }
 }

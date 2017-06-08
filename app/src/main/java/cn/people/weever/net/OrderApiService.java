@@ -33,7 +33,10 @@ public interface OrderApiService {
     public static final int TO_ORDER_LIST_PENDING_SETTLEMENT_NET_REQUST          =            415           ;
 
 
-    public static final int TO_ORDER_DETAILS_NET_REQUST             =   408                     ;
+    public static final int TO_ORDER_TYPE_DAY_DETAILS_NET_REQUST             =   420                      ;
+    public static final int TO_ORDER_TYPE_DAYHALF_DETAILS_NET_REQUST        =   421                      ;
+    public static final int TO_ORDER_TYPE_TRANSFER_DETAILS_NET_REQUST        =  422                      ;
+    public static final int TO_ORDER_TYPE_FixTime_DETAILS_NET_REQUST        =   423                      ;
     /**
      *查询订单
      * @param token
@@ -63,25 +66,24 @@ public interface OrderApiService {
 
     /**
      * 取消订单
-     * @param token
      * @param id
      * @return
      */
     @FormUrlEncoded
     @POST("/app/?url=/order/cancel")
-    Call<BaseModel<Object>> cancel(@Field("token") String token , @Field("order_id") String id ) ;
+    Call<BaseModel<Object>> cancel( @Field("order_id") String id ) ;
 
     @FormUrlEncoded
     @POST("order/getDailyRentaOrderInfo")
-    Call<BaseModel<DailyRentaOrder>> getDailyRentaOrderDetails(@Field("sid") String sid , @Field("order_id") String id) ;
+    Call<BaseModel<DailyRentaOrder>> getDailyRentaOrderDetails( @Field("order_id") String id) ;
     @FormUrlEncoded
     @POST("order/getHalfDayRentalOrderInfo")
-    Call<BaseModel<HalfDayRentalOrder>> getHalfDayRentalOrderDetails(@Field("sid") String sid , @Field("order_id") String id) ;
+    Call<BaseModel<HalfDayRentalOrder>> getHalfDayRentalOrderDetails( @Field("order_id") String id) ;
     @FormUrlEncoded
     @POST("order/getTransferOrderInfo")
-    Call<BaseModel<TransferOrder>> getTransferOrderDetails(@Field("sid") String sid , @Field("order_id") String id) ;
+    Call<BaseModel<TransferOrder>> getTransferOrderDetails( @Field("order_id") String id) ;
     @FormUrlEncoded
     @POST("order/getFixTimeOrderInfo")
-    Call<BaseModel<FixTimeOrder>>  getFixTimeOrderDetails(@Field("sid") String sid , @Field("order_id") String id) ;
+    Call<BaseModel<FixTimeOrder>>  getFixTimeOrderDetails( @Field("order_id") String id) ;
 
 }

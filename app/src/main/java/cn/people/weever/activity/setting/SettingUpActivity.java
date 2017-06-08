@@ -24,6 +24,8 @@ import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.ManifestUtil;
 import cn.people.weever.dialog.CustomProgressDialog;
+import cn.people.weever.dialog.ICancelOK;
+import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.model.VersionUpdating;
 
 /**
@@ -74,7 +76,6 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
         rl_about_we.setOnClickListener(this);
         tv_log_out.setOnClickListener(this);
         tv_title.setText("设置");
-
     }
 
     @Override
@@ -85,13 +86,13 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
                 this.finish();
                 break;
             case R.id.rl_version_upgrade: // 版本更新
-//                intent.putExtra("versionUpdating",versionUpdating);
-//                intent.setClass(SettingUpActivity.this,VersionUpgradeActivity.class);
-//                startActivity(intent);
+                intent.putExtra("versionUpdating",versionUpdating);
+                intent.setClass(SettingUpActivity.this,VersionUpgradeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.rl_about_we: // 关于我们
-//                intent.setClass(SettingUpActivity.this,AboutWeActivity.class);
-//                startActivity(intent);
+                intent.setClass(SettingUpActivity.this,AboutWeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.tv_log_out: //  退出
                 logout();
@@ -102,9 +103,20 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
 
     // t退出弹出框
     private void logout(){
-       WeeverApplication.exitLogin();
-        ActivityExitManage.finishAll();
-       startActivity(LoginActivity.newIntent(this));
+        OKCancelDlg.createCancelOKDlg(this, "确定退出登录吗?", new ICancelOK() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void ok() {
+                WeeverApplication.exitLogin();
+                ActivityExitManage.finishAll();
+                startActivity(LoginActivity.newIntent(SettingUpActivity.this));
+            }
+        });
+
     }
 
 

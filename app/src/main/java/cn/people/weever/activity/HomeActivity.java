@@ -1,8 +1,6 @@
 package cn.people.weever.activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -39,9 +37,6 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
-import com.baidu.mapapi.navi.BaiduMapNavigation;
-import com.baidu.mapapi.navi.NaviParaOption;
 import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.BikingRouteResult;
@@ -54,7 +49,6 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
-import com.baidu.mapapi.utils.OpenClientUtil;
 import com.baidu.navisdk.adapter.BNCommonSettingParam;
 import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
@@ -81,7 +75,7 @@ import cn.people.weever.R;
 import cn.people.weever.activity.nav.BNDemoGuideActivity;
 import cn.people.weever.activity.nav.BNEventHandler;
 import cn.people.weever.activity.order.MyOrdersActivity;
-import cn.people.weever.activity.order.OrderClearingActivity;
+import cn.people.weever.activity.order.Clearing.OrderClearingBaseActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.activity.setting.SettingUpActivity;
@@ -351,7 +345,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
 	private void compute(){
         WeeverApplication.mClient.stopGather(traceListener);
-        startActivity(OrderClearingActivity.newIntent(this , new BaseOrder()));
+        startActivity(OrderClearingBaseActivity.newIntent(this , new BaseOrder()));
 	}
     private void start(){
         String startNodeStr = mEdtSrc.getText().toString()   ;

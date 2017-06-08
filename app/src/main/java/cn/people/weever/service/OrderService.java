@@ -42,8 +42,10 @@ public class OrderService {
         if(TextUtils.isEmpty(id)){
             return ;
         }
-        String sid = "" ;
         mOrderRespository.getDetails( id ) ;
     }
- 
+
+    public void getDetails(BaseOrder baseOrder){
+        mOrderRespository.getDetails( baseOrder ) ;
+    }
 }

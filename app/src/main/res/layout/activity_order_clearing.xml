@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cn.people.weever.activity.order.OrderClearingActivity">
+    tools:context="cn.people.weever.activity.order.Clearing.OrderClearingBaseActivity">
     <LinearLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"

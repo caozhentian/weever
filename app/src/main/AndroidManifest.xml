@@ -125,7 +125,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activity.order.OrderClearingActivity"
+            android:name=".activity.order.Clearing.OrderClearingBaseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
@@ -134,6 +134,14 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.setting.SettingUpActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.setting.AboutWeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.setting.VersionUpgradeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <!-- Rich push 核心功能 since 2.0.6 -->
