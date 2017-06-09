@@ -4,7 +4,7 @@ package cn.people.weever.model;
  * Created by Administrator on 2017/4/8.
  */
 
-public class TransferOrder {
+public class TransferOrder extends BaseOrder{
 
     //接送机费用
     private int mTransferCost           ;
@@ -17,5 +17,13 @@ public class TransferOrder {
 
     public void setFlightNumber(String flightNumber) {
         mFlightNumber = flightNumber;
+    }
+
+    public int getTransferCost() {
+        return mTransferCost;
+    }
+
+    public void setTransferCost(int transferCost) {
+        mTransferCost = transferCost;
     }
 }

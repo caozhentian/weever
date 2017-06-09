@@ -8,6 +8,7 @@ import cn.people.weever.model.FixTimeOrder;
 import cn.people.weever.model.HalfDayRentalOrder;
 import cn.people.weever.model.OrderSubmitInfo;
 import cn.people.weever.model.QueryModel;
+import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.model.TransferOrder;
 import cn.people.weever.net.BaseCallback;
 import cn.people.weever.net.BaseModel;
@@ -35,6 +36,10 @@ public class OrderRespository {
         call.enqueue(new BaseCallback<List<BaseOrder>>(OrderApiService.TO_ORDER_LIST_NET_REQUST));
     }
 
+    public void routeOperateOrder(RouteOperateEvent routeOperateEvent){
+        Call<BaseModel<Object>> call = mOrderApiService.routeOperateOrder(RequestBodyCreator.CreateRequestBodyJSON(routeOperateEvent)) ;
+        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST)) ;
+    }
 
     public void submit(OrderSubmitInfo orderSubmitInfo){
         Call<BaseModel<Object>> call = mOrderApiService.submit(RequestBodyCreator.CreateRequestBodyJSON(orderSubmitInfo)) ;

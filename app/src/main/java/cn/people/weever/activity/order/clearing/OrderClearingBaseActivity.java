@@ -25,7 +25,7 @@ import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.OrderSubmitInfo;
 import cn.people.weever.service.OrderService;
 
-public abstract class OrderClearingBaseActivity extends BaseActivity {
+public  class OrderClearingBaseActivity extends BaseActivity {
 
     @BindView(R.id.tv_title)
     TextView mTvTitle;
@@ -35,13 +35,6 @@ public abstract class OrderClearingBaseActivity extends BaseActivity {
     TextView mTvSrc;
     @BindView(R.id.tv_desc)
     TextView mTvDesc;
-
-    @BindView(R.id.tv_half_day_cost)
-    TextView mTvHalfDayCost;
-    @BindView(R.id.tv_day_cost)
-    TextView mTvDayCost;
-    @BindView(R.id.tv_transfer_cost)
-    TextView mTvTransferCost;
 
     @BindView(R.id.tv_member)
     TextView mTvMember;
@@ -122,8 +115,9 @@ public abstract class OrderClearingBaseActivity extends BaseActivity {
         finish();
     }
 
-
-    abstract protected <T extends BaseOrder> T queryOrderDetails(BaseOrder order);
+    protected void queryOrderDetails(BaseOrder baseOrder) {
+        mOrderService.getDetails(baseOrder);
+    }
 
     @OnClick({R.id.btn_compute, R.id.btn_trace})
     public void onViewClicked(View view) {

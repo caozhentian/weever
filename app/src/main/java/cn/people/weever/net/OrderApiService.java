@@ -20,10 +20,7 @@ import retrofit2.http.POST;
 public interface OrderApiService {
 
     //订单
-    public static final int TO_ORDER_CHARGING_NET_REQUST            =             400          ;
-    public static final int TO_ORDER_WAITTING_NET_REQUST            =             401          ;
-    public static final int TO_ORDER_RESTART_NET_REQUST             =             402          ;
-    public static final int TO_ORDER_TO_SETTLEMENT_NET_REQUST      =          403           ;
+    public static final int TO_ORDER_ROUTE_OPERATE_NET_REQUST            =       400          ;
     public static final int TO_ORDER_SUBMIT_NET_REQUST              =             404           ;
 
     public static final int TO_ORDER_LIST_NET_REQUST                          =             410           ;
@@ -61,9 +58,8 @@ public interface OrderApiService {
      * 订单
      * @return
      */
-    @FormUrlEncoded
-    @POST("order/operateOrder")
-    Call<BaseModel<Object>>  operateOrder(@Body RequestBody orderSubmitInfo) ;
+    @POST("order/routeOperateOrder")
+    Call<BaseModel<Object>>  routeOperateOrder(@Body RequestBody orderSubmitInfo) ;
 
     /**
      * 取消订单
