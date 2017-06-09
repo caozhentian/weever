@@ -50,6 +50,11 @@ import cn.people.weever.common.util.MapUtil;
 public class TrackQueryActivity extends BaseActivity
         implements CompoundButton.OnCheckedChangeListener {
 
+    private  static final String S_START_TIME =  "start_time" ;
+
+    private  static final String S_END_TIME   =  "end_time" ;
+
+
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.img_back)
@@ -205,19 +210,23 @@ public class TrackQueryActivity extends BaseActivity
      */
     private long lastQueryTime = 0;
 
-    public static final Intent newIntent(Context packageContext) {
+    public static final Intent newIntent(Context packageContext , long startTime , long endTime) {
         Intent intent = new Intent(packageContext, TrackQueryActivity.class);
+        intent.putExtra(S_START_TIME , startTime) ;
+        intent.putExtra(S_END_TIME , endTime);
         return intent;
     }
 
     @Override
     public void initData() {
-
+        //startTime  = getIntent().getLongExtra(S_START_TIME , 0L) ;
+        //endTime    = getIntent().getLongExtra(S_END_TIME , 0L)    ;
+        queryHistoryTrack();
     }
 
     @Override
     public void initView() {
-
+        init() ;
     }
 
     @Override
@@ -228,7 +237,8 @@ public class TrackQueryActivity extends BaseActivity
         tvTitle.setText("路线轨迹");
         trackApp = (WeeverApplication) getApplicationContext();
         pageIndex = 1;
-        init();
+        initView() ;
+        initData() ;
     }
 
     /**
@@ -242,7 +252,7 @@ public class TrackQueryActivity extends BaseActivity
         //trackAnalysisInfoLayout = new TrackAnalysisInfoLayout(this, mapUtil.baiduMap);
         initListener();
         BitmapUtil.init();
-        queryHistoryTrack();
+
     }
 
     /**
@@ -296,7 +306,7 @@ public class TrackQueryActivity extends BaseActivity
 // 设置里程填充方式为驾车
         historyTrackRequest.setSupplementMode(SupplementMode.driving);
         trackApp.initRequest(historyTrackRequest);
-        historyTrackRequest.setEntityName(trackApp.entityName);
+        historyTrackRequest.setEntityName(WeeverApplication.getEntityName());
         historyTrackRequest.setStartTime(startTime);
         historyTrackRequest.setEndTime(endTime);
         historyTrackRequest.setPageIndex(pageIndex);

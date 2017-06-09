@@ -3,11 +3,16 @@ package cn.people.weever.activity.order.clearing;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,27 +20,64 @@ import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
 import cn.people.weever.activity.car.TrackQueryActivity;
+import cn.people.weever.model.Amount;
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.OrderSubmitInfo;
+import cn.people.weever.service.OrderService;
 
-public abstract  class OrderClearingBaseActivity extends BaseActivity {
+public abstract class OrderClearingBaseActivity extends BaseActivity {
 
-
-    @BindView(R.id.src)
-    TextView src;
-    @BindView(R.id.desc)
-    TextView desc;
-    @BindView(R.id.spn_settlement_first)
-    Spinner spnSettlementFirst;
-    @BindView(R.id.spn_settlement_second)
-    Spinner spnSettlementSecond;
-    @BindView(R.id.btn_compute)
-    Button btnCompute;
-    @BindView(R.id.btn_trace)
-    Button btnTrace;
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.img_back)
     ImageView mImgBack;
+    @BindView(R.id.tv_src)
+    TextView mTvSrc;
+    @BindView(R.id.tv_desc)
+    TextView mTvDesc;
+
+    @BindView(R.id.tv_half_day_cost)
+    TextView mTvHalfDayCost;
+    @BindView(R.id.tv_day_cost)
+    TextView mTvDayCost;
+    @BindView(R.id.tv_transfer_cost)
+    TextView mTvTransferCost;
+
+    @BindView(R.id.tv_member)
+    TextView mTvMember;
+    @BindView(R.id.tv_pre_discount)
+    TextView mTvPreDiscount;
+    @BindView(R.id.tv_post_discount)
+    TextView mTvPostDiscount;
+    @BindView(R.id.tv_percent_discount)
+    TextView mTvPercentDiscount;
+
+    @BindView(R.id.tv_start_up_cost)
+    TextView mTvStartUpCost;//TODO
+    @BindView(R.id.tv_distance_cost)
+    TextView mTvDistanceCost;
+    @BindView(R.id.tv_ride_time_cost)
+    TextView mTvRideTimeCost;
+    @BindView(R.id.tv_wait_time_cost)
+    TextView mTvWaitTimeCost;
+
+    @BindView(R.id.spn_settlement_first)
+    Spinner mSpnSettlementFirst;
+    @BindView(R.id.edt_settlement_first_cost)
+    EditText mEdtSettlementFirstCost;
+    @BindView(R.id.spn_settlement_second)
+    Spinner mSpnSettlementSecond;
+    @BindView(R.id.edt_settlement_second_cost)
+    EditText mEdtSettlementSecondCost;
+
+    @BindView(R.id.btn_compute)
+    Button mBtnCompute;
+    @BindView(R.id.btn_trace)
+    Button mBtnTrace;
+
+    protected BaseOrder mBaseOrder ;
+
+    protected OrderService mOrderService ;
 
     public static final Intent newIntent(Context context, BaseOrder baseOrder) {
         Intent intent = new Intent(context, OrderClearingBaseActivity.class);
@@ -45,12 +87,25 @@ public abstract  class OrderClearingBaseActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        mOrderService = new OrderService() ;
     }
 
     @Override
     public void initView() {
-        mTvTitle.setText("结算");
+        mTvTitle.setText("");
+    }
+
+    protected void setViewByBaseOrder(){
+        mTvSrc.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
+        mTvDesc.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
+        mTvMember.setText(mBaseOrder.getCompany().getCompanyNum());
+        mTvPreDiscount.setText(mBaseOrder.getPreDiscount() + "");
+        mTvPostDiscount.setText(mBaseOrder.getPostDiscount() + "");
+        mTvPercentDiscount.setText(mBaseOrder.getPercentDiscount() );
+        //mTvStartUpCost.setText(baseOrder.get);
+        mTvDistanceCost.setText(mBaseOrder.getActualMileageCost());
+        mTvRideTimeCost.setText(mBaseOrder.getActualRideTimeCost());
+        mTvWaitTimeCost.setText(mBaseOrder.getActualWaitTimeCost());
     }
 
     @Override
@@ -62,26 +117,82 @@ public abstract  class OrderClearingBaseActivity extends BaseActivity {
         initData();
     }
 
-    @OnClick({R.id.btn_compute, R.id.btn_trace})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_compute:
-                break;
-            case R.id.btn_trace:
-                startActivity(TrackQueryActivity.newIntent(this));
-                break;
-        }
-    }
-
     @OnClick(R.id.img_back)
     public void onViewClicked() {
         finish();
     }
 
 
-    abstract  protected <T extends BaseOrder> T queryOrderDetails(BaseOrder order)  ;
+    abstract protected <T extends BaseOrder> T queryOrderDetails(BaseOrder order);
 
-    protected void  submitOrder(){
+    @OnClick({R.id.btn_compute, R.id.btn_trace})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_compute:
+                toCompute() ;
+                break;
+            case R.id.btn_trace:
+                getTrace() ;
+                break;
+        }
+    }
 
+    private void toCompute(){
+        if(mBaseOrder == null){
+            return ;
+        }
+        String  firstCost  =  mEdtSettlementFirstCost.getEditableText().toString()   ;
+        String  secondCost =  mEdtSettlementSecondCost.getEditableText().toString()  ;
+        if(TextUtils.isEmpty(firstCost) && TextUtils.isEmpty(secondCost)){
+            showToast("请选择");
+            return ;
+        }
+        OrderSubmitInfo orderSubmitInfo = new OrderSubmitInfo() ;
+        orderSubmitInfo.setOrderId(mBaseOrder.getOrderId())    ;
+        List<Amount> amountList = new ArrayList<>(2) ;
+        if(!TextUtils.isEmpty(firstCost)){
+            int  fCost =  Integer.parseInt(firstCost) ;
+            int  fType =  getAmountType(mSpnSettlementFirst) ;
+            Amount amount = new Amount(fType , fCost) ;
+            amountList.add(amount) ;
+        }
+        if(!TextUtils.isEmpty(secondCost)){
+            int  sCost =  Integer.parseInt(secondCost) ;
+            int  sType =  getAmountType(mSpnSettlementSecond) ;
+            Amount amount = new Amount(sType , sCost) ;
+            amountList.add(amount) ;
+        }
+        mOrderService.submit(orderSubmitInfo);
+    }
+
+    private void getTrace() {
+        if(mBaseOrder == null){
+            return ;
+        }
+        long startTime = mBaseOrder.getActualBoardingTripNode().getTime();
+        long endTime = mBaseOrder.getActualDropOffTripNode().getTime();
+        startActivity(TrackQueryActivity.newIntent(this, startTime, endTime));
+    }
+
+
+    private int getAmountType(Spinner spinner){
+        String typeStr = (String) spinner.getSelectedItem();
+        int   acountType = Amount.AMOUNT_TYPE_CRASH ;
+        switch (typeStr){
+            case "A":
+                acountType = Amount.AMOUNT_TYPE_CRASH ;
+                break ;
+            case "B":
+                acountType = Amount.AMOUNT_TYPE_MONTHLY_TICKET ;
+                break ;
+            case "C"  :
+                acountType = Amount.AMOUNT_TYPE_MONTHLY_ACCOUNTING ;
+                break ;
+            default:
+                break ;
+        }
+        return acountType ;
     }
 }
+
+

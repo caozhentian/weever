@@ -6,11 +6,13 @@ import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.DailyRentaOrder;
 import cn.people.weever.model.FixTimeOrder;
 import cn.people.weever.model.HalfDayRentalOrder;
+import cn.people.weever.model.OrderSubmitInfo;
 import cn.people.weever.model.QueryModel;
 import cn.people.weever.model.TransferOrder;
 import cn.people.weever.net.BaseCallback;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
+import cn.people.weever.net.RequestBodyCreator;
 import cn.people.weever.net.RetrofitFactory;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -32,19 +34,19 @@ public class OrderRespository {
         Call<BaseModel<List<BaseOrder>>> call = mOrderApiService.list( status , queryModel.getPage() , queryModel.getPageSize()) ;
         call.enqueue(new BaseCallback<List<BaseOrder>>(OrderApiService.TO_ORDER_LIST_NET_REQUST));
     }
-   
+
+
+    public void submit(OrderSubmitInfo orderSubmitInfo){
+        Call<BaseModel<Object>> call = mOrderApiService.submit(RequestBodyCreator.CreateRequestBodyJSON(orderSubmitInfo)) ;
+        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_SUBMIT_NET_REQUST)) ;
+    }
     // 取消订单
     public void cancel(String orderId ,String reason ){
 //        String sid = "" ;
 //        Call<BaseModel<Object>> call = mOrderApiService.cancel(sid ,orderId ,reason  ) ;
 //        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_CANCEL));
     }
-    // 确认收货
-    public void confirmReceipt(){
-//        String sid = "" ;
-//        Call<BaseModel<Object>> call = mOrderApiService.confirmReceipt(sid ,"" ) ;
-//        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_SUBMIT));
-    }
+
     // 订单详情
     public void getDetails(String id){
 //        String sid = "" ;

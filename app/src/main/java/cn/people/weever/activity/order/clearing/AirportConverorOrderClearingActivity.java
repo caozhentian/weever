@@ -6,7 +6,7 @@ import cn.people.weever.model.BaseOrder;
  * Created by Administrator on 2017/6/9.
  */
 
-public class Airport_Converor_OrderClearingActivity extends OrderClearingBaseActivity {
+public class AirportConverorOrderClearingActivity extends OrderClearingBaseActivity {
 
 
     @Override

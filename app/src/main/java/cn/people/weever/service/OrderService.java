@@ -3,6 +3,7 @@ package cn.people.weever.service;
 import android.text.TextUtils;
 
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.OrderSubmitInfo;
 import cn.people.weever.model.QueryModel;
 import cn.people.weever.respositoty.OrderRespository;
 
@@ -31,12 +32,12 @@ public class OrderService {
     }
 
  
-    //  确认收货
-    public void confirmReceipt(BaseOrder order){
-        if(order == null){
+    //
+    public void submit(OrderSubmitInfo orderSubmitInfo){
+        if(orderSubmitInfo == null){
             return ;
         }
-        mOrderRespository.confirmReceipt();
+        mOrderRespository.submit(orderSubmitInfo);
     }
     // 订单详情
     public void getDetails(String id){

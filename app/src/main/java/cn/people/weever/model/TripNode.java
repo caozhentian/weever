@@ -2,8 +2,6 @@ package cn.people.weever.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import cn.people.weever.model.Address;
-
 /**行程节点： 时间和 地点信息
  * Created by  on 2017/6/2.
  */

@@ -83,7 +83,7 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/src"
+                            android:id="@+id/tv_src"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="right|center"
@@ -111,7 +111,7 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/desc"
+                            android:id="@+id/tv_desc"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
@@ -136,6 +136,7 @@
                     android:text="半日租费用"/>
 
                 <TextView
+                    android:id="@+id/tv_half_day_cost"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -162,7 +163,7 @@
                     android:text="日租费用"/>
 
                 <TextView
-                    android:id="@+id/editText"
+                    android:id="@+id/tv_day_cost"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -189,6 +190,7 @@
                     android:text="接送机费用"/>
 
                 <TextView
+                    android:id="@+id/tv_transfer_cost"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -223,6 +225,7 @@
                         android:textSize="20sp"/>/>
 
                     <TextView
+                        android:id="@+id/tv_member"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="left|center"
@@ -237,7 +240,6 @@
                     android:gravity="center">
 
                     <TextView
-                        android:id="@+id/textView6"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="@dimen/dim10"
@@ -247,6 +249,7 @@
                         android:textSize="20sp"/>/>
 
                     <TextView
+                        android:id="@+id/tv_pre_discount"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="left|center"
@@ -271,6 +274,7 @@
                         android:textSize="20sp"/>/>
 
                     <TextView
+                        android:id="@+id/tv_post_discount"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="left|center"
@@ -294,6 +298,7 @@
                         android:textSize="20sp"/>/>
 
                     <TextView
+                        android:id="@+id/tv_percent_discount"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="left|center"
@@ -323,6 +328,7 @@
                         android:textSize="18sp"/>
 
                     <TextView
+                        android:id="@+id/tv_start_up_cost"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -349,6 +355,7 @@
                         android:textSize="18sp"/>
 
                     <TextView
+                        android:id="@+id/tv_distance_cost"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -368,6 +375,7 @@
                         android:text="乘车时间（35Minute）"/>
 
                     <TextView
+                        android:id="@+id/tv_ride_time_cost"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -394,6 +402,7 @@
                         android:text="等待时间（5Minute）"/>
 
                     <TextView
+                        android:id="@+id/tv_wait_time_cost"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -410,7 +419,7 @@
 
             </LinearLayout>
 
-            <!-- 计价-->
+
             <include layout="@layout/inc_line"></include>
 
             <LinearLayout
@@ -432,6 +441,7 @@
                     android:layout_weight="1"
                     android:entries="@array/settlement"/>
                 <EditText
+                    android:id="@+id/edt_settlement_first_cost"
                     android:layout_width="@dimen/dim96"
                     android:layout_height="@dimen/dim48"
                     android:gravity="center"
@@ -471,6 +481,7 @@
                     android:layout_weight="1"
                     android:entries="@array/settlement"/>
                 <EditText
+                    android:id="@+id/edt_settlement_second_cost"
                     android:layout_width="@dimen/dim96"
                     android:layout_height="@dimen/dim48"
                     android:gravity="center"

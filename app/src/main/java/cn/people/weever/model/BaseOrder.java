@@ -60,7 +60,12 @@ public class BaseOrder extends WeeverBean {
     @SerializedName("actualDropOffTripNode")
     protected TripNode mActualDropOffTripNode       ;
 
-
+    @SerializedName("preDiscount")
+    private   int mPreDiscount         ;
+    @SerializedName("postDiscount")
+    private   int mPostDiscount        ;
+    @SerializedName("percentDiscount")
+    private   String mPercentDiscount  ;
 	/*
 	实际乘车时间 6小时
 	*/
@@ -74,12 +79,12 @@ public class BaseOrder extends WeeverBean {
 
 	//实际等待时间 30分钟
     @SerializedName("waitTime")
-	protected String mWaitTime              ;
+	protected String mActualWaitTime              ;
 	/**
      实际等待时间费用
 	*/
     @SerializedName("waitTimeCost")
-    protected int mWaitTimeCost           ;
+    protected int mActualWaitTimeCost           ;
 
 	//实际总里程
     @SerializedName("actualMileage")
@@ -186,20 +191,20 @@ public class BaseOrder extends WeeverBean {
         mActualRideTimeCost = actualRideTimeCost;
     }
 
-    public String getWaitTime() {
-        return mWaitTime;
+    public String getActualWaitTime() {
+        return mActualWaitTime;
     }
 
-    public void setWaitTime(String waitTime) {
-        mWaitTime = waitTime;
+    public void setActualWaitTime(String actualWaitTime) {
+        mActualWaitTime = actualWaitTime;
     }
 
-    public int getWaitTimeCost() {
-        return mWaitTimeCost;
+    public int getActualWaitTimeCost() {
+        return mActualWaitTimeCost;
     }
 
-    public void setWaitTimeCost(int waitTimeCost) {
-        mWaitTimeCost = waitTimeCost;
+    public void setActualWaitTimeCost(int actualWaitTimeCost) {
+        mActualWaitTimeCost = actualWaitTimeCost;
     }
 
     public String getActualMileage() {
@@ -216,5 +221,29 @@ public class BaseOrder extends WeeverBean {
 
     public void setActualMileageCost(int actualMileageCost) {
         mActualMileageCost = actualMileageCost;
+    }
+
+    public int getPreDiscount() {
+        return mPreDiscount;
+    }
+
+    public void setPreDiscount(int preDiscount) {
+        mPreDiscount = preDiscount;
+    }
+
+    public int getPostDiscount() {
+        return mPostDiscount;
+    }
+
+    public void setPostDiscount(int postDiscount) {
+        mPostDiscount = postDiscount;
+    }
+
+    public String getPercentDiscount() {
+        return mPercentDiscount;
+    }
+
+    public void setPercentDiscount(String percentDiscount) {
+        mPercentDiscount = percentDiscount;
     }
 }

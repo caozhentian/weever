@@ -18,6 +18,11 @@ public class Amount {
     //金额
     private int mValue  ;
 
+    public Amount(int type, int value) {
+        mType = type;
+        mValue = value;
+    }
+
     public static int getAmountTypeCrash() {
         return AMOUNT_TYPE_CRASH;
     }
