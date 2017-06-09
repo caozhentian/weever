@@ -16,6 +16,10 @@ import cn.people.weever.activity.login.LoginActivity;
 import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.ManifestUtil;
+<<<<<<< HEAD
+=======
+import cn.people.weever.dialog.CustomProgressDialog;
+>>>>>>> 60d71813b2bfbb0cac026bd2466c805ab0c286a1
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.model.VersionUpdating;

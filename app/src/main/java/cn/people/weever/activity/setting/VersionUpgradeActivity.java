@@ -9,7 +9,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import cn.people.weever.R;
+<<<<<<< HEAD
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
+=======
+import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.activity.SubcribeCreateDestroyActivity;
+import cn.people.weever.activity.order.MyOrdersActivity;
+>>>>>>> 60d71813b2bfbb0cac026bd2466c805ab0c286a1
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.ManifestUtil;
 import cn.people.weever.model.VersionUpdating;
