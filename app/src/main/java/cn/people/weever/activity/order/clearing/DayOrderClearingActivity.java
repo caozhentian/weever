@@ -1,4 +1,4 @@
-package cn.people.weever.activity.order.Clearing;
+package cn.people.weever.activity.order.clearing;
 
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.DailyRentaOrder;

@@ -2,28 +2,20 @@ package cn.people.weever.activity.setting;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-
 import cn.people.weever.R;
-import cn.people.weever.activity.BaseActivity;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.activity.login.LoginActivity;
-import cn.people.weever.activity.order.MyOrdersActivity;
 import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.ManifestUtil;
-import cn.people.weever.dialog.CustomProgressDialog;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.model.VersionUpdating;

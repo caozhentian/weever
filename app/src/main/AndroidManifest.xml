@@ -105,7 +105,7 @@
             android:name=".activity.poi.PoiSearchActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.order.MyOrdersActivity"
+            android:name=".activity.order.list.MyOrdersActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <!-- <activity -->
         <!-- android:name=".activity.PoiSearchActivity" -->
@@ -125,7 +125,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activity.order.Clearing.OrderClearingBaseActivity"
+            android:name=".activity.order.clearing.OrderClearingBaseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
@@ -244,7 +244,7 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="af0f2185725cbbbed952eeab"/> <!-- </>值来自开发者平台取得的AppKey -->
-        <activity android:name=".activity.order.OrderDetailsActivity"
+        <activity android:name=".activity.order.detail.OrderDetailsBaseActivity"
                   android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

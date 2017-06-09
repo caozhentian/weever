@@ -1,9 +1,8 @@
-package cn.people.weever.activity.order;
+package cn.people.weever.activity.order.list;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;

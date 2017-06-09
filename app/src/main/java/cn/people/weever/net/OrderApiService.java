@@ -26,26 +26,28 @@ public interface OrderApiService {
     public static final int TO_ORDER_SETTLEMENT_NET_REQUST         =             403           ;
     public static final int TO_ORDER_SUBMIT_NET_REQUST              =             404           ;
 
-    public static final int TO_ORDER_LIST_ALL_NET_REQUST                 =             410           ;
+    public static final int TO_ORDER_LIST_NET_REQUST                          =             410           ;
+    public static final int TO_ORDER_LIST_ALL_NET_REQUST                          =             410           ;
     public static final int TO_ORDER_LIST_PENDING_APPOINTMENT_NET_REQUST        =             412           ;
     public static final int TO_ORDER_LIST_PENDING_EXECUTION_NET_REQUST          =             413           ;
-    public static final int TO_ORDER_LIST_CANCELED_NET_REQUST              =             414          ;
+    public static final int TO_ORDER_LIST_CANCELED_NET_REQUST                     =             414          ;
     public static final int TO_ORDER_LIST_PENDING_SETTLEMENT_NET_REQUST          =            415           ;
+    public static final int TO_ORDER_LIST_MAX_VALUE_NET_REQUST                          =             419           ;
 
 
     public static final int TO_ORDER_TYPE_DAY_DETAILS_NET_REQUST             =   420                      ;
     public static final int TO_ORDER_TYPE_DAYHALF_DETAILS_NET_REQUST        =   421                      ;
     public static final int TO_ORDER_TYPE_TRANSFER_DETAILS_NET_REQUST        =  422                      ;
     public static final int TO_ORDER_TYPE_FixTime_DETAILS_NET_REQUST        =   423                      ;
+
     /**
      *查询订单
-     * @param token
-     * @param type
+     * @param status
      * @return
      */
     @FormUrlEncoded
     @POST("order/list")
-    Call<BaseModel<List<BaseOrder>>> list(@Field("token") String token , @Field("type")int type) ;
+    Call<BaseModel<List<BaseOrder>>> list( @Field("status")int status ,@Field("page")int page , @Field("pageSize")int pageSize ) ;
 
 
     /**

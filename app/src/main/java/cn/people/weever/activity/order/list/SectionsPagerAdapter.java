@@ -1,4 +1,4 @@
-package cn.people.weever.activity.order;
+package cn.people.weever.activity.order.list;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.Collections;
 import java.util.List;
+
+import cn.people.weever.net.OrderApiService;
 
 /**
  * Created by Administrator on 2017/5/9.
@@ -24,7 +26,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(position + 1);
+        return PlaceholderFragment.newInstance(position + 1 ,getOrderStaus(position));
     }
 
     @Override
@@ -38,5 +40,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             return mTitles.get(position) ;
         }
         return null;
+    }
+
+    private int getOrderStaus(int position){
+        return OrderApiService.TO_ORDER_LIST_ALL_NET_REQUST  + position;
     }
 }

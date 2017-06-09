@@ -1,4 +1,4 @@
-package cn.people.weever.activity.order;
+package cn.people.weever.activity.order.list;
 
 import android.content.Context;
 import android.content.Intent;

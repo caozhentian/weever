@@ -1,19 +1,15 @@
 package cn.people.weever.activity.setting;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import cn.people.weever.R;
-import cn.people.weever.activity.BaseActivity;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
-import cn.people.weever.activity.order.MyOrdersActivity;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.ManifestUtil;
 import cn.people.weever.model.VersionUpdating;

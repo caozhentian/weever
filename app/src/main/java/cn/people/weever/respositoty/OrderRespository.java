@@ -6,6 +6,7 @@ import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.DailyRentaOrder;
 import cn.people.weever.model.FixTimeOrder;
 import cn.people.weever.model.HalfDayRentalOrder;
+import cn.people.weever.model.QueryModel;
 import cn.people.weever.model.TransferOrder;
 import cn.people.weever.net.BaseCallback;
 import cn.people.weever.net.BaseModel;
@@ -27,9 +28,9 @@ public class OrderRespository {
     }
 
     // 订单列表
-    public void list(int type){
-        Call<BaseModel<List<BaseOrder>>> call = mOrderApiService.list("" ,type ) ;
-        call.enqueue(new BaseCallback<List<BaseOrder>>(OrderApiService.TO_ORDER_LIST_ALL_NET_REQUST));
+    public void list(int status, QueryModel queryModel ){
+        Call<BaseModel<List<BaseOrder>>> call = mOrderApiService.list( status , queryModel.getPage() , queryModel.getPageSize()) ;
+        call.enqueue(new BaseCallback<List<BaseOrder>>(OrderApiService.TO_ORDER_LIST_NET_REQUST));
     }
    
     // 取消订单

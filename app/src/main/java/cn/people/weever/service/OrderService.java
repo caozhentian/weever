@@ -3,6 +3,7 @@ package cn.people.weever.service;
 import android.text.TextUtils;
 
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.QueryModel;
 import cn.people.weever.respositoty.OrderRespository;
 
 /**订单的业务逻辑
@@ -17,8 +18,8 @@ public class OrderService {
         mOrderRespository = new OrderRespository() ;
     }
 
-    public void list(int type){
-        mOrderRespository.list(type);
+    public void list(int status , QueryModel queryModel){
+        mOrderRespository.list(status,queryModel);
     }
     
     // 取消订单

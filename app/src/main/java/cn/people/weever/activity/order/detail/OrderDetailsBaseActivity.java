@@ -1,4 +1,4 @@
-package cn.people.weever.activity.order;
+package cn.people.weever.activity.order.detail;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,27 +11,33 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.model.BaseOrder;
 
-public class OrderDetailsActivity extends BaseActivity {
+public class OrderDetailsBaseActivity extends BaseActivity {
+
+    private static final String ARG_ORDER_BASE = "order_base" ;
 
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.img_back)
     ImageView mImgBack;
 
-    public static final Intent newIntent(Context context) {
-        Intent intent = new Intent(context, OrderDetailsActivity.class);
-        return intent;
+    private BaseOrder mBaseOrder ;
+
+    public static final Intent newIntent(Context context , BaseOrder baseOrder) {
+        Intent intent = new Intent(context, OrderDetailsBaseActivity.class)  ;
+        intent.putExtra(ARG_ORDER_BASE , baseOrder)                     ;
+        return intent ;
     }
 
     @Override
     public void initData() {
-
+        mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE) ;
     }
 
     @Override
     public void initView() {
-        mTvTitle.setText("日租");
+        mTvTitle.setText("");
     }
 
     @Override

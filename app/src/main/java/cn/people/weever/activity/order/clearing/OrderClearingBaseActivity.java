@@ -1,4 +1,4 @@
-package cn.people.weever.activity.order.Clearing;
+package cn.people.weever.activity.order.clearing;
 
 import android.content.Context;
 import android.content.Intent;
