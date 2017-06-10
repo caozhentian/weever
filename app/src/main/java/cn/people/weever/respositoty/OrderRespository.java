@@ -36,6 +36,10 @@ public class OrderRespository {
         call.enqueue(new BaseCallback<List<BaseOrder>>(OrderApiService.TO_ORDER_LIST_NET_REQUST));
     }
 
+    /**
+     * 出发 计费 等待 再出发
+     * @param routeOperateEvent
+     */
     public void routeOperateOrder(RouteOperateEvent routeOperateEvent){
         Call<BaseModel<Object>> call = mOrderApiService.routeOperateOrder(RequestBodyCreator.CreateRequestBodyJSON(routeOperateEvent)) ;
         call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST)) ;
@@ -46,18 +50,11 @@ public class OrderRespository {
         call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_SUBMIT_NET_REQUST)) ;
     }
     // 取消订单
-    public void cancel(String orderId ,String reason ){
+//    public void cancel(String orderId ,String reason ){
 //        String sid = "" ;
 //        Call<BaseModel<Object>> call = mOrderApiService.cancel(sid ,orderId ,reason  ) ;
 //        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_CANCEL));
-    }
-
-    // 订单详情
-    public void getDetails(String id){
-//        String sid = "" ;
-//        Call<BaseModel<BaseOrder>> call = mOrderApiService.getDetails(sid ,id) ;
-//        call.enqueue(new BaseCallback<BaseOrder>(OrderApiService.TO_ORDER_DETAILS));
-    }
+//    }
 
     // 订单详情
     public void getDetails(BaseOrder baseOrder){

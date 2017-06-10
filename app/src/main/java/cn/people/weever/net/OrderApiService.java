@@ -66,9 +66,15 @@ public interface OrderApiService {
      * @param id
      * @return
      */
+//    @FormUrlEncoded
+//    @POST("order/cancel")
+//    Call<BaseModel<Object>> cancel( @Field("order_id") String id ) ;
+
+    //接单
     @FormUrlEncoded
-    @POST("/app/?url=/order/cancel")
-    Call<BaseModel<Object>> cancel( @Field("order_id") String id ) ;
+    @POST("order/take")
+    Call<BaseModel<Object>> takeOrder( @Field("order_id") String id ) ;
+
 
     @FormUrlEncoded
     @POST("order/getDailyRentaOrderInfo")
