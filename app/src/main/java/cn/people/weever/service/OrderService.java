@@ -24,12 +24,12 @@ public class OrderService {
     }
     
     // 取消订单
-    public void cancel(String orderId ,String reason ){
-        if(TextUtils.isEmpty(orderId) || TextUtils.isEmpty(reason)){
-            return ;
-        }
-        mOrderRespository.cancel(orderId , reason);
-    }
+//    public void cancel(String orderId ,String reason ){
+//        if(TextUtils.isEmpty(orderId) || TextUtils.isEmpty(reason)){
+//            return ;
+//        }
+//        mOrderRespository.cancel(orderId , reason);
+//    }
 
  
     //
@@ -40,12 +40,12 @@ public class OrderService {
         mOrderRespository.submit(orderSubmitInfo);
     }
     // 订单详情
-    public void getDetails(String id){
-        if(TextUtils.isEmpty(id)){
-            return ;
-        }
-        mOrderRespository.getDetails( id ) ;
-    }
+//    public void getDetails(String id){
+//        if(TextUtils.isEmpty(id)){
+//            return ;
+//        }
+//        mOrderRespository.getDetails( id ) ;
+//    }
 
     public void getDetails(BaseOrder baseOrder){
         mOrderRespository.getDetails( baseOrder ) ;

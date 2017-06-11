@@ -222,7 +222,7 @@
                         android:layout_weight="1"
                         android:gravity="right|center"
                         android:text="会员编号"
-                        android:textSize="20sp"/>/>
+                        android:textSize="20sp"/>
 
                     <TextView
                         android:id="@+id/tv_member"
@@ -339,13 +339,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dim48">
 
-                    <TextView
-                        android:layout_width="0dp"
+                    <LinearLayout
                         android:layout_height="match_parent"
-                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_weight="2">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="left|center"
-                        android:text="公里数（50公里）"/>
-
+                        android:text="公里数"/>
+                        <TextView
+                            android:id="@+id/tv_distance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="left|center"
+                            android:text="（50公里）"/>
+                    </LinearLayout>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -366,14 +375,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dim48">
 
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="0dp"
+                    <LinearLayout
                         android:layout_height="match_parent"
-                        android:layout_weight="2"
+                        android:layout_width="0dp"
+                        android:layout_weight="2">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="left|center"
-                        android:text="乘车时间（35Minute）"/>
-
+                        android:text="乘车时间"/>
+                        <TextView
+                            android:id="@+id/tv_ride_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="left|center"
+                            android:text="（35Minute）"/>
+                    </LinearLayout>
                     <TextView
                         android:id="@+id/tv_ride_time_cost"
                         android:layout_width="0dp"
@@ -394,13 +411,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dim48">
 
+                    <LinearLayout
+                        android:layout_height="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="2">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:gravity="left|center"
-                        android:text="等待时间（5Minute）"/>
-
+                        android:text="等待时间"/>
+                        <TextView
+                            android:id="@+id/tv_wait_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="left|center"
+                            android:text="（5Minute)"/>
+                    </LinearLayout>
                     <TextView
                         android:id="@+id/tv_wait_time_cost"
                         android:layout_width="0dp"
