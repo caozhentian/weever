@@ -50,4 +50,8 @@ public class OrderService {
     public void getDetails(BaseOrder baseOrder){
         mOrderRespository.getDetails( baseOrder ) ;
     }
+
+    public void takeOrder(BaseOrder baseOrder){
+        mOrderRespository.takeOrder(baseOrder);
+    }
 }

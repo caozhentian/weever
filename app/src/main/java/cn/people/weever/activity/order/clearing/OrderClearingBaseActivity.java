@@ -95,7 +95,7 @@ public  class OrderClearingBaseActivity extends BaseActivity {
         mTvPreDiscount.setText(mBaseOrder.getPreDiscount() + "");
         mTvPostDiscount.setText(mBaseOrder.getPostDiscount() + "");
         mTvPercentDiscount.setText(mBaseOrder.getPercentDiscount() );
-        //mTvStartUpCost.setText(baseOrder.get);
+        mTvStartUpCost.setText(mBaseOrder.getStartingFare());
         mTvDistanceCost.setText(mBaseOrder.getActualMileageCost());
         mTvRideTimeCost.setText(mBaseOrder.getActualRideTimeCost());
         mTvWaitTimeCost.setText(mBaseOrder.getActualWaitTimeCost());

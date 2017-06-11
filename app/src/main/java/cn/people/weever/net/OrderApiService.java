@@ -21,15 +21,17 @@ public interface OrderApiService {
 
     //订单
     public static final int TO_ORDER_ROUTE_OPERATE_NET_REQUST            =       400          ;
-    public static final int TO_ORDER_SUBMIT_NET_REQUST              =             404           ;
+    public static final int TO_ORDER_SUBMIT_NET_REQUST              =             404          ;
+    public static final int TO_ORDER_TAKE_NET_REQUST              =             405            ;
 
     public static final int TO_ORDER_LIST_NET_REQUST                          =             410           ;
     public static final int TO_ORDER_LIST_ALL_NET_REQUST                          =             410           ;
-    public static final int TO_ORDER_LIST_PENDING_APPOINTMENT_NET_REQUST        =             412           ;
-    public static final int TO_ORDER_LIST_PENDING_EXECUTION_NET_REQUST          =             413           ;
-    public static final int TO_ORDER_LIST_CANCELED_NET_REQUST                     =             414          ;
-    public static final int TO_ORDER_LIST_PENDING_SETTLEMENT_NET_REQUST          =            415           ;
-    public static final int TO_ORDER_LIST_MAX_VALUE_NET_REQUST                          =             419           ;
+
+//    public static final int TO_ORDER_LIST_PENDING_APPOINTMENT_NET_REQUST        =             412           ;
+//    public static final int TO_ORDER_LIST_PENDING_EXECUTION_NET_REQUST          =             413           ;
+//    public static final int TO_ORDER_LIST_CANCELED_NET_REQUST                     =             414          ;
+//    public static final int TO_ORDER_LIST_PENDING_SETTLEMENT_NET_REQUST          =            415           ;
+//    public static final int TO_ORDER_LIST_MAX_VALUE_NET_REQUST                          =             419           ;
 
 
     public static final int TO_ORDER_TYPE_DAY_DETAILS_NET_REQUST             =   420                      ;

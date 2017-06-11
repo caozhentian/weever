@@ -100,6 +100,7 @@ public class PlaceholderFragment extends BaseFragment {
             public void onFooterRefresh(PullToRefreshView view) {
                 mQueryModel.addPage(1);
                 queryOrderList() ;
+                mPullRefresh_Lv.onFooterRefreshComplete();
             }
         });
         mPullRefresh_Lv.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
@@ -107,6 +108,7 @@ public class PlaceholderFragment extends BaseFragment {
             public void onHeaderRefresh(PullToRefreshView view) {
                 mQueryModel.resetPage();
                 queryOrderList() ;
+                mPullRefresh_Lv.onHeaderRefreshComplete();
             }
         });
         queryOrderList() ;
