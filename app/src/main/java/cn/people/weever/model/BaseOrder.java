@@ -10,10 +10,10 @@ public class BaseOrder extends WeeverBean {
 
     //订单状态 常量定义
     public static final int  ORDER_STAUS_ALL           = 0x00 ;  //全部状态
-    public static final int  ORDER_STAUS_APPOINTMENT  = 0x01 ;  //预约
-    public static final int  ORDER_STAUS_ORDER         = 0x02;   //接单
-    public static final int  ORDER_STAUS_CANCEL        = 0x03 ;  //取消
-    public static final int  ORDER_STAUS_PAY            = 0x04 ;  //待付款
+    public static final int  ORDER_STAUS_APPOINTMENT  = 0x01 ;  //预约中
+    public static final int  ORDER_STAUS_ORDER         = 0x02;   //待执行订单
+    public static final int  ORDER_STAUS_PAY            = 0x03 ;  //待付款
+    public static final int  ORDER_STAUS_CANCEL        = 0x04 ;  //取消
     public static final int  ORDER_STAUS_FINISH         = 0x05 ; //已完成
 
     //订单类型 常量定义
@@ -66,6 +66,10 @@ public class BaseOrder extends WeeverBean {
     private   int mPostDiscount        ;
     @SerializedName("percentDiscount")
     private   String mPercentDiscount  ;
+
+    //起步价
+    @SerializedName("startingFare")
+    private String mStartingFare ;
 	/*
 	实际乘车时间 6小时
 	*/
@@ -245,5 +249,13 @@ public class BaseOrder extends WeeverBean {
 
     public void setPercentDiscount(String percentDiscount) {
         mPercentDiscount = percentDiscount;
+    }
+
+    public String getStartingFare() {
+        return mStartingFare;
+    }
+
+    public void setStartingFare(String startingFare) {
+        mStartingFare = startingFare;
     }
 }

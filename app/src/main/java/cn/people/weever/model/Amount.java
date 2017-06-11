@@ -1,5 +1,7 @@
 package cn.people.weever.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Administrator on 2017/6/2.
  */
@@ -13,9 +15,11 @@ public class Amount {
     //记账
     public static final int AMOUNT_TYPE_MONTHLY_ACCOUNTING = 0x03;
     //类型  现金 月票 记账
+    @SerializedName("type")
     private int mType   ;
 
     //金额
+    @SerializedName("value")
     private int mValue  ;
 
     public Amount(int type, int value) {

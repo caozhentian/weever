@@ -1,5 +1,7 @@
 package cn.people.weever.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -10,16 +12,17 @@ import java.util.List;
 public class OrderSubmitInfo {
 
     //订单ID
-    private String orderId ;
-
+    @SerializedName("orderId")
+    private String mOrderId ;
+    @SerializedName("amountList")
     private List<Amount> mAmountList ;
 
     public String getOrderId() {
-        return orderId;
+        return mOrderId;
     }
 
     public void setOrderId(String orderId) {
-        this.orderId = orderId;
+        mOrderId = orderId;
     }
 
     public List<Amount> getAmountList() {
