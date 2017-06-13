@@ -1,5 +1,7 @@
 package cn.people.weever.service;
 
+import cn.people.weever.MockData.MockOrderService;
+import cn.people.weever.MockData.MockService;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.OrderSubmitInfo;
 import cn.people.weever.model.QueryModel;
@@ -13,12 +15,16 @@ import cn.people.weever.respositoty.OrderRespository;
 public class OrderService {
 
     private OrderRespository mOrderRespository ;
-
+    MockOrderService mockOrderService = new MockOrderService() ;
     public OrderService() {
         mOrderRespository = new OrderRespository() ;
     }
 
     public void list(int status , QueryModel queryModel){
+        if(MockService.DEBUG_MOCK){
+            mockOrderService.getJsonData();
+            return ;
+        }
         mOrderRespository.list(status,queryModel);
     }
     
@@ -47,6 +53,10 @@ public class OrderService {
 //    }
 
     public void getDetails(BaseOrder baseOrder){
+        if(MockService.DEBUG_MOCK){
+            mockOrderService.getDetails(baseOrder);
+            return ;
+        }
         mOrderRespository.getDetails( baseOrder ) ;
     }
 

@@ -17,6 +17,8 @@ public class RouteOperateEvent {
 
     private int        mOperateType    ;
 
+    private String     mOrderId           ;
+
     private TripNode    mTripNode       ;
 
 
@@ -35,5 +37,13 @@ public class RouteOperateEvent {
 
     public void setTripNode(TripNode tripNode) {
         mTripNode = tripNode;
+    }
+
+    public String getOrderId() {
+        return mOrderId;
+    }
+
+    public void setOrderId(String orderId) {
+        mOrderId = orderId;
     }
 }

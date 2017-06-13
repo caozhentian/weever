@@ -41,8 +41,8 @@ public class OrderRespository {
      * @param routeOperateEvent
      */
     public void routeOperateOrder(RouteOperateEvent routeOperateEvent){
-        Call<BaseModel<Object>> call = mOrderApiService.routeOperateOrder(RequestBodyCreator.CreateRequestBodyJSON(routeOperateEvent)) ;
-        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST)) ;
+        Call<BaseModel<RouteOperateEvent>> call = mOrderApiService.routeOperateOrder(RequestBodyCreator.CreateRequestBodyJSON(routeOperateEvent)) ;
+        call.enqueue(new BaseCallback<RouteOperateEvent>(OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST)) ;
     }
 
     public void submit(OrderSubmitInfo orderSubmitInfo){

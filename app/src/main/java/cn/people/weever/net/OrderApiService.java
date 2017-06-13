@@ -6,6 +6,7 @@ import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.DailyRentaOrder;
 import cn.people.weever.model.FixTimeOrder;
 import cn.people.weever.model.HalfDayRentalOrder;
+import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.model.TransferOrder;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -61,7 +62,7 @@ public interface OrderApiService {
      * @return
      */
     @POST("order/routeOperateOrder")
-    Call<BaseModel<Object>>  routeOperateOrder(@Body RequestBody orderSubmitInfo) ;
+    Call<BaseModel<RouteOperateEvent>>  routeOperateOrder(@Body RequestBody orderSubmitInfo) ;
 
     /**
      * 取消订单

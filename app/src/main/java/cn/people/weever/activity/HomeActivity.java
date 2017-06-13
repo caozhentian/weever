@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -83,12 +84,16 @@ import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.NumberFormat;
 import cn.people.weever.config.FileConfig;
+import cn.people.weever.dialog.ICancelOK;
+import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.Address;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.model.TripNode;
+import cn.people.weever.net.BaseModel;
+import cn.people.weever.net.OrderApiService;
 import cn.people.weever.receiver.PowerReceiver;
 import cn.people.weever.service.OrderService;
 
@@ -185,6 +190,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     private LatLng srcLating ;
     private LatLng destLating ;
 
+    private boolean[] status = new boolean[4] ;
+
     private BaseOrder mBaseOrder ;
     public static final Intent newIntent(Context packageContext, BaseOrder baseOrder){
         Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
@@ -273,6 +280,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         mSearch.setOnGetRoutePlanResultListener(this);
         powerManager =  (PowerManager) getSystemService(Context.POWER_SERVICE);
         mOrderService = new OrderService() ;
+        mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
+        mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
     }
 
     @Override
@@ -374,10 +383,18 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     }
 
 	private void compute(){
-        WeeverApplication.mClient.stopGather(traceListener);
-        startActivity(OrderClearingBaseActivity.newIntent(this , new BaseOrder()));
-        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
-        mOrderService.routeOperateOrder(mRouteOperateEvent);
+        OKCancelDlg.createCancelOKDlg(this, "", new ICancelOK() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void ok() {
+                WeeverApplication.mClient.stopGather(traceListener);
+            }
+        });
+
 	}
 
     private void start(){
@@ -391,18 +408,27 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             showToast("目的地不能为空");
             return ;
         }
-        // 设置起终点信息，对于tranist search 来说，城市名无意义
-        //startNodeStr = "科技六路" ;
-        //endNodeStr   = "金宇蓝苑" ;
-        PlanNode stNode = PlanNode.withLocation(srcLating)   ;
-        PlanNode enNode = PlanNode.withLocation(destLating)  ;
-        mBaiduMap.clear();
-        mSearch.drivingSearch((new DrivingRoutePlanOption())
-                .from(stNode).to(enNode));
-        mLlTop.setVisibility(View.VISIBLE);
-		WeeverApplication.mClient.startGather(traceListener);
-        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE);
-        mOrderService.routeOperateOrder(mRouteOperateEvent);
+        OKCancelDlg.createCancelOKDlg(this, "", new ICancelOK() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void ok() {
+                // 设置起终点信息，对于tranist search 来说，城市名无意义
+                //startNodeStr = "科技六路" ;
+                //endNodeStr   = "金宇蓝苑" ;
+                PlanNode stNode = PlanNode.withLocation(srcLating)   ;
+                PlanNode enNode = PlanNode.withLocation(destLating)  ;
+                mBaiduMap.clear();
+                mSearch.drivingSearch((new DrivingRoutePlanOption())
+                        .from(stNode).to(enNode));
+                mLlTop.setVisibility(View.VISIBLE);
+                WeeverApplication.mClient.startGather(traceListener);
+            }
+        });
+
     }
 
     @OnClick({R.id.edtSrc, R.id.edtDest})
@@ -605,11 +631,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             @Override
             public void onStartTraceCallback(int errorNo, String message) {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.START_TRACE_NETWORK_CONNECT_FAILED <= errorNo) {
-//                    trackApp.isTraceStarted = true;
-//                    SharedPreferences.Editor editor = trackApp.trackConf.edit();
-//                    editor.putBoolean("is_trace_started", true);
-//                    editor.apply();
-//                    setTraceBtnStyle();
                     registerPowerReceiver();
                 }
                 //showToast(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
@@ -619,42 +640,32 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             @Override
             public void onStopTraceCallback(int errorNo, String message) {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.CACHE_TRACK_NOT_UPLOAD == errorNo) {
-//                    trackApp.isTraceStarted = false;
-//                    trackApp.isGatherStarted = false;
-//                    // 停止成功后，直接移除is_trace_started记录（便于区分用户没有停止服务，直接杀死进程的情况）
-//                    SharedPreferences.Editor editor = trackApp.trackConf.edit();
-//                    editor.remove("is_trace_started");
-//                    editor.remove("is_gather_started");
-//                    editor.apply();
-//                    setTraceBtnStyle();
-//                    setGatherBtnStyle();
                     unregisterPowerReceiver();
                 }
-                //showToast( String.format("onStopTraceCallback, errorNo:%d, message:%s ", errorNo, message));
             }
 
             @Override
             public void onStartGatherCallback(int errorNo, String message) {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STARTED == errorNo) {
-//                    trackApp.isGatherStarted = true;
-//                    SharedPreferences.Editor editor = trackApp.trackConf.edit();
-//                    editor.putBoolean("is_gather_started", true);
-//                    editor.apply();
+                    showToast( "轨迹采集开始");
+                    mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE);
+                    mOrderService.routeOperateOrder(mRouteOperateEvent);
                 }
-                //showToast(String.format("onStartGatherCallback, errorNo:%d, message:%s ", errorNo, message));
-                showToast( "轨迹采集开始");
+                else{
+                    showToast( "轨迹采集失败，请重新点击");
+                }
             }
 
             @Override
             public void onStopGatherCallback(int errorNo, String message) {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STOPPED == errorNo) {
-//                    trackApp.isGatherStarted = false;
-//                    SharedPreferences.Editor editor = trackApp.trackConf.edit();
-//                    editor.remove("is_gather_started");
-//                    editor.apply();
+                    showToast( "轨迹采集结束");
+                    mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
+                    mOrderService.routeOperateOrder(mRouteOperateEvent);
                 }
-                //showToast( String.format("onStopGatherCallback, errorNo:%d, message:%s ", errorNo, message));
-                showToast( "轨迹采集结束");
+                else{
+                    showToast( "轨迹采集失败，请重新点击");
+                }
             }
 
             @Override
@@ -682,7 +693,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         if (WeeverApplication.isRegisterPower || powerManager == null) {
             return;
         }
-
         if (null == wakeLock) {
             wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "track upload");
         }
@@ -883,4 +893,15 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         BNaviSettingManager.setNaviSdkParam(bundle);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void processEvent(@Nullable BaseModel<RouteOperateEvent> baseModel){
+        if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST){
+            showToast("请求成功");
+            RouteOperateEvent routeOperateEvent = baseModel.getData() ;
+            if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE){
+              
+                startActivity(OrderClearingBaseActivity.newIntent(HomeActivity.this , new BaseOrder()));
+            }
+        }
+    }
 }
