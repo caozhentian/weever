@@ -3,6 +3,7 @@ package cn.people.weever.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,6 +38,8 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -82,6 +85,7 @@ import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.activity.setting.SettingUpActivity;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.DatetimeUtil;
+import cn.people.weever.common.util.MapUtil;
 import cn.people.weever.common.util.NumberFormat;
 import cn.people.weever.config.FileConfig;
 import cn.people.weever.dialog.ICancelOK;
@@ -261,7 +265,18 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            OKCancelDlg.createCancelOKDlg(this, "确认退出吗?", new ICancelOK() {
+                @Override
+                public void cancel() {
+
+                }
+
+                @Override
+                public void ok() {
+                    finish();
+                }
+            });
+
         }
     }
 
@@ -282,6 +297,16 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         mOrderService = new OrderService() ;
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
         mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
+        //根据订单初始化
+        if(mBaseOrder.getPlanboardingTripNode().getAddress() != null){
+            srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude() ,
+                    mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude() );
+        }
+        if(mBaseOrder.getPlanDropOffTripNode().getAddress() != null){
+            destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude() ,
+                    mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude() );
+        }
+
     }
 
     @Override
@@ -618,7 +643,15 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         trackListener = new OnTrackListener() {
             @Override
             public void onLatestPointCallback(LatestPointResponse response) {
-
+                // 添加路线（轨迹）
+                MapUtil mapUtil = MapUtil.getInstance();
+                LatLng currentLatLng = mapUtil.convertTrace2Map(response.getLatestPoint().getLocation());
+                List<LatLng> latLngs = new ArrayList<>(1) ;
+                latLngs.add(currentLatLng) ;
+                OverlayOptions polylineOptions = new PolylineOptions().width(10)
+                        .color(Color.RED).points(latLngs);
+                //polylineOverlay =
+                mBaiduMap.addOverlay(polylineOptions);
             }};
 
         entityListener = new OnEntityListener() {
@@ -699,7 +732,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         if (null == powerReceiver) {
             powerReceiver = new PowerReceiver(wakeLock);
         }
-
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_ON);
