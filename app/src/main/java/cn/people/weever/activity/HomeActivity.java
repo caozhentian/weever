@@ -296,15 +296,17 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         powerManager =  (PowerManager) getSystemService(Context.POWER_SERVICE);
         mOrderService = new OrderService() ;
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
-        mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
-        //根据订单初始化
-        if(mBaseOrder.getPlanboardingTripNode().getAddress() != null){
-            srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude() ,
-                    mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude() );
-        }
-        if(mBaseOrder.getPlanDropOffTripNode().getAddress() != null){
-            destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude() ,
-                    mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude() );
+        if(mBaseOrder != null) {
+            mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
+            //根据订单初始化
+            if (mBaseOrder.getPlanboardingTripNode().getAddress() != null) {
+                srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude(),
+                        mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude());
+            }
+            if (mBaseOrder.getPlanDropOffTripNode().getAddress() != null) {
+                destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude(),
+                        mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
+            }
         }
 
     }
