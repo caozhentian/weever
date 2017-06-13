@@ -60,26 +60,28 @@ public class OrderDetailsBaseActivity extends BaseActivity {
     Button mBtnStart;
     @BindView(R.id.btn_settlent)
     Button mBtnSettlent;
+    @BindView(R.id.ll_take)
+    LinearLayout mLlTake;
+    @BindView(R.id.ll_start)
+    LinearLayout mLlStart;
+    @BindView(R.id.ll_settlent)
+    LinearLayout mLlSettlent;
 
     private BaseOrder mBaseOrder;
 
-    private OrderService mOrderService ;
+    private OrderService mOrderService;
 
     public static final Intent newIntent(Context context, BaseOrder baseOrder) {
         Intent intent = new Intent(context, DayOrderDetailsActivity.class);
-        if(baseOrder.getType() == BaseOrder.ORDER_TYPE_DAY){
+        if (baseOrder.getType() == BaseOrder.ORDER_TYPE_DAY) {
             intent = new Intent(context, DayOrderDetailsActivity.class);
-        }
-        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF){
+        } else if (baseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF) {
             intent = new Intent(context, DayHalfOrderDetailsActivity.class);
-        }
-        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP){
+        } else if (baseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP) {
             intent = new Intent(context, PickupOrderDetailsActivity.class);
-        }
-        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR){
+        } else if (baseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR) {
             intent = new Intent(context, AirportConverorOrderDetailsActivity.class);
-        }
-        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME){
+        } else if (baseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME) {
             intent = new Intent(context, FixTimeOrderDetailsActivity.class);
         }
         intent.putExtra(ARG_ORDER_BASE, baseOrder);
@@ -88,8 +90,9 @@ public class OrderDetailsBaseActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        mBaseOrder     =  (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE);
-        mOrderService  =  new OrderService() ;
+        mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE);
+        mOrderService = new OrderService();
+        setViewByBaseOrder();
     }
 
     @Override
@@ -97,25 +100,24 @@ public class OrderDetailsBaseActivity extends BaseActivity {
         mTvTitle.setText("");
     }
 
-    private void setViewByBaseOrder(){
+    private void setViewByBaseOrder() {
+        mTvTitle.setText(BaseOrder.getTypeStr(mBaseOrder.getType()));
         mTvName.setText(mBaseOrder.getSubscribePerson());
         mTvPlantStartDate.setText(mBaseOrder.getPlanboardingTripNode().getDateStr());
         mTvPlantStartAddress.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
-        if(mBaseOrder.getActualBoardingTripNode() != null){
+        if (mBaseOrder.getActualBoardingTripNode() != null) {
             mTvActualStartDate.setText(mBaseOrder.getActualBoardingTripNode().getDateStr());
             mTvActualStartAddress.setText(mBaseOrder.getActualBoardingTripNode().getAddress().getPlaceName());
         }
-        mTvExpireDistanceCose.setText(mBaseOrder.getActualMileageCost()+"");
+        mTvExpireDistanceCose.setText(mBaseOrder.getActualMileageCost() + "");
         mTvActualAllCost.setText(mBaseOrder.getPostDiscount() + "");
-        mTvExpireTimeCose.setText(mBaseOrder.getActualWaitTimeCost()+"");
-        if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT){
-            mBtnTake.setVisibility(View.VISIBLE);
-        }
-        else  if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDER){
-            mBtnStart.setVisibility(View.VISIBLE);
-        }
-        else  if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY){
-            mBtnSettlent.setVisibility(View.VISIBLE);
+        mTvExpireTimeCose.setText(mBaseOrder.getActualWaitTimeCost() + "");
+        if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
+            mLlTake.setVisibility(View.VISIBLE);
+        } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDER) {
+            mLlStart.setVisibility(View.VISIBLE);
+        } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY) {
+            mLlSettlent.setVisibility(View.VISIBLE);
         }
     }
 
@@ -137,40 +139,36 @@ public class OrderDetailsBaseActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_take:
-                take() ;
+                take();
                 break;
             case R.id.btn_start:
-                start() ;
+                start();
                 break;
             case R.id.btn_settlent:
-                settlent() ;
+                settlent();
                 break;
         }
     }
 
-    private void take(){
+    private void take() {
         mOrderService.takeOrder(mBaseOrder);
     }
 
-    private void start(){
-        startActivity(HomeActivity.newIntent(this ,mBaseOrder ));
+    private void start() {
+        startActivity(HomeActivity.newIntent(this, mBaseOrder));
     }
 
-    private void settlent(){
-        if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY){
-            startActivity(DayOrderClearingActivity.newIntent(this ,mBaseOrder ));
-        }
-        else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF){
-            startActivity(DayHalfOrderClearingActivity.newIntent(this ,mBaseOrder ));
-        }
-        else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME){
-            startActivity(FixedTimeOrderClearingActivity.newIntent(this ,mBaseOrder ));
-        }
-        else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR){
-            startActivity(AirportConverorOrderClearingActivity.newIntent(this ,mBaseOrder ));
-        }
-        else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP){
-            startActivity(PickupOrderClearingActivity.newIntent(this ,mBaseOrder ));
+    private void settlent() {
+        if (mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY) {
+            startActivity(DayOrderClearingActivity.newIntent(this, mBaseOrder));
+        } else if (mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF) {
+            startActivity(DayHalfOrderClearingActivity.newIntent(this, mBaseOrder));
+        } else if (mBaseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME) {
+            startActivity(FixedTimeOrderClearingActivity.newIntent(this, mBaseOrder));
+        } else if (mBaseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR) {
+            startActivity(AirportConverorOrderClearingActivity.newIntent(this, mBaseOrder));
+        } else if (mBaseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP) {
+            startActivity(PickupOrderClearingActivity.newIntent(this, mBaseOrder));
         }
 
     }

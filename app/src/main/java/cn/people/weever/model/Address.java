@@ -2,11 +2,13 @@ package cn.people.weever.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**地点描述
  * Created by Administrator on 2017/6/2.
  */
 
-public class Address {
+public class Address implements Serializable{
 
     //地点名
     @SerializedName("placeName")

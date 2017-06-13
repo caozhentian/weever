@@ -2,13 +2,15 @@ package cn.people.weever.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import cn.people.weever.common.util.DatetimeUtil;
 
 /**行程节点： 时间和 地点信息
  * Created by  on 2017/6/2.
  */
 
-public class TripNode {
+public class TripNode implements Serializable{
 
     //时间 单位秒
     @SerializedName("time")

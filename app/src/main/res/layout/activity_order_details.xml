@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:text="2017-05-30 12:00"/>
+            android:text=""/>
     </LinearLayout>
 
     <LinearLayout
@@ -78,7 +78,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:text="科技三路"/>
+            android:text=""/>
     </LinearLayout>
     <include layout="@layout/inc_line"></include>
 
@@ -99,7 +99,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:text="2017-05-30 12:00"/>
+            android:text=""/>
     </LinearLayout>
 
     <LinearLayout
@@ -119,7 +119,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:text="科技三路"/>
+            android:text=""/>
     </LinearLayout>
 
     <LinearLayout
@@ -139,7 +139,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:text="科技四路"/>
+            android:text=""/>
     </LinearLayout>
     <include layout="@layout/inc_line"></include>
     <LinearLayout
@@ -159,7 +159,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="left|center"
-            android:text="300元+150元=450元"/>
+            android:text=""/>
     </LinearLayout>
     <include layout="@layout/inc_line"></include>
     <LinearLayout
@@ -195,7 +195,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="left|center"
-                    android:text="60元"/>
+                    android:text=""/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -214,15 +214,17 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="left|center"
-                    android:text="90元"/>
+                    android:text=""/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_take"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dim48"
+        android:visibility="gone"
         android:gravity="bottom">
         <Button
             android:id="@+id/btn_take"
@@ -233,9 +235,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_start"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dim48"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:visibility="gone">
         <Button
             android:id="@+id/btn_start"
             android:layout_width="0dp"
@@ -245,9 +249,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_settlent"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dim48"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:visibility="gone">
         <Button
             android:id="@+id/btn_settlent"
             android:layout_width="0dp"

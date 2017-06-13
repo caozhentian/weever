@@ -80,6 +80,21 @@ public  class OrderClearingBaseActivity extends BaseActivity {
 
     public static final Intent newIntent(Context context, BaseOrder baseOrder) {
         Intent intent = new Intent(context, OrderClearingBaseActivity.class);
+        if(baseOrder.getType() == BaseOrder.ORDER_TYPE_DAY){
+            intent = new Intent(context, DayOrderClearingActivity.class);
+        }
+        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF){
+            intent = new Intent(context, DayHalfOrderClearingActivity.class);
+        }
+        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR){
+            intent = new Intent(context, AirportConverorOrderClearingActivity.class);
+        }
+        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP){
+            intent = new Intent(context, PickupOrderClearingActivity.class);
+        }
+        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME){
+            intent = new Intent(context, FixedTimeOrderClearingActivity.class);
+        }
         intent.putExtra(BaseOrder.ORDER_ID, baseOrder);
         return intent;
     }
@@ -87,6 +102,8 @@ public  class OrderClearingBaseActivity extends BaseActivity {
     @Override
     public void initData() {
         mOrderService = new OrderService() ;
+        mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(BaseOrder.ORDER_ID);
+        setViewByBaseOrder();
     }
 
     @Override

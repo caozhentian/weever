@@ -275,15 +275,15 @@ public class BaseOrder extends WeeverBean {
     public static final String getTypeStr(int type){
        switch (type){
            case ORDER_TYPE_DAY:
-               return "A1" ;
+               return "日租" ;
            case ORDER_TYPE_DAY_HALF:
-               return "A2" ;
+               return "半日租" ;
            case ORDER_TYPE_PICK_UP:
-               return "A3" ;
+               return "接送机" ;
            case ORDER_TYPE_AIRPORT_CONVEYOR:
-               return "A4" ;
+               return "接送机" ;
            case ORDER_TYPE_AIRPORT_FIXED_TIME:
-               return "A5" ;
+               return "固定时间" ;
            default:
                return "" ;
        }
@@ -292,11 +292,11 @@ public class BaseOrder extends WeeverBean {
     public static final String getStatusStr(int status){
         switch (status){
             case ORDER_STAUS_APPOINTMENT:
-                return "A11" ;
+                return "预约中" ;
             case ORDER_STAUS_ORDER:
-                return "A22" ;
+                return "待执行" ;
             case ORDER_STAUS_PAY:
-                return "A33" ;
+                return "待付款" ;
             default:
                 return "" ;
         }

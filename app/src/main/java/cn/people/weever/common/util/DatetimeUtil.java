@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
  * Time: 14:10
  */
 public class DatetimeUtil {
-    public static final String DEFAULT_FORMAT1="yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_FORMAT1="yyyy-MM-dd HH:mm";
     //默认时间格式1 年-月-日 时:分:秒
     public static final String DEFAULT_FORMAT2="yyyy-MM-dd";
     //默认时间格式2 年-月-日

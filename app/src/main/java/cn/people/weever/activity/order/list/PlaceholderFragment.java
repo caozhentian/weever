@@ -83,9 +83,6 @@ public class PlaceholderFragment extends BaseFragment {
         mOrderService = new OrderService() ;
         mQueryModel   = new QueryModel()     ;
         mBaseOrderList = new LinkedList<>() ;
-        mBaseOrderList.add(new BaseOrder()) ;
-        mBaseOrderList.add(new BaseOrder()) ;
-        mBaseOrderList.add(new BaseOrder()) ;
         mOrderAdapter = new OrderAdapter(this.getContext() , mBaseOrderList) ;
         mLv.setAdapter(mOrderAdapter);
         mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -130,7 +127,7 @@ public class PlaceholderFragment extends BaseFragment {
     public void processBaseOrderEvent(@Nullable BaseModel<List<BaseOrder>> baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_LIST_NET_REQUST){
             List<BaseOrder> baseOrderList = baseModel.getData() ;
-            if(mQueryModel.isFirstPage()){
+            if(mQueryModel != null && mQueryModel.isFirstPage()){
                 mBaseOrderList.clear();
             }
             mBaseOrderList.addAll(baseOrderList) ;

@@ -34,10 +34,10 @@ public class MockOrderService extends MockService {
     private List<BaseOrder> getOrders(){
 
         orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY, BaseOrder.ORDER_STAUS_ORDER));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY_HALF,BaseOrder.ORDER_STAUS_ORDER));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_PICK_UP,BaseOrder.ORDER_STAUS_ORDER));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR,BaseOrder.ORDER_STAUS_ORDER));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME,BaseOrder.ORDER_STAUS_ORDER));
+        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY_HALF,BaseOrder.ORDER_STAUS_APPOINTMENT));
+        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_PICK_UP,BaseOrder.ORDER_STAUS_PAY));
+        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR,BaseOrder.ORDER_STAUS_PAY));
+        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME,BaseOrder.ORDER_STAUS_APPOINTMENT));
         return   orders ;
     }
 
@@ -79,7 +79,7 @@ public class MockOrderService extends MockService {
         address.setLatitude(34.17589);
         address.setLongitude(108.879616);
         tripNode.setAddress(address);
-        baseOrder.setPlanboardingTripNode(tripNode);
+        baseOrder.setPlanDropOffTripNode(tripNode);
 
         baseOrder.setPlanTotalTime("30分钟");
 
