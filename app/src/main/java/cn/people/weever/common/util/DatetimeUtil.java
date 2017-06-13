@@ -12,11 +12,11 @@ import java.util.GregorianCalendar;
  * Time: 14:10
  */
 public class DatetimeUtil {
-    private static final String DEFAULT_FORMAT1="yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_FORMAT1="yyyy-MM-dd HH:mm:ss";
     //默认时间格式1 年-月-日 时:分:秒
-    private static final String DEFAULT_FORMAT2="yyyy-MM-dd";
+    public static final String DEFAULT_FORMAT2="yyyy-MM-dd";
     //默认时间格式2 年-月-日
-    private static final String DEFAULT_FORMAT3="HH:mm:ss";
+    public static final String DEFAULT_FORMAT3="HH:mm:ss";
     //默认时间格式3 时:分:秒
     public static final long DAY_TIME_MILLIS = 24 * 60 * 60 * 1000;
     //一天的毫秒数

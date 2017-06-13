@@ -74,18 +74,23 @@ import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.nav.BNDemoGuideActivity;
 import cn.people.weever.activity.nav.BNEventHandler;
-import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.activity.order.clearing.OrderClearingBaseActivity;
+import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.activity.setting.SettingUpActivity;
 import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.NumberFormat;
 import cn.people.weever.config.FileConfig;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
+import cn.people.weever.model.Address;
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.RouteOperateEvent;
+import cn.people.weever.model.TripNode;
 import cn.people.weever.receiver.PowerReceiver;
+import cn.people.weever.service.OrderService;
 
 public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
        ,NavigationView.OnNavigationItemSelectedListener {
@@ -104,6 +109,9 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     BaiduMap mBaiduMap;
     boolean isFirstLoc = true; // 是否首次定位
 
+    private RouteOperateEvent mRouteOperateEvent = new RouteOperateEvent();
+
+    private OrderService mOrderService ;
     /**
      * 轨迹服务监听器
      */
@@ -255,6 +263,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(this);
         powerManager =  (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mOrderService = new OrderService() ;
     }
 
     @Override
@@ -332,10 +341,12 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 start();
                 break;
             case R.id.btnWait:
+                waitting() ;
                 break;
-            case R.id.btnReturn:
-                break;
+//            case R.id.btnReturn:
+//                break;
             case R.id.btnRestart:
+                restart() ;
                 break;
             case R.id.btnCompute:
                 compute() ;
@@ -343,10 +354,23 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         }
     }
 
+    private void waitting(){
+        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE);
+        mOrderService.routeOperateOrder(mRouteOperateEvent);
+    }
+
+    private  void restart(){
+        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE);
+        mOrderService.routeOperateOrder(mRouteOperateEvent);
+    }
+
 	private void compute(){
         WeeverApplication.mClient.stopGather(traceListener);
         startActivity(OrderClearingBaseActivity.newIntent(this , new BaseOrder()));
+        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
+        mOrderService.routeOperateOrder(mRouteOperateEvent);
 	}
+
     private void start(){
         String startNodeStr = mEdtSrc.getText().toString()   ;
         String endNodeStr   = mEdtDest.getText().toString() ;
@@ -368,6 +392,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 .from(stNode).to(enNode));
         mLlTop.setVisibility(View.VISIBLE);
 		WeeverApplication.mClient.startGather(traceListener);
+        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE);
+        mOrderService.routeOperateOrder(mRouteOperateEvent);
     }
 
     @OnClick({R.id.edtSrc, R.id.edtDest})
@@ -484,21 +510,30 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                     .direction(180).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
             mBaiduMap.setMyLocationData(locData);
+            //使用街道
+            List<Poi> poiList = location.getPoiList() ;
+            LatLng ll = new LatLng(location.getLatitude(),
+                    location.getLongitude());
+            srcLating = ll ;
             if (isFirstLoc) {
                 isFirstLoc = false;
                 //使用街道
-                List<Poi> poiList = location.getPoiList() ;
                 if(poiList != null && poiList.size() > 1) {
                     Poi poi = poiList.get(0);
                     mEdtSrc.setText(poi.getName());
                 }
-                LatLng ll = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                srcLating = ll ;
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(12.0f);
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
+            TripNode tripNode  = new TripNode() ;
+            tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
+            Address address = new Address() ;
+            address.setPlaceName(poiList.get(0).getName()) ;
+            address.setLatitude(location.getLatitude())    ;
+            address.setLongitude(location.getLongitude())  ;
+            tripNode.setAddress(address);
+            mRouteOperateEvent.setTripNode(tripNode);
         }
     }
 

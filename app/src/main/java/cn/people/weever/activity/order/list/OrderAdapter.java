@@ -19,16 +19,15 @@ import cn.people.weever.model.BaseOrder;
 
 public class OrderAdapter extends BaseListAdapter<BaseOrder> {
 
+
     @BindView(R.id.tv_type)
     TextView mTvType;
     @BindView(R.id.tv_passenger)
     TextView mTvPassenger;
-    @BindView(R.id.textView2)
-    TextView mTextView2;
-    @BindView(R.id.textView3)
-    TextView mTextView3;
-    @BindView(R.id.txt_passenger)
-    TextView mTxtPassenger;
+    @BindView(R.id.tv_start_end_time)
+    TextView mTvStartEndTime;
+    @BindView(R.id.txt_order_status)
+    TextView mTxtOrderStatus;
 
     protected OrderAdapter(Context context, List<BaseOrder> list) {
         super(context, list);
@@ -45,6 +44,11 @@ public class OrderAdapter extends BaseListAdapter<BaseOrder> {
         } else {
             holderView = (HolderView) v.getTag();
         }
+        BaseOrder baseOrder = mList.get(position) ;
+        mTvType.setText(BaseOrder.getTypeStr(baseOrder.getType()));
+        mTvPassenger.setText(baseOrder.getSubscribePerson());
+        mTvStartEndTime.setText(baseOrder.getStartEndTimeStr());
+        mTxtOrderStatus.setText(BaseOrder.getStatusStr(baseOrder.getStatus()));
         return v;
     }
 

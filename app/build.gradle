@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId "cn.people.weever"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 21
         versionCode 100
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

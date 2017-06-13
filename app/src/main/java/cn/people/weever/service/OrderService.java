@@ -1,10 +1,9 @@
 package cn.people.weever.service;
 
-import android.text.TextUtils;
-
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.OrderSubmitInfo;
 import cn.people.weever.model.QueryModel;
+import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.respositoty.OrderRespository;
 
 /**订单的业务逻辑
@@ -53,5 +52,9 @@ public class OrderService {
 
     public void takeOrder(BaseOrder baseOrder){
         mOrderRespository.takeOrder(baseOrder);
+    }
+
+    public void routeOperateOrder(RouteOperateEvent routeOperateEvent){
+        mOrderRespository.routeOperateOrder(routeOperateEvent);
     }
 }

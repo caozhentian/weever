@@ -19,6 +19,8 @@ public class RouteOperateEvent {
 
     private TripNode    mTripNode       ;
 
+
+
     public int getOperateType() {
         return mOperateType;
     }

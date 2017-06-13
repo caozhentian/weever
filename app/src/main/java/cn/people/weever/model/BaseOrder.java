@@ -2,6 +2,8 @@ package cn.people.weever.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import cn.people.weever.common.util.DatetimeUtil;
+
 /**订单 的基类
  * Created by weever on 2017/4/6.
  */
@@ -258,4 +260,46 @@ public class BaseOrder extends WeeverBean {
     public void setStartingFare(String startingFare) {
         mStartingFare = startingFare;
     }
+
+
+    public String getStartEndTimeStr(){
+
+        if(mPlanboardingTripNode != null && mPlanDropOffTripNode != null){
+            String startDate = DatetimeUtil.getDate(mPlanboardingTripNode.getTime( ) * 1000 ,  DatetimeUtil.DEFAULT_FORMAT1) ;
+            String endDate   = DatetimeUtil.getDate(mPlanDropOffTripNode.getTime( ) * 1000  ,  DatetimeUtil.DEFAULT_FORMAT1) ;
+            return startDate + " - " + endDate ;
+        }
+        return "" ;
+    }
+
+    public static final String getTypeStr(int type){
+       switch (type){
+           case ORDER_TYPE_DAY:
+               return "A1" ;
+           case ORDER_TYPE_DAY_HALF:
+               return "A2" ;
+           case ORDER_TYPE_PICK_UP:
+               return "A3" ;
+           case ORDER_TYPE_AIRPORT_CONVEYOR:
+               return "A4" ;
+           case ORDER_TYPE_AIRPORT_FIXED_TIME:
+               return "A5" ;
+           default:
+               return "" ;
+       }
+    }
+
+    public static final String getStatusStr(int status){
+        switch (status){
+            case ORDER_STAUS_APPOINTMENT:
+                return "A11" ;
+            case ORDER_STAUS_ORDER:
+                return "A22" ;
+            case ORDER_STAUS_PAY:
+                return "A33" ;
+            default:
+                return "" ;
+        }
+    }
+
 }

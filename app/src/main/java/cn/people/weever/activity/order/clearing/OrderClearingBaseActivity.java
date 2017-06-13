@@ -3,6 +3,7 @@ package cn.people.weever.activity.order.clearing;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +27,8 @@ import cn.people.weever.activity.car.TrackQueryActivity;
 import cn.people.weever.model.Amount;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.OrderSubmitInfo;
+import cn.people.weever.net.BaseModel;
+import cn.people.weever.net.OrderApiService;
 import cn.people.weever.service.OrderService;
 
 public  class OrderClearingBaseActivity extends BaseActivity {
@@ -186,6 +192,13 @@ public  class OrderClearingBaseActivity extends BaseActivity {
                 break ;
         }
         return acountType ;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void processSubmitOrderEvent(@Nullable BaseModel<Object> baseModel){
+        if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_SUBMIT_NET_REQUST){
+           showToast(baseModel.getMessage());
+        }
     }
 }
 
