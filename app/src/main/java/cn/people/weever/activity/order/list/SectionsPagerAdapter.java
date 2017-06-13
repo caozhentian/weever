@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.Collections;
 import java.util.List;
 
-import cn.people.weever.net.OrderApiService;
+import cn.people.weever.model.BaseOrder;
 
 /**
  * Created by Administrator on 2017/5/9.
@@ -43,6 +43,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     }
 
     private int getOrderStaus(int position){
-        return OrderApiService.TO_ORDER_LIST_ALL_NET_REQUST  + position;
+        return BaseOrder.ORDER_STAUS_APPOINTMENT  + position;
     }
 }

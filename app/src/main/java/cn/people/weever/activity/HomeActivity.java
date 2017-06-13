@@ -95,6 +95,8 @@ import cn.people.weever.service.OrderService;
 public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
        ,NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String ARG_BASE_ORDER = "baseorder" ;
+
     private static final int accuracyCircleFillColor = 0xAAFFFF88;
     private static final int accuracyCircleStrokeColor = 0xAA00FF00;
     public MyLocationListener myListener = new MyLocationListener();
@@ -183,8 +185,15 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     private LatLng srcLating ;
     private LatLng destLating ;
 
+    private BaseOrder mBaseOrder ;
+    public static final Intent newIntent(Context packageContext, BaseOrder baseOrder){
+        Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
+        intent.putExtra(ARG_BASE_ORDER , baseOrder) ;
+        return intent ;
+    }
     public static final Intent newIntent(Context packageContext){
         Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
+
         return intent ;
     }
     @Override

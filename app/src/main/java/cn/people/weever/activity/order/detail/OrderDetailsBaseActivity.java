@@ -15,6 +15,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.activity.HomeActivity;
+import cn.people.weever.activity.order.clearing.AirportConverorOrderClearingActivity;
+import cn.people.weever.activity.order.clearing.DayHalfOrderClearingActivity;
+import cn.people.weever.activity.order.clearing.DayOrderClearingActivity;
+import cn.people.weever.activity.order.clearing.FixedTimeOrderClearingActivity;
+import cn.people.weever.activity.order.clearing.PickupOrderClearingActivity;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.service.OrderService;
 
@@ -58,20 +64,59 @@ public class OrderDetailsBaseActivity extends BaseActivity {
     private BaseOrder mBaseOrder;
 
     private OrderService mOrderService ;
+
     public static final Intent newIntent(Context context, BaseOrder baseOrder) {
-        Intent intent = new Intent(context, OrderDetailsBaseActivity.class);
+        Intent intent = new Intent(context, DayOrderDetailsActivity.class);
+        if(baseOrder.getType() == BaseOrder.ORDER_TYPE_DAY){
+            intent = new Intent(context, DayOrderDetailsActivity.class);
+        }
+        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF){
+            intent = new Intent(context, DayHalfOrderDetailsActivity.class);
+        }
+        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP){
+            intent = new Intent(context, PickupOrderDetailsActivity.class);
+        }
+        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR){
+            intent = new Intent(context, AirportConverorOrderDetailsActivity.class);
+        }
+        else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME){
+            intent = new Intent(context, FixTimeOrderDetailsActivity.class);
+        }
         intent.putExtra(ARG_ORDER_BASE, baseOrder);
         return intent;
     }
 
     @Override
     public void initData() {
-        mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE);
+        mBaseOrder     =  (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE);
+        mOrderService  =  new OrderService() ;
     }
 
     @Override
     public void initView() {
         mTvTitle.setText("");
+    }
+
+    private void setViewByBaseOrder(){
+        mTvName.setText(mBaseOrder.getSubscribePerson());
+        mTvPlantStartDate.setText(mBaseOrder.getPlanboardingTripNode().getDateStr());
+        mTvPlantStartAddress.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
+        if(mBaseOrder.getActualBoardingTripNode() != null){
+            mTvActualStartDate.setText(mBaseOrder.getActualBoardingTripNode().getDateStr());
+            mTvActualStartAddress.setText(mBaseOrder.getActualBoardingTripNode().getAddress().getPlaceName());
+        }
+        mTvExpireDistanceCose.setText(mBaseOrder.getActualMileageCost()+"");
+        mTvActualAllCost.setText(mBaseOrder.getPostDiscount() + "");
+        mTvExpireTimeCose.setText(mBaseOrder.getActualWaitTimeCost()+"");
+        if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT){
+            mBtnTake.setVisibility(View.VISIBLE);
+        }
+        else  if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDER){
+            mBtnStart.setVisibility(View.VISIBLE);
+        }
+        else  if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY){
+            mBtnSettlent.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -92,11 +137,41 @@ public class OrderDetailsBaseActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_take:
+                take() ;
                 break;
             case R.id.btn_start:
+                start() ;
                 break;
             case R.id.btn_settlent:
+                settlent() ;
                 break;
         }
+    }
+
+    private void take(){
+        mOrderService.takeOrder(mBaseOrder);
+    }
+
+    private void start(){
+        startActivity(HomeActivity.newIntent(this ,mBaseOrder ));
+    }
+
+    private void settlent(){
+        if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY){
+            startActivity(DayOrderClearingActivity.newIntent(this ,mBaseOrder ));
+        }
+        else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF){
+            startActivity(DayHalfOrderClearingActivity.newIntent(this ,mBaseOrder ));
+        }
+        else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME){
+            startActivity(FixedTimeOrderClearingActivity.newIntent(this ,mBaseOrder ));
+        }
+        else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR){
+            startActivity(AirportConverorOrderClearingActivity.newIntent(this ,mBaseOrder ));
+        }
+        else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP){
+            startActivity(PickupOrderClearingActivity.newIntent(this ,mBaseOrder ));
+        }
+
     }
 }

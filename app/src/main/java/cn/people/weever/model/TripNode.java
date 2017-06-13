@@ -2,6 +2,8 @@ package cn.people.weever.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import cn.people.weever.common.util.DatetimeUtil;
+
 /**行程节点： 时间和 地点信息
  * Created by  on 2017/6/2.
  */
@@ -29,5 +31,9 @@ public class TripNode {
 
     public void setAddress(Address address) {
         mAddress = address;
+    }
+
+    public String  getDateStr(){
+        return DatetimeUtil.getDate(mTime * 1000 , DatetimeUtil.DEFAULT_FORMAT1) ;
     }
 }
