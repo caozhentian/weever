@@ -25,6 +25,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import cn.people.weever.R;
+import cn.people.weever.config.FileConfig;
+import cn.people.weever.config.IpConfig;
 
 
 /**
@@ -34,8 +36,6 @@ import cn.people.weever.R;
 
 public class UpdateManager
 {
-	public static final String URL_BANNER_HEAD = "" ;
-	public static final String DIR_APK = "" ;
 	public static final String PACKAGE_NAME = "cn.people.weever" ;
 	
 	/* 下载中 */
@@ -203,8 +203,8 @@ public class UpdateManager
 				if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
 				{
 					// 获得存储卡的路径
-					mSavePath = DIR_APK;
-					URL url = new URL(URL_BANNER_HEAD + mUpdateAPKModel.getDownloadUrl());
+					mSavePath = FileConfig.APP_FOLDER_NAME;
+					URL url = new URL(IpConfig.class + mUpdateAPKModel.getDownloadUrl());
 					// 创建连接
 					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 					conn.connect();
