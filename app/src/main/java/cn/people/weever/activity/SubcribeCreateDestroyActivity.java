@@ -12,6 +12,7 @@ import cn.people.weever.event.NetRequestPostEvent;
 import cn.people.weever.event.NetRequestPreEvent;
 import cn.people.weever.net.APIError;
 import cn.people.weever.net.APIFail;
+import cn.people.weever.net.BaseModel;
 
 /**
  * Created by ztcao on 2016/12/20. onResume / onPause 事件订阅的生命周期
@@ -60,6 +61,11 @@ public abstract class SubcribeCreateDestroyActivity extends BaseActivity{
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void processFailEvent(@NonNull APIFail apiFail) {
 		super.processFailEvent(apiFail);
+	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void processSuccessEvent(@NonNull BaseModel baseModel) {
+		super.processSuccessEvent(baseModel);
 	}
 
 }

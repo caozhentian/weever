@@ -64,7 +64,7 @@ public class MyOrdersActivity extends BaseActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         //String[] aa = {"全部" , "预约", "接单" ,"付款" ,"拒绝","完成"} ;
-        String[] aa = { "预约中", "待执行" ,"待付款" } ;
+        String[] aa = { "预约中", "待执行" ,"待付款", "已完成"} ;
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), Arrays.asList(aa));
 
         // Set up the ViewPager with the sections adapter.

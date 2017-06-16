@@ -36,6 +36,8 @@ public class OrderDetailsBaseActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.layout_top)
     LinearLayout mLayoutTop;
+    @BindView(R.id.tv_num)
+    TextView mTvNum;
     @BindView(R.id.tv_name)
     TextView mTvName;
     @BindView(R.id.tv_plant_start_date)
@@ -102,6 +104,7 @@ public class OrderDetailsBaseActivity extends BaseActivity {
 
     private void setViewByBaseOrder() {
         mTvTitle.setText(BaseOrder.getTypeStr(mBaseOrder.getType()));
+        mTvNum.setText(mBaseOrder.getOrderId()) ;
         mTvName.setText(mBaseOrder.getSubscribePerson());
         mTvPlantStartDate.setText(mBaseOrder.getPlanboardingTripNode().getDateStr());
         mTvPlantStartAddress.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
@@ -170,6 +173,6 @@ public class OrderDetailsBaseActivity extends BaseActivity {
         } else if (mBaseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP) {
             startActivity(PickupOrderClearingActivity.newIntent(this, mBaseOrder));
         }
-
     }
+
 }

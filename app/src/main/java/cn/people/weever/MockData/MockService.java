@@ -16,7 +16,7 @@ public abstract class MockService {
 		mockResponse.setMessage("success");
 		BaseModel baseModel = new BaseModel() ;
 		baseModel.setStatus(BaseModel.SUCCESS);
-		baseModel.setMessage("success");
+		baseModel.setMessage("操作成功");
 		baseModel.setData(baseModel);
 		mockResponse.setModel(baseModel);
 		return mockResponse;

@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -123,8 +120,7 @@ public class PlaceholderFragment extends BaseFragment {
         mOrderService.list(mOrderStatus , mQueryModel ) ;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void processBaseOrderEvent(@Nullable BaseModel<List<BaseOrder>> baseModel){
+    public void dealSuccess(@Nullable BaseModel<List<BaseOrder>> baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_LIST_NET_REQUST){
             List<BaseOrder> baseOrderList = baseModel.getData() ;
             if(mQueryModel != null && mQueryModel.isFirstPage()){

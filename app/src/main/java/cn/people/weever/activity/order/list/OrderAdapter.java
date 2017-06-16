@@ -38,6 +38,7 @@ public class OrderAdapter extends BaseListAdapter<BaseOrder> {
             holderView = (HolderView) v.getTag();
         }
         BaseOrder baseOrder = mList.get(position) ;
+        holderView.mTvNum.setText(baseOrder.getOrderId()) ;
         holderView.mTvType.setText(BaseOrder.getTypeStr(baseOrder.getType()));
         holderView.mTvPassenger.setText(baseOrder.getSubscribePerson());
         holderView.mTvStartEndTime.setText(baseOrder.getStartEndTimeStr());
@@ -46,6 +47,9 @@ public class OrderAdapter extends BaseListAdapter<BaseOrder> {
     }
 
     static class HolderView {
+
+        @BindView(R.id.tv_num)
+        TextView mTvNum;
         @BindView(R.id.tv_type)
         TextView mTvType;
         @BindView(R.id.tv_passenger)

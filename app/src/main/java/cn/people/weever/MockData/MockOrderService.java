@@ -22,7 +22,7 @@ import cn.people.weever.net.OrderApiService;
 
 public class MockOrderService extends MockService {
 
-    List<BaseOrder> orders =  new LinkedList<>() ;
+    public static List<BaseOrder> orders =  new LinkedList<>() ;
 
 
     public MockResponse getJsonData(int status) {
@@ -159,6 +159,7 @@ public class MockOrderService extends MockService {
     }
 
     public void cancelOrder(BaseOrder baseOrder){
+        orders.remove(baseOrder) ;
         MockResponse mockResponse = getSuccessResponse() ;
         MockBaseCallback<Object> mockBaseCallback = new  MockBaseCallback<Object>(OrderApiService.TO_ORDER_CANCEL_NET_REQUST , mockResponse) ;
         mockBaseCallback.onResponse();

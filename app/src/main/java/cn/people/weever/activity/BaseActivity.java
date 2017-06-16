@@ -60,6 +60,19 @@ public abstract class BaseActivity extends AppCompatActivity{
 		mCustomProgressDialog.cancel();
 	}
 
+
+	public void processSuccessEvent(@NonNull BaseModel baseModel) {
+		if(baseModel.isSuccess()){
+			showToast(baseModel.getMessage());
+			dealSuccess(baseModel) ;
+		}
+		else{
+			showToast(baseModel.getMessage());
+			return ;
+		}
+
+	}
+
 	public void processErrorEvent(@NonNull APIError apiErrorError) {
 		if(apiErrorError.getThrowable() instanceof SocketTimeoutException){
 			Toast.makeText(this,"网络连接超时。请检查网络",Toast.LENGTH_SHORT).show();
@@ -76,6 +89,14 @@ public abstract class BaseActivity extends AppCompatActivity{
 		else {
 			Toast.makeText(this, apiFail.getMessage(), Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	/**
+	 *
+	 * @param baseModel
+	 */
+	protected void dealSuccess(BaseModel baseModel){
+
 	}
 
 	public void showTokenExpireDialog(){

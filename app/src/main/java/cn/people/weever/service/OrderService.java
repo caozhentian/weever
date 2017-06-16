@@ -27,7 +27,7 @@ public class OrderService {
         }
         mOrderRespository.list(status,queryModel);
     }
-    
+
     //
     public void submit(OrderSubmitInfo orderSubmitInfo){
         if(orderSubmitInfo == null){
