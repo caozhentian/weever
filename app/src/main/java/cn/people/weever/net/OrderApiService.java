@@ -23,10 +23,11 @@ public interface OrderApiService {
     //订单
     public static final int TO_ORDER_ROUTE_OPERATE_NET_REQUST            =       400          ;
     public static final int TO_ORDER_SUBMIT_NET_REQUST              =             404          ;
-    public static final int TO_ORDER_TAKE_NET_REQUST              =             405            ;
+    public static final int TO_ORDER_TAKE_NET_REQUST                  =           405           ;
+    public static final int TO_ORDER_CANCEL_NET_REQUST              =             406           ;
 
     public static final int TO_ORDER_LIST_NET_REQUST                          =             410           ;
-    public static final int TO_ORDER_LIST_ALL_NET_REQUST                          =             410           ;
+//    public static final int TO_ORDER_LIST_ALL_NET_REQUST                          =             410           ;
 
 //    public static final int TO_ORDER_LIST_PENDING_APPOINTMENT_NET_REQUST        =             412           ;
 //    public static final int TO_ORDER_LIST_PENDING_EXECUTION_NET_REQUST          =             413           ;
@@ -78,6 +79,10 @@ public interface OrderApiService {
     @POST("order/take")
     Call<BaseModel<Object>> takeOrder( @Field("order_id") String id ) ;
 
+    //接单
+    @FormUrlEncoded
+    @POST("order/cancel")
+    Call<BaseModel<Object>> cancelOrder( @Field("order_id") String id ) ;
 
     @FormUrlEncoded
     @POST("order/getDailyRentaOrderInfo")

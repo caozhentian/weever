@@ -10,6 +10,8 @@ import cn.people.weever.model.Company;
 import cn.people.weever.model.DailyRentaOrder;
 import cn.people.weever.model.FixTimeOrder;
 import cn.people.weever.model.HalfDayRentalOrder;
+import cn.people.weever.model.OrderSubmitInfo;
+import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.model.TransferOrder;
 import cn.people.weever.model.TripNode;
 import cn.people.weever.net.OrderApiService;
@@ -22,22 +24,22 @@ public class MockOrderService extends MockService {
 
     List<BaseOrder> orders =  new LinkedList<>() ;
 
-    @Override
-    public MockResponse getJsonData() {
+
+    public MockResponse getJsonData(int status) {
         MockResponse mockResponse = getSuccessResponse() ;
-        mockResponse.getModel().setData(getOrders());
+        mockResponse.getModel().setData(getOrders(status));
         MockBaseCallback<List<BaseOrder>> mockBaseCallback = new  MockBaseCallback<List<BaseOrder>>(OrderApiService.TO_ORDER_LIST_NET_REQUST , mockResponse) ;
         mockBaseCallback.onResponse();
         return  mockResponse ;
     }
 
-    private List<BaseOrder> getOrders(){
+    private List<BaseOrder> getOrders(int status){
 
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY, BaseOrder.ORDER_STAUS_ORDER));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY_HALF,BaseOrder.ORDER_STAUS_APPOINTMENT));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_PICK_UP,BaseOrder.ORDER_STAUS_PAY));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR,BaseOrder.ORDER_STAUS_PAY));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME,BaseOrder.ORDER_STAUS_APPOINTMENT));
+        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY, status));
+        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY_HALF,status));
+        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_PICK_UP,status));
+        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR,status));
+        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME,status));
         return   orders ;
     }
 
@@ -156,6 +158,33 @@ public class MockOrderService extends MockService {
         }
     }
 
+    public void cancelOrder(BaseOrder baseOrder){
+        MockResponse mockResponse = getSuccessResponse() ;
+        MockBaseCallback<Object> mockBaseCallback = new  MockBaseCallback<Object>(OrderApiService.TO_ORDER_CANCEL_NET_REQUST , mockResponse) ;
+        mockBaseCallback.onResponse();
+    }
 
+    public void submitOrder(OrderSubmitInfo orderSubmitInfo){
+        MockResponse mockResponse = getSuccessResponse() ;
+        MockBaseCallback<Object> mockBaseCallback = new  MockBaseCallback<Object>(OrderApiService.TO_ORDER_SUBMIT_NET_REQUST , mockResponse) ;
+        mockBaseCallback.onResponse();
+    }
 
+    public void takeOrder(BaseOrder baseOrder){
+        MockResponse mockResponse = getSuccessResponse() ;
+        MockBaseCallback<Object> mockBaseCallback = new  MockBaseCallback<Object>(OrderApiService.TO_ORDER_TAKE_NET_REQUST , mockResponse) ;
+        mockBaseCallback.onResponse();
+    }
+
+    public void routeOperateOrder(RouteOperateEvent routeOperateEvent){
+        MockResponse mockResponse = getSuccessResponse() ;
+        mockResponse.getModel().setData(routeOperateEvent);
+        MockBaseCallback<RouteOperateEvent> mockBaseCallback = new  MockBaseCallback<RouteOperateEvent>(OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST , mockResponse) ;
+        mockBaseCallback.onResponse();
+    }
+
+    @Override
+    public MockResponse getJsonData() {
+        return null;
+    }
 }

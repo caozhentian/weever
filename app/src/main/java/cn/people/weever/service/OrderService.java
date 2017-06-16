@@ -22,21 +22,12 @@ public class OrderService {
 
     public void list(int status , QueryModel queryModel){
         if(MockService.DEBUG_MOCK){
-            mockOrderService.getJsonData();
+            mockOrderService.getJsonData(status);
             return ;
         }
         mOrderRespository.list(status,queryModel);
     }
     
-    // 取消订单
-//    public void cancel(String orderId ,String reason ){
-//        if(TextUtils.isEmpty(orderId) || TextUtils.isEmpty(reason)){
-//            return ;
-//        }
-//        mOrderRespository.cancel(orderId , reason);
-//    }
-
- 
     //
     public void submit(OrderSubmitInfo orderSubmitInfo){
         if(orderSubmitInfo == null){
@@ -60,11 +51,27 @@ public class OrderService {
         mOrderRespository.getDetails( baseOrder ) ;
     }
 
+    public void cancelOrder(BaseOrder baseOrder){
+        if(MockService.DEBUG_MOCK){
+            mockOrderService.cancelOrder(baseOrder);
+            return ;
+        }
+        mOrderRespository.cancelOrder(baseOrder);
+    }
+
     public void takeOrder(BaseOrder baseOrder){
+        if(MockService.DEBUG_MOCK){
+            mockOrderService.takeOrder(baseOrder);
+            return ;
+        }
         mOrderRespository.takeOrder(baseOrder);
     }
 
     public void routeOperateOrder(RouteOperateEvent routeOperateEvent){
+        if(MockService.DEBUG_MOCK){
+            mockOrderService.routeOperateOrder(routeOperateEvent);
+            return ;
+        }
         mOrderRespository.routeOperateOrder(routeOperateEvent);
     }
 }

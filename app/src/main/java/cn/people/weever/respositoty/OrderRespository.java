@@ -86,4 +86,9 @@ public class OrderRespository {
         Call<BaseModel<Object>> call = mOrderApiService.takeOrder(baseOrder.getOrderId())        ;
         call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_TAKE_NET_REQUST))  ;
     }
+
+    public void cancelOrder(BaseOrder baseOrder){
+        Call<BaseModel<Object>> call = mOrderApiService.takeOrder(baseOrder.getOrderId())        ;
+        call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_CANCEL_NET_REQUST))     ;
+    }
 }

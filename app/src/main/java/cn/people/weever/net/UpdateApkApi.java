@@ -9,6 +9,8 @@ import retrofit2.http.GET;
  */
 
 public interface UpdateApkApi {
+
+    public static final int TO_UPDATE_APK_NET_REQUEST = 601;
     @GET("")
     Call<BaseModel<UpdateAPKModel>> getUpdateApkInfo() ;
 
