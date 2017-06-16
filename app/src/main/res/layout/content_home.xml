@@ -180,7 +180,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dim10"
                 android:background="@drawable/shape_rec_normal"
-                android:checked="true"
+                android:checked="false"
+                android:enabled="false"
                 android:text="日租">
             </RadioButton>
 
@@ -189,6 +190,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dim10"
+                android:checked="false"
+                android:enabled="false"
                 android:background="@drawable/shape_rec_normal"
                 android:text="半日租">
             </RadioButton>
@@ -196,6 +199,8 @@
                 android:id="@+id/radioBtnTransfer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="false"
+                android:enabled="false"
                 android:layout_marginRight="@dimen/dim10"
                 android:background="@drawable/shape_rec_normal"
                 android:text="接送机">

@@ -23,6 +23,8 @@ import cn.people.weever.activity.order.clearing.DayHalfOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.DayOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.FixedTimeOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.PickupOrderClearingActivity;
+import cn.people.weever.dialog.ICancelOK;
+import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.event.OrderStatusChangeEvent;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.net.BaseModel;
@@ -168,7 +170,18 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     }
 
     private void cancel() {
-        mOrderService.cancelOrder(mBaseOrder);
+        OKCancelDlg.createCancelOKDlg(this, "确定拒绝吗?", new ICancelOK() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void ok() {
+                mOrderService.cancelOrder(mBaseOrder);
+            }
+        });
+
     }
 
     private void start() {

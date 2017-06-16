@@ -32,6 +32,7 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -204,7 +205,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     }
     public static final Intent newIntent(Context packageContext){
         Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
-
         return intent ;
     }
     @Override
@@ -220,7 +220,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        initView();
+        initData();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
@@ -245,16 +246,14 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         option.setProdName("WeeverDemo");
         option.setIsNeedLocationPoiList(true);
         option.setIsNeedAddress(true);
-		//BitmapDescriptor currentMarker = BitmapDescriptorFactory
-        //                    .fromResource(R.drawable.ic_gprs_blue);
+		BitmapDescriptor currentMarker = BitmapDescriptorFactory
+                           .fromResource(R.drawable.ic_map_location);
         mBaiduMap
                 .setMyLocationConfigeration(new MyLocationConfiguration(
-                        mCurrentMode, true, null,
+                        mCurrentMode, true, currentMarker,
                         accuracyCircleFillColor, accuracyCircleStrokeColor));
         mLocClient.setLocOption(option);
         mLocClient.start();
-        initView();
-        initData();
         startTrace() ;
         initListener();
     }
@@ -295,7 +294,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         mSearch.setOnGetRoutePlanResultListener(this);
         powerManager =  (PowerManager) getSystemService(Context.POWER_SERVICE);
         mOrderService = new OrderService() ;
-        mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
         if(mBaseOrder != null) {
             mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
             //根据订单初始化
@@ -313,7 +311,21 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
     @Override
     public void initView() {
-
+      mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
+      if(mBaseOrder != null){
+         mEdtSrc.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
+         mEdtDest.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName()) ;
+         if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY){
+             mRadioBtnDayUse.setChecked(true);
+         }
+         else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF){
+             mRadioBtnHalfDayUse.setChecked(true);
+         }
+         else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP ||
+                 mBaseOrder.getType() == BaseOrder.ORDER_STAUS_APPOINTMENT){
+             mRadioBtnTransfer.setChecked(true);
+         }
+      }
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -400,16 +412,28 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     }
 
     private void waitting(){
+        if(mBaseOrder == null){
+            showToast("无关联订单");
+            return ;
+        }
         mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE);
         mOrderService.routeOperateOrder(mRouteOperateEvent);
     }
 
     private  void restart(){
+        if(mBaseOrder == null){
+            showToast("无关联订单");
+            return ;
+        }
         mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE);
         mOrderService.routeOperateOrder(mRouteOperateEvent);
     }
 
 	private void compute(){
+        if(mBaseOrder == null){
+            showToast("无关联订单");
+            return ;
+        }
         OKCancelDlg.createCancelOKDlg(this, "", new ICancelOK() {
             @Override
             public void cancel() {
@@ -425,6 +449,10 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 	}
 
     private void start(){
+        if(mBaseOrder == null){
+            showToast("无关联订单");
+            return ;
+        }
         String startNodeStr = mEdtSrc.getText().toString()   ;
         String endNodeStr   = mEdtDest.getText().toString() ;
         if(TextUtils.isEmpty(startNodeStr)){
@@ -582,7 +610,9 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 //使用街道
                 if(poiList != null && poiList.size() > 1) {
                     Poi poi = poiList.get(0);
-                    mEdtSrc.setText(poi.getName());
+                    if(mBaseOrder != null) {
+                        mEdtSrc.setText(poi.getName());
+                    }
                 }
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(12.0f);
