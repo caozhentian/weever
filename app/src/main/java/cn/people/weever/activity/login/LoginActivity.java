@@ -11,9 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,6 +19,7 @@ import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.HomeActivity;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
+import cn.people.weever.common.util.ToastUtil;
 import cn.people.weever.model.Car;
 import cn.people.weever.model.Driver;
 import cn.people.weever.net.BaseModel;
@@ -29,7 +27,6 @@ import cn.people.weever.net.CarApiService;
 import cn.people.weever.net.DriverApiService;
 import cn.people.weever.service.CarService;
 import cn.people.weever.service.DriverService;
-import cn.people.weever.common.util.ToastUtil;
 
 
 public class LoginActivity extends SubcribeCreateDestroyActivity {
@@ -133,7 +130,15 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    protected<T> void dealSuccess(BaseModel baseModel){
+        if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_LOGIN){
+            processLoginEvent(baseModel) ;
+        }
+        else if(baseModel.getApiOperationCode() == CarApiService.TO_CAR){
+            processCarNumEvent(baseModel);
+        }
+    }
+
     public void processLoginEvent(@Nullable BaseModel<Driver> baseModel){
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_LOGIN){
             Driver driver = baseModel.getData() ;
@@ -143,7 +148,6 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void processCarNumEvent(@Nullable BaseModel<List<Car>> baseModel){
         if(baseModel.getApiOperationCode() == CarApiService.TO_CAR){
                 mCarList = baseModel.getData()  ;

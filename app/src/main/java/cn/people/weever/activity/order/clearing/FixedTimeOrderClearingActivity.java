@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import cn.people.weever.model.FixTimeOrder;
+import cn.people.weever.model.BaseOrder;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
 
@@ -16,9 +16,9 @@ import cn.people.weever.net.OrderApiService;
 public class FixedTimeOrderClearingActivity extends OrderClearingBaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void processOrderEvent(@Nullable BaseModel<FixTimeOrder> baseModel){
+    public void processOrderEvent(@Nullable BaseModel baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TYPE_FixTime_DETAILS_NET_REQUST){
-            mBaseOrder =  baseModel.getData() ;
+            mBaseOrder = (BaseOrder) baseModel.getData();
             setViewByBaseOrder() ;
         }
     }

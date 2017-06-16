@@ -12,9 +12,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
-import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.activity.car.TrackQueryActivity;
 import cn.people.weever.model.Amount;
 import cn.people.weever.model.BaseOrder;
@@ -31,7 +28,7 @@ import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
 import cn.people.weever.service.OrderService;
 
-public  class OrderClearingBaseActivity extends BaseActivity {
+public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
 
     @BindView(R.id.tv_title)
     TextView mTvTitle;
@@ -211,12 +208,26 @@ public  class OrderClearingBaseActivity extends BaseActivity {
         return acountType ;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void processSubmitOrderEvent(@Nullable BaseModel<Object> baseModel){
+    public void dealSuccess(@Nullable BaseModel baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_SUBMIT_NET_REQUST){
-           showToast(baseModel.getMessage());
+            dealSubmitSuccess(baseModel)                         ;
+        }
+        else {
+            processOrderEvent(baseModel) ;
         }
     }
+
+    public void dealSubmitSuccess(@Nullable BaseModel baseModel){
+        if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_SUBMIT_NET_REQUST){
+           showToast(baseModel.getMessage()) ;
+           finish()                          ;
+        }
+    }
+
+    public void processOrderEvent(@Nullable BaseModel baseModel){
+
+    }
+
 }
 
 

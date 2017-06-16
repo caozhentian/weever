@@ -75,10 +75,10 @@ public abstract class BaseActivity extends AppCompatActivity{
 
 	public void processErrorEvent(@NonNull APIError apiErrorError) {
 		if(apiErrorError.getThrowable() instanceof SocketTimeoutException){
-			Toast.makeText(this,"网络连接超时。请检查网络",Toast.LENGTH_SHORT).show();
+			showToast("网络连接超时。请检查网络");
 		}
 		else{
-			Toast.makeText(this,"未知错误",Toast.LENGTH_SHORT).show();
+			showToast("未知错误");
 		}
 	}
 
@@ -87,7 +87,7 @@ public abstract class BaseActivity extends AppCompatActivity{
 			showTokenExpireDialog() ;
 		}
 		else {
-			Toast.makeText(this, apiFail.getMessage(), Toast.LENGTH_SHORT).show();
+			showToast(apiFail.getMessage());
 		}
 	}
 
@@ -95,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity{
 	 *
 	 * @param baseModel
 	 */
-	protected void dealSuccess(BaseModel baseModel){
+	protected<T> void dealSuccess(BaseModel baseModel){
 
 	}
 

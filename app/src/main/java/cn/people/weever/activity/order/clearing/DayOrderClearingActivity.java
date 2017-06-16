@@ -3,11 +3,9 @@ package cn.people.weever.activity.order.clearing;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import butterknife.BindView;
 import cn.people.weever.R;
+import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.DailyRentaOrder;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
@@ -27,10 +25,10 @@ public class DayOrderClearingActivity extends OrderClearingBaseActivity {
         mTvDayCost.setText(((DailyRentaOrder)mBaseOrder).getDailyRentalCost()+"") ;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void processOrderEvent(@Nullable BaseModel<DailyRentaOrder> baseModel){
+
+    public void processOrderEvent(@Nullable BaseModel baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TYPE_DAY_DETAILS_NET_REQUST){
-            mBaseOrder =  baseModel.getData() ;
+            mBaseOrder = (BaseOrder) baseModel.getData();
             setViewByBaseOrder() ;
         }
     }

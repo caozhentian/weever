@@ -8,15 +8,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import cn.people.weever.BaseFragment;
 import cn.people.weever.R;
 import cn.people.weever.activity.order.detail.OrderDetailsBaseActivity;
+import cn.people.weever.event.OrderStatusChangeEvent;
+import cn.people.weever.fragment.SubscribeResumePauseBaseFragment;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.QueryModel;
 import cn.people.weever.net.BaseModel;
@@ -29,7 +33,7 @@ import cn.people.weever.widget.PullToRefreshView;
  * Created by Administrator on 2017/5/9.
  */
 
-public class PlaceholderFragment extends BaseFragment {
+public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -76,7 +80,7 @@ public class PlaceholderFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_orders, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-        mOrderStatus = getArguments().getByte(ARG_ORDER_STATUS) ;
+        mOrderStatus = getArguments().getInt(ARG_ORDER_STATUS) ;
         mOrderService = new OrderService() ;
         mQueryModel   = new QueryModel()     ;
         mBaseOrderList = new LinkedList<>() ;
@@ -120,13 +124,19 @@ public class PlaceholderFragment extends BaseFragment {
         mOrderService.list(mOrderStatus , mQueryModel ) ;
     }
 
-    public void dealSuccess(@Nullable BaseModel<List<BaseOrder>> baseModel){
+    public void dealSuccess(@Nullable BaseModel baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_LIST_NET_REQUST){
-            List<BaseOrder> baseOrderList = baseModel.getData() ;
+            List<BaseOrder> baseOrderList = (List<BaseOrder>) baseModel.getData();
             if(mQueryModel != null && mQueryModel.isFirstPage()){
                 mBaseOrderList.clear();
             }
             mBaseOrderList.addAll(baseOrderList) ;
         }
+    }
+
+    @Subscribe(sticky = true ,threadMode = ThreadMode.MAIN)
+    public void dealSuccess(@Nullable OrderStatusChangeEvent orderStatusChangeEvent){
+        mQueryModel.resetPage();
+        queryOrderList() ;
     }
 }

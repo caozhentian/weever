@@ -599,7 +599,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void process(AddressSelectVM o){
         if(o.isSrc()){
             mEdtSrc.setText(o.getmPoiInfo().name)   ;
@@ -927,13 +927,12 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         BNaviSettingManager.setNaviSdkParam(bundle);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void processEvent(@Nullable BaseModel<RouteOperateEvent> baseModel){
+    @Override
+    protected  void dealSuccess(@Nullable BaseModel baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST){
-            showToast("请求成功");
-            RouteOperateEvent routeOperateEvent = baseModel.getData() ;
+            showToast("操作成功");
+            RouteOperateEvent routeOperateEvent = (RouteOperateEvent) baseModel.getData();
             if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE){
-              
                 startActivity(OrderClearingBaseActivity.newIntent(HomeActivity.this , new BaseOrder()));
             }
         }

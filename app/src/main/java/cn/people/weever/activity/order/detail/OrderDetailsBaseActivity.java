@@ -10,21 +10,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
-import cn.people.weever.activity.BaseActivity;
 import cn.people.weever.activity.HomeActivity;
+import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.activity.order.clearing.AirportConverorOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.DayHalfOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.DayOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.FixedTimeOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.PickupOrderClearingActivity;
+import cn.people.weever.event.OrderStatusChangeEvent;
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.net.BaseModel;
 import cn.people.weever.service.OrderService;
 
-public class OrderDetailsBaseActivity extends BaseActivity {
+public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     private static final String ARG_ORDER_BASE = "order_base";
 
@@ -58,6 +62,8 @@ public class OrderDetailsBaseActivity extends BaseActivity {
     TextView mTvExpireDistanceCose;
     @BindView(R.id.btn_take)
     Button mBtnTake;
+    @BindView(R.id.btn_cancel)
+    Button mBtnCancel;
     @BindView(R.id.btn_start)
     Button mBtnStart;
     @BindView(R.id.btn_settlent)
@@ -69,7 +75,7 @@ public class OrderDetailsBaseActivity extends BaseActivity {
     @BindView(R.id.ll_settlent)
     LinearLayout mLlSettlent;
 
-    private BaseOrder mBaseOrder;
+    protected BaseOrder mBaseOrder;
 
     private OrderService mOrderService;
 
@@ -95,6 +101,7 @@ public class OrderDetailsBaseActivity extends BaseActivity {
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE);
         mOrderService = new OrderService();
         setViewByBaseOrder();
+        mOrderService.getDetails(mBaseOrder);
     }
 
     @Override
@@ -138,11 +145,14 @@ public class OrderDetailsBaseActivity extends BaseActivity {
         finish();
     }
 
-    @OnClick({R.id.btn_take, R.id.btn_start, R.id.btn_settlent})
+    @OnClick({R.id.btn_take,R.id.btn_cancel , R.id.btn_start, R.id.btn_settlent})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_take:
                 take();
+                break;
+            case R.id.btn_cancel:
+                cancel();
                 break;
             case R.id.btn_start:
                 start();
@@ -155,6 +165,10 @@ public class OrderDetailsBaseActivity extends BaseActivity {
 
     private void take() {
         mOrderService.takeOrder(mBaseOrder);
+    }
+
+    private void cancel() {
+        mOrderService.cancelOrder(mBaseOrder);
     }
 
     private void start() {
@@ -175,4 +189,14 @@ public class OrderDetailsBaseActivity extends BaseActivity {
         }
     }
 
+    protected void dealSuccess(BaseModel baseModel){
+        showToast("操作成功");
+        setOtherDetailInfo() ;
+        EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
+        finish();
+    }
+
+    protected void setOtherDetailInfo(){
+
+    }
 }

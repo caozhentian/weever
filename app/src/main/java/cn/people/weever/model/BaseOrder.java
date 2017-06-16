@@ -15,8 +15,8 @@ public class BaseOrder extends WeeverBean {
     public static final int  ORDER_STAUS_APPOINTMENT  = 0x01 ;  //预约中
     public static final int  ORDER_STAUS_ORDER         = 0x02;   //待执行订单
     public static final int  ORDER_STAUS_PAY            = 0x03 ;  //待付款
-    public static final int  ORDER_STAUS_CANCEL        = 0x05 ;  //取消
     public static final int  ORDER_STAUS_FINISH         = 0x04 ; //已完成
+    public static final int  ORDER_STAUS_CANCEL        = 0x05 ;  //取消
 
     //订单类型 常量定义
     public static final int  ORDER_TYPE_DAY           = 0x01 ;             //日租
@@ -298,7 +298,7 @@ public class BaseOrder extends WeeverBean {
             case ORDER_STAUS_PAY:
                 return "待付款" ;
             default:
-                return "" ;
+                return "已完成" ;
         }
     }
 

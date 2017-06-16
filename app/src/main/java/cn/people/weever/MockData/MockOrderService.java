@@ -24,6 +24,11 @@ public class MockOrderService extends MockService {
 
     public static List<BaseOrder> orders =  new LinkedList<>() ;
 
+    public static List<BaseOrder> orders2 =  new LinkedList<>() ;
+
+    public static List<BaseOrder> orders3 =  new LinkedList<>() ;
+
+    public static List<BaseOrder> orders4 =  new LinkedList<>() ;
 
     public MockResponse getJsonData(int status) {
         MockResponse mockResponse = getSuccessResponse() ;
@@ -34,13 +39,28 @@ public class MockOrderService extends MockService {
     }
 
     private List<BaseOrder> getOrders(int status){
+        List<BaseOrder> curOrder = orders ;
+        if(status == BaseOrder.ORDER_STAUS_APPOINTMENT){
 
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY, status));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY_HALF,status));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_PICK_UP,status));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR,status));
-        orders.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME,status));
-        return   orders ;
+        }
+        else if(status == BaseOrder.ORDER_STAUS_ORDER){
+            curOrder = orders2 ;
+        }
+        else if(status == BaseOrder.ORDER_STAUS_PAY){
+            curOrder = orders3 ;
+        }
+        else if(status == BaseOrder.ORDER_STAUS_FINISH){
+            curOrder = orders4 ;
+        }
+        if(curOrder.size() > 0){
+            return curOrder ;
+        }
+        curOrder.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY, status));
+        curOrder.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY_HALF,status));
+        curOrder.add(generatePreOrder(BaseOrder.ORDER_TYPE_PICK_UP,status));
+        curOrder.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR,status));
+        curOrder.add(generatePreOrder(BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME,status));
+        return curOrder ;
     }
 
 
@@ -62,13 +82,13 @@ public class MockOrderService extends MockService {
             transferOrder.setTransferCost(400) ;
         }
 
-        baseOrder.setOrderId(UUID.randomUUID().toString());
+        baseOrder.setOrderId(UUID.randomUUID().toString().substring(0 , 15));
         baseOrder.setSubscribePerson("LiMing");
 
         TripNode tripNode = new TripNode() ;
         tripNode.setTime(System.currentTimeMillis()/1000 - 70*60*60);
         Address address = new Address() ;
-        address.setPlaceName("HereS")   ;
+        address.setPlaceName("旺座现代城")   ;
         address.setLatitude(34.221227);
         address.setLongitude(108.898191);
         tripNode.setAddress(address);
@@ -77,7 +97,7 @@ public class MockOrderService extends MockService {
         tripNode = new TripNode() ;
         tripNode.setTime(System.currentTimeMillis()/1000 - 65*60*60);
         address = new Address() ;
-        address.setPlaceName("HereD")   ;
+        address.setPlaceName("企业壹号公园")   ;
         address.setLatitude(34.17589);
         address.setLongitude(108.879616);
         tripNode.setAddress(address);
@@ -89,7 +109,7 @@ public class MockOrderService extends MockService {
             TripNode tripNodeM = new TripNode();
             tripNodeM.setTime(System.currentTimeMillis() / 1000 - 66 * 60 * 60);
             Address addressM = new Address();
-            addressM.setPlaceName("Here2S");
+            addressM.setPlaceName("旺座现代城");
             addressM.setLatitude(34.172786);
             addressM.setLongitude(108.881262);
             tripNodeM.setAddress(addressM);
@@ -97,7 +117,7 @@ public class MockOrderService extends MockService {
             tripNodeM = new TripNode() ;
             tripNodeM.setTime(System.currentTimeMillis()/1000 - 66*60*60);
             addressM = new Address()  ;
-            addressM.setPlaceName("Here2D")   ;
+            addressM.setPlaceName("企业壹号公园")   ;
             addressM.setLatitude(34.17589)   ;
             addressM.setLongitude(108.879616) ;
             tripNodeM.setAddress(addressM);
@@ -128,8 +148,12 @@ public class MockOrderService extends MockService {
 
     public void getDetails(BaseOrder baseOrder){
         MockResponse mockResponse = getSuccessResponse() ;
-
-        for(BaseOrder baseOrderS : orders){
+        List<BaseOrder> curOrders = new LinkedList<>() ;
+        curOrders.addAll(orders) ;
+        curOrders.addAll(orders2) ;
+        curOrders.addAll(orders3) ;
+        curOrders.addAll(orders4) ;
+        for(BaseOrder baseOrderS : curOrders){
             if(baseOrder.getOrderId().equals(baseOrderS.getOrderId())){
                 int type = baseOrder.getType() ;
 
@@ -159,19 +183,35 @@ public class MockOrderService extends MockService {
     }
 
     public void cancelOrder(BaseOrder baseOrder){
-        orders.remove(baseOrder) ;
+        List<BaseOrder> curOrders = new LinkedList<>() ;
+        curOrders.addAll(orders) ;
+        curOrders.addAll(orders2) ;
+        curOrders.addAll(orders3) ;
+        curOrders.addAll(orders4) ;
+        curOrders.remove(baseOrder) ;
         MockResponse mockResponse = getSuccessResponse() ;
         MockBaseCallback<Object> mockBaseCallback = new  MockBaseCallback<Object>(OrderApiService.TO_ORDER_CANCEL_NET_REQUST , mockResponse) ;
         mockBaseCallback.onResponse();
     }
 
     public void submitOrder(OrderSubmitInfo orderSubmitInfo){
+        List<BaseOrder> curOrders = new LinkedList<>() ;
+        curOrders.addAll(orders) ;
+        curOrders.addAll(orders2) ;
+        curOrders.addAll(orders3) ;
+        curOrders.addAll(orders4) ;
+        for(BaseOrder baseOrder : curOrders){
+            if(baseOrder.getOrderId().equals(orderSubmitInfo.getOrderId())){
+                baseOrder.setStatus(BaseOrder.ORDER_STAUS_PAY);
+            }
+        }
         MockResponse mockResponse = getSuccessResponse() ;
         MockBaseCallback<Object> mockBaseCallback = new  MockBaseCallback<Object>(OrderApiService.TO_ORDER_SUBMIT_NET_REQUST , mockResponse) ;
         mockBaseCallback.onResponse();
     }
 
     public void takeOrder(BaseOrder baseOrder){
+        baseOrder.setStatus(BaseOrder.ORDER_STAUS_ORDER);
         MockResponse mockResponse = getSuccessResponse() ;
         MockBaseCallback<Object> mockBaseCallback = new  MockBaseCallback<Object>(OrderApiService.TO_ORDER_TAKE_NET_REQUST , mockResponse) ;
         mockBaseCallback.onResponse();
