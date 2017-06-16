@@ -198,6 +198,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     private boolean[] status = new boolean[4] ;
 
     private BaseOrder mBaseOrder ;
+
     public static final Intent newIntent(Context packageContext, BaseOrder baseOrder){
         Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
         intent.putExtra(ARG_BASE_ORDER , baseOrder) ;
@@ -259,6 +260,12 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        initView();
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -294,18 +301,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         mSearch.setOnGetRoutePlanResultListener(this);
         powerManager =  (PowerManager) getSystemService(Context.POWER_SERVICE);
         mOrderService = new OrderService() ;
-        if(mBaseOrder != null) {
-            mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
-            //根据订单初始化
-            if (mBaseOrder.getPlanboardingTripNode().getAddress() != null) {
-                srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude(),
-                        mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude());
-            }
-            if (mBaseOrder.getPlanDropOffTripNode().getAddress() != null) {
-                destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude(),
-                        mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
-            }
-        }
+
 
     }
 
@@ -325,22 +321,21 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                  mBaseOrder.getType() == BaseOrder.ORDER_STAUS_APPOINTMENT){
              mRadioBtnTransfer.setChecked(true);
          }
+          if(mBaseOrder != null) {
+              mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
+              //根据订单初始化
+              if (mBaseOrder.getPlanboardingTripNode().getAddress() != null) {
+                  srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude(),
+                          mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude());
+              }
+              if (mBaseOrder.getPlanDropOffTripNode().getAddress() != null) {
+                  destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude(),
+                          mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
+              }
+          }
       }
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -490,9 +485,17 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     public void onViewClickedAddress(View view) {
         switch (view.getId()) {
             case R.id.edtSrc:
+                if(mBaseOrder != null){
+                   showToast("已关联订单，无法更改目的地址");
+                   return ;
+                }
                 startActivity(PoiSearchActivity.newIntent(this,true));
                 break;
             case R.id.edtDest:
+                if(mBaseOrder != null){
+                    showToast("已关联订单，无法更改目的地址");
+                    return ;
+                }
                 startActivity(PoiSearchActivity.newIntent(this,false));
                 break;
         }
@@ -961,6 +964,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     protected  void dealSuccess(@Nullable BaseModel baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST){
             showToast("操作成功");
+            mBaseOrder = null ;
             RouteOperateEvent routeOperateEvent = (RouteOperateEvent) baseModel.getData();
             if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE){
                 startActivity(OrderClearingBaseActivity.newIntent(HomeActivity.this , new BaseOrder()));

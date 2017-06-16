@@ -96,7 +96,7 @@
         </activity>
         <activity
             android:name=".activity.login.LoginActivity"
-            android:label="登录"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.car.MainActivity"
@@ -118,7 +118,8 @@
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".activity.car.TrackQueryActivity"
             android:screenOrientation="portrait"
