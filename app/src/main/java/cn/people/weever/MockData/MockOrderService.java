@@ -52,7 +52,7 @@ public class MockOrderService extends MockService {
         else if(status == BaseOrder.ORDER_STAUS_FINISH){
             curOrder = orders4 ;
         }
-        if(curOrder.size() > 0){
+        if(curOrder.size()> 0){
             return curOrder ;
         }
         curOrder.add(generatePreOrder(BaseOrder.ORDER_TYPE_DAY, status));

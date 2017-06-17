@@ -42,8 +42,7 @@ public class LogoActivity extends SubcribeCreateDestroyActivity {
         finish();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void processAutoLoginEvent(@Nullable BaseModel<Object> baseModel){
+    public void dealSuccess(@Nullable BaseModel baseModel){
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_AUTO_LOGIN){
             startActivity(HomeActivity.newIntent(this));
             finish() ;

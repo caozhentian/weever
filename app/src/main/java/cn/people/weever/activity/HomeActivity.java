@@ -271,7 +271,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            OKCancelDlg.createCancelOKDlg(this, "确认退出吗?", new ICancelOK() {
+            OKCancelDlg.createCancelOKDlg(this, "确认退出应用吗?", new ICancelOK() {
                 @Override
                 public void cancel() {
 
@@ -289,7 +289,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        //getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
@@ -408,7 +408,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
     private void waitting(){
         if(mBaseOrder == null){
-            showToast("无关联订单");
+            showToast("无关联订单，请先关联订单");
             return ;
         }
         mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE);
@@ -417,7 +417,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
     private  void restart(){
         if(mBaseOrder == null){
-            showToast("无关联订单");
+            showToast("无关联订单，请先关联订单");
             return ;
         }
         mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE);
@@ -426,7 +426,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
 	private void compute(){
         if(mBaseOrder == null){
-            showToast("无关联订单");
+            showToast("无关联订单，请先关联订单");
             return ;
         }
         OKCancelDlg.createCancelOKDlg(this, "", new ICancelOK() {
@@ -445,7 +445,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
     private void start(){
         if(mBaseOrder == null){
-            showToast("无关联订单");
+            showToast("无关联订单，请先关联订单");
             return ;
         }
         String startNodeStr = mEdtSrc.getText().toString()   ;
@@ -600,7 +600,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(180).latitude(location.getLatitude())
+                    .direction(0).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
             mBaiduMap.setMyLocationData(locData);
             //使用街道
@@ -613,7 +613,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 //使用街道
                 if(poiList != null && poiList.size() > 1) {
                     Poi poi = poiList.get(0);
-                    if(mBaseOrder != null) {
+                    if(mBaseOrder == null) {
                         mEdtSrc.setText(poi.getName());
                     }
                 }

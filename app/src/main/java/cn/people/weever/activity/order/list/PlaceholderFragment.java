@@ -131,6 +131,7 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
                 mBaseOrderList.clear();
             }
             mBaseOrderList.addAll(baseOrderList) ;
+            mOrderAdapter.notifyDataSetChanged();
         }
     }
 

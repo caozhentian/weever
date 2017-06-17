@@ -1,10 +1,13 @@
 package cn.people.weever.fragment;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.net.SocketTimeoutException;
 
@@ -35,16 +38,18 @@ public class SubscribeResumePauseBaseFragment extends BaseFragment {
         Toast.makeText(this.getContext(), getContext().getResources().getText(res), Toast.LENGTH_SHORT).show();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void processNetRequestPreEvent(@Nullable NetRequestPreEvent netRequestPreEvent){
         mCustomProgressDialog = new CustomProgressDialog(this.getContext() , R.style.progress_dialog) ;
         mCustomProgressDialog.show();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void processNetRequestPostEvent(@Nullable NetRequestPostEvent netRequestPostEvent){
         mCustomProgressDialog.cancel();
     }
 
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void processSuccessEvent(@NonNull BaseModel baseModel) {
         if(baseModel.isSuccess()){
             showToast(baseModel.getMessage());
@@ -57,6 +62,7 @@ public class SubscribeResumePauseBaseFragment extends BaseFragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void processErrorEvent(@NonNull APIError apiErrorError) {
         if(apiErrorError.getThrowable() instanceof SocketTimeoutException){
             showToast("网络连接超时。请检查网络");
@@ -66,6 +72,7 @@ public class SubscribeResumePauseBaseFragment extends BaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void processFailEvent(@NonNull APIFail apiFail) {
         if(apiFail.getCode() == BaseModel.SUB_FAIL_STATUS_TOKEN_EXPIRE){
             showTokenExpireDialog() ;
@@ -82,17 +89,29 @@ public class SubscribeResumePauseBaseFragment extends BaseFragment {
     protected<T> void dealSuccess(BaseModel baseModel){
 
     }
+
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onAttach(Context context) {
+        super.onAttach(context);
         EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDetach() {
+        super.onDetach();
         EventBus.getDefault().unregister(this);
     }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        EventBus.getDefault().register(this);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        EventBus.getDefault().unregister(this);
+//    }
 
     public void showTokenExpireDialog(){
         OKCancelDlg.createCancelOKDlg(getContext(), "登录超时", "重新登录", "退出应用", new ICancelOK() {

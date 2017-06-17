@@ -108,7 +108,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     @Override
     public void initView() {
-        mTvTitle.setText("");
+
     }
 
     private void setViewByBaseOrder() {
@@ -205,8 +205,8 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     protected void dealSuccess(BaseModel baseModel){
         showToast("操作成功");
         setOtherDetailInfo() ;
-        EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
-        finish();
+//        EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
+ //       finish();
     }
 
     protected void setOtherDetailInfo(){

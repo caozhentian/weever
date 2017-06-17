@@ -22,25 +22,25 @@ public abstract class SubcribeCreateDestroyActivity extends BaseActivity{
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//EventBus.getDefault().register(this);
+		EventBus.getDefault().register(this);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		EventBus.getDefault().register(this);
+		//EventBus.getDefault().register(this);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		//EventBus.getDefault().unregister(this);
+		EventBus.getDefault().unregister(this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		EventBus.getDefault().unregister(this);
+		//EventBus.getDefault().unregister(this);
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
