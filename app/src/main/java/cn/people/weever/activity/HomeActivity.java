@@ -233,6 +233,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         MyLocationConfiguration configuration = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true,null);
         mBaiduMap.setMyLocationConfigeration(configuration);
         MapStatusUpdate u2 = MapStatusUpdateFactory.newLatLng(CityConstant.GEO_XIAN);
+
         mBaiduMap.setMapStatus(u2);
         mBaiduMap.setTrafficEnabled(true) ;
         // 开启定位图层
@@ -618,7 +619,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                     }
                 }
                 MapStatus.Builder builder = new MapStatus.Builder();
-                builder.target(ll).zoom(12.0f);
+                builder.target(ll).zoom(18.0f);
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
             TripNode tripNode  = new TripNode() ;

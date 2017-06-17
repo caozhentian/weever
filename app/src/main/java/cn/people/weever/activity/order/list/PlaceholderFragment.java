@@ -44,6 +44,8 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
 
     private int mOrderStatus ;
 
+    private int mSectionNumber ;
+
     @BindView(R.id.pull_refresh_lv)
     PullToRefreshView mPullRefresh_Lv;
     @BindView(R.id.lv)
@@ -80,6 +82,7 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_orders, container, false);
         unbinder = ButterKnife.bind(this, rootView);
+        mSectionNumber =  getArguments().getInt(ARG_SECTION_NUMBER) ;
         mOrderStatus = getArguments().getInt(ARG_ORDER_STATUS) ;
         mOrderService = new OrderService() ;
         mQueryModel   = new QueryModel()     ;
@@ -129,6 +132,13 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
             List<BaseOrder> baseOrderList = (List<BaseOrder>) baseModel.getData();
             if(mQueryModel != null && mQueryModel.isFirstPage()){
                 mBaseOrderList.clear();
+            }
+            if(baseOrderList == null || baseOrderList.size() == 0){
+                return ;
+            }
+            BaseOrder baseOrder = baseOrderList.get(0) ;
+            if(baseOrder.getStatus() != mOrderStatus){ //避免网络返回问题
+                return ;
             }
             mBaseOrderList.addAll(baseOrderList) ;
             mOrderAdapter.notifyDataSetChanged();

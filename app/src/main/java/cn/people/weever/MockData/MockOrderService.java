@@ -80,6 +80,7 @@ public class MockOrderService extends MockService {
             TransferOrder transferOrder = new TransferOrder() ;
             transferOrder.setFlightNumber("Hiai Hang") ;
             transferOrder.setTransferCost(400) ;
+            baseOrder = transferOrder ;
         }
 
         baseOrder.setOrderId(UUID.randomUUID().toString().substring(0 , 15));
