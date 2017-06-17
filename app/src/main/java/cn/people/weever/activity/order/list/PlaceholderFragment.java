@@ -136,10 +136,10 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
             if(baseOrderList == null || baseOrderList.size() == 0){
                 return ;
             }
-            BaseOrder baseOrder = baseOrderList.get(0) ;
-            if(baseOrder.getStatus() != mOrderStatus){ //避免网络返回问题
-                return ;
-            }
+//            BaseOrder baseOrder = baseOrderList.get(0) ;
+//            if(baseOrder.getStatus() != mOrderStatus){ //避免网络返回问题
+//                return ;
+//            }
             mBaseOrderList.addAll(baseOrderList) ;
             mOrderAdapter.notifyDataSetChanged();
         }

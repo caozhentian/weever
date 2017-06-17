@@ -206,7 +206,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         showToast("操作成功");
         setOtherDetailInfo() ;
 //        EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
- //       finish();
+ //      finish();
     }
 
     protected void setOtherDetailInfo(){

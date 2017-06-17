@@ -5,8 +5,8 @@
         <item>夜班</item>
     </string-array>
     <string-array name="settlement">
-        <item>现金</item>
-        <item>月票</item>
-        <item>记账</item>
+        <item>现金(현금)</item>
+        <item>小票(쿠폰)</item>
+        <item>记账(결제)</item>
     </string-array>
 </resources>

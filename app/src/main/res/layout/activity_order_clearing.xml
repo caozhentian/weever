@@ -53,7 +53,7 @@
                     android:layout_marginLeft="@dimen/dim5"
                     android:layout_marginRight="@dimen/dim5"
                     android:gravity="center"
-                    android:text="계산하다"/>
+                    android:text="결산"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -131,9 +131,9 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="3"
                     android:gravity="left|center"
-                    android:text="半日租费用"/>
+                    android:text="半日租费用(반일임대)"/>
 
                 <TextView
                     android:id="@+id/tv_half_day_cost"
@@ -158,9 +158,9 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="3"
                     android:gravity="left|center"
-                    android:text="日租费用"/>
+                    android:text="日租费用(하루임대)"/>
 
                 <TextView
                     android:id="@+id/tv_day_cost"
@@ -185,9 +185,9 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="3"
                     android:gravity="left|center"
-                    android:text="接送机费用"/>
+                    android:text="接送机费用(공항픽업요금)"/>
 
                 <TextView
                     android:id="@+id/tv_transfer_cost"
@@ -221,7 +221,7 @@
                         android:layout_marginRight="@dimen/dim10"
                         android:layout_weight="1"
                         android:gravity="right|center"
-                        android:text="会员编号"
+                        android:text="会员编号(회원번호)"
                         android:textSize="20sp"/>
 
                     <TextView
@@ -294,7 +294,7 @@
                         android:gravity="right|center"
                         android:layout_height="match_parent"
                         android:layout_marginRight="@dimen/dim10"
-                        android:text="总费用打折"
+                        android:text="折扣率(할인가격)"
                         android:textSize="20sp"/>/>
 
                     <TextView
@@ -315,9 +315,9 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:gravity="left|center"
-                        android:text="起步费用"/>
+                        android:text="起步费用(기본요금)"/>
 
                     <TextView
                         android:layout_width="0dp"
@@ -342,12 +342,12 @@
                     <LinearLayout
                         android:layout_height="match_parent"
                         android:layout_width="0dp"
-                        android:layout_weight="2">
+                        android:layout_weight="3">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="left|center"
-                        android:text="公里数"/>
+                        android:text="公里数(키로수)"/>
                         <TextView
                             android:id="@+id/tv_distance"
                             android:layout_width="wrap_content"
@@ -378,12 +378,12 @@
                     <LinearLayout
                         android:layout_height="match_parent"
                         android:layout_width="0dp"
-                        android:layout_weight="2">
+                        android:layout_weight="3">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="left|center"
-                        android:text="乘车时间"/>
+                        android:text="时长费用(소요시간)"/>
                         <TextView
                             android:id="@+id/tv_ride_time"
                             android:layout_width="wrap_content"
@@ -419,7 +419,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="left|center"
-                        android:text="等待时间"/>
+                        android:text="等待时间(대기시간)"/>
                         <TextView
                             android:id="@+id/tv_wait_time"
                             android:layout_width="wrap_content"
@@ -456,9 +456,9 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dim36"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:gravity="left|center"
-                    android:text="结算方式"/>
+                    android:text="结算方式(결산방식)"/>
 
                 <Spinner
                     android:id="@+id/spn_settlement_first"
@@ -468,7 +468,7 @@
                     android:entries="@array/settlement"/>
                 <EditText
                     android:id="@+id/edt_settlement_first_cost"
-                    android:layout_width="@dimen/dim96"
+                    android:layout_width="50dp"
                     android:layout_height="@dimen/dim48"
                     android:gravity="center"
                     android:inputType="number"
@@ -496,9 +496,9 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dim36"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:gravity="left|center"
-                    android:text="结算方式"/>
+                    android:text="结算方式(결산방식)"/>
 
                 <Spinner
                     android:id="@+id/spn_settlement_second"
@@ -508,8 +508,8 @@
                     android:entries="@array/settlement"/>
                 <EditText
                     android:id="@+id/edt_settlement_second_cost"
-                    android:layout_width="@dimen/dim96"
-                    android:layout_height="@dimen/dim48"
+                    android:layout_width="@dimen/dim48"
+                    android:layout_height="50dp"
                     android:gravity="center"
                     android:inputType="number"
                     android:maxLength="10"/>
@@ -533,7 +533,7 @@
             android:layout_marginRight="@dimen/dim5"
             android:layout_height="@dimen/dim48"
             android:gravity="center"
-            android:text="结算"/>
+            android:text="结算(결산)"/>
 
         <Button
             android:id="@+id/btn_trace"
@@ -542,6 +542,6 @@
             android:layout_marginLeft="@dimen/dim5"
             android:layout_height="@dimen/dim48"
             android:gravity="center"
-            android:text="路线轨迹"/>
+            android:text="路线轨迹(노선궤적)"/>
     </LinearLayout>
 </LinearLayout>

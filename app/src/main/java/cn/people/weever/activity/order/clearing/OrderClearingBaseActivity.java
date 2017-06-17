@@ -105,12 +105,15 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
 
     @Override
     public void initView() {
-        mTvTitle.setText("");
+        mTvTitle.setText("결산"); //结算
     }
 
     protected void setViewByBaseOrder(){
         mTvSrc.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
-        mTvDesc.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
+        if(mBaseOrder.getPlanDropOffTripNode() != null &&
+                mBaseOrder.getPlanDropOffTripNode().getAddress() != null ) {
+            mTvDesc.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
+        }
         mTvMember.setText(mBaseOrder.getCompany().getCompanyNum());
         mTvPreDiscount.setText(mBaseOrder.getPreDiscount() + "");
         mTvPostDiscount.setText(mBaseOrder.getPostDiscount() + "");
