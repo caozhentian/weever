@@ -25,12 +25,12 @@ public class Driver extends WeeverBean {
     private String mUserName  ;
 
     //密码
-    @Transient
+    //@Transient
     @SerializedName("password") //JSON序列化的字段名
     private String mPassword       ;
 
     //车辆编号
-    //@SerializedName("cardNum") //JSON序列化的字段名
+    @SerializedName("cardNum") //JSON序列化的字段名
     @Property(nameInDb = "CARD_NUM")
     private String mCardNum         ;
 

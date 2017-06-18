@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -20,6 +21,7 @@ import butterknife.Unbinder;
 import cn.people.weever.R;
 import cn.people.weever.activity.order.detail.OrderDetailsBaseActivity;
 import cn.people.weever.event.OrderStatusChangeEvent;
+import cn.people.weever.fragment.BaseFragment;
 import cn.people.weever.fragment.SubscribeResumePauseBaseFragment;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.QueryModel;
@@ -33,7 +35,7 @@ import cn.people.weever.widget.PullToRefreshView;
  * Created by Administrator on 2017/5/9.
  */
 
-public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
+public class PlaceholderFragment extends BaseFragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -78,6 +80,11 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_orders, container, false);
@@ -112,7 +119,7 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
                 mPullRefresh_Lv.onHeaderRefreshComplete();
             }
         });
-        queryOrderList() ;
+        //queryOrderList() ;
         return rootView;
     }
 
@@ -127,6 +134,7 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
         mOrderService.list(mOrderStatus , mQueryModel ) ;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void dealSuccess(@Nullable BaseModel baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_LIST_NET_REQUST){
             List<BaseOrder> baseOrderList = (List<BaseOrder>) baseModel.getData();
@@ -136,10 +144,6 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
             if(baseOrderList == null || baseOrderList.size() == 0){
                 return ;
             }
-//            BaseOrder baseOrder = baseOrderList.get(0) ;
-//            if(baseOrder.getStatus() != mOrderStatus){ //避免网络返回问题
-//                return ;
-//            }
             mBaseOrderList.addAll(baseOrderList) ;
             mOrderAdapter.notifyDataSetChanged();
         }
@@ -149,5 +153,21 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
     public void dealSuccess(@Nullable OrderStatusChangeEvent orderStatusChangeEvent){
         mQueryModel.resetPage();
         queryOrderList() ;
+    }
+
+    //setUserVisibleHint  adapter中的每个fragment切换的时候都会被调用，如果是切换到当前页，那么isVisibleToUser==true，否则为false
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser) {
+            EventBus.getDefault().register(this);
+            mSectionNumber =  getArguments().getInt(ARG_SECTION_NUMBER) ;
+            mOrderStatus = getArguments().getInt(ARG_ORDER_STATUS) ;
+            mOrderService = new OrderService() ;
+            mQueryModel   = new QueryModel()     ;
+            queryOrderList() ;
+        } else {
+            EventBus.getDefault().unregister(this);
+        }
     }
 }

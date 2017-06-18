@@ -311,7 +311,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
       mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
       if(mBaseOrder != null){
          mEdtSrc.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
-         mEdtDest.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName()) ;
+         mEdtDest.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName()) ;
          if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY){
              mRadioBtnDayUse.setChecked(true);
          }
@@ -430,7 +430,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             showToast("无关联订单，请先关联订单");
             return ;
         }
-        OKCancelDlg.createCancelOKDlg(this, "", new ICancelOK() {
+        OKCancelDlg.createCancelOKDlg(this, "确定结算吗", new ICancelOK() {
             @Override
             public void cancel() {
 
@@ -459,7 +459,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             showToast("目的地不能为空");
             return ;
         }
-        OKCancelDlg.createCancelOKDlg(this, "", new ICancelOK() {
+        OKCancelDlg.createCancelOKDlg(this, "确定开始计费吗", new ICancelOK() {
             @Override
             public void cancel() {
 
@@ -608,7 +608,9 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             List<Poi> poiList = location.getPoiList() ;
             LatLng ll = new LatLng(location.getLatitude(),
                     location.getLongitude());
-            srcLating = ll ;
+            if(mBaseOrder == null) { //如果有订单关联，出发地是订单的出发地
+                srcLating = ll;
+            }
             if (isFirstLoc) {
                 isFirstLoc = false;
                 //使用街道
@@ -965,10 +967,11 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     protected  void dealSuccess(@Nullable BaseModel baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST){
             showToast("操作成功");
-            mBaseOrder = null ;
+
             RouteOperateEvent routeOperateEvent = (RouteOperateEvent) baseModel.getData();
             if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE){
-                startActivity(OrderClearingBaseActivity.newIntent(HomeActivity.this , new BaseOrder()));
+                startActivity(OrderClearingBaseActivity.newIntent(HomeActivity.this , mBaseOrder));
+                mBaseOrder = null ;
             }
         }
     }
