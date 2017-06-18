@@ -161,7 +161,7 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
         String  firstCost  =  mEdtSettlementFirstCost.getEditableText().toString()   ;
         String  secondCost =  mEdtSettlementSecondCost.getEditableText().toString()  ;
         if(TextUtils.isEmpty(firstCost) && TextUtils.isEmpty(secondCost)){
-            showToast("请选择");
+            showToast("请选择结算方式");
             return ;
         }
         OrderSubmitInfo orderSubmitInfo = new OrderSubmitInfo() ;
@@ -196,13 +196,13 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
         String typeStr = (String) spinner.getSelectedItem();
         int   acountType = Amount.AMOUNT_TYPE_CRASH ;
         switch (typeStr){
-            case "A":
+            case "现金":
                 acountType = Amount.AMOUNT_TYPE_CRASH ;
                 break ;
-            case "B":
+            case "小票":
                 acountType = Amount.AMOUNT_TYPE_MONTHLY_TICKET ;
                 break ;
-            case "C"  :
+            case "记账"  :
                 acountType = Amount.AMOUNT_TYPE_MONTHLY_ACCOUNTING ;
                 break ;
             default:

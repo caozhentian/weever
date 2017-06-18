@@ -142,7 +142,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:minWidth="@dimen/dim36"
-                    android:text="300"/>
+                    android:text=""/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -169,7 +169,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:minWidth="@dimen/dim36"
-                    android:text="500"/>
+                    android:text=""/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -196,7 +196,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:minWidth="@dimen/dim36"
-                    android:text="200"/>
+                    android:text=""/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -204,12 +204,36 @@
                     android:gravity="center"
                     android:text="RMB"/>
             </LinearLayout>
-
+            <include layout="@layout/inc_line"></include>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim48"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/dim10"
+                    android:layout_weight="1"
+                    android:gravity="right|center"
+                    android:text="会员编号(회원번호)"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/tv_member"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="left|center"
+                    android:layout_height="@dimen/dim48"
+                    android:text="C907842"
+                    android:textColor="@color/red"
+                    android:textSize="20sp"/>
+            </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dim48"
@@ -221,16 +245,16 @@
                         android:layout_marginRight="@dimen/dim10"
                         android:layout_weight="1"
                         android:gravity="right|center"
-                        android:text="会员编号(회원번호)"
+                        android:text="会员名称(회원명칭)"
                         android:textSize="20sp"/>
 
                     <TextView
-                        android:id="@+id/tv_member"
+                        android:id="@+id/tv_member_name"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:gravity="left|center"
                         android:layout_height="@dimen/dim48"
-                        android:text="C907842"
+                        android:text="三星"
                         android:textColor="@color/red"
                         android:textSize="20sp"/>
                 </LinearLayout>
@@ -307,7 +331,7 @@
                         android:textColor="@color/red"
                         android:textSize="20sp"/>
                 </LinearLayout>
-
+                <include layout="@layout/inc_line"></include>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dim48">
@@ -320,6 +344,7 @@
                         android:text="起步费用(기본요금)"/>
 
                     <TextView
+                        android:id="@+id/tv_start_up_cost"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -328,7 +353,6 @@
                         android:textSize="18sp"/>
 
                     <TextView
-                        android:id="@+id/tv_start_up_cost"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -356,6 +380,7 @@
                             android:text="（50公里）"/>
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/tv_distance_cost"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -364,7 +389,6 @@
                         android:textSize="18sp"/>
 
                     <TextView
-                        android:id="@+id/tv_distance_cost"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -414,7 +438,7 @@
                     <LinearLayout
                         android:layout_height="match_parent"
                         android:layout_width="0dp"
-                        android:layout_weight="2">
+                        android:layout_weight="3">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -449,6 +473,7 @@
             <include layout="@layout/inc_line"></include>
 
             <LinearLayout
+                android:layout_marginTop="@dimen/dim5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white">
@@ -460,19 +485,28 @@
                     android:gravity="left|center"
                     android:text="结算方式(결산방식)"/>
 
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dim5"
+                    android:background="@color/red">
                 <Spinner
                     android:id="@+id/spn_settlement_first"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dim36"
                     android:layout_weight="1"
                     android:entries="@array/settlement"/>
+                </LinearLayout>
+
                 <EditText
                     android:id="@+id/edt_settlement_first_cost"
                     android:layout_width="50dp"
-                    android:layout_height="@dimen/dim48"
+                    android:layout_height="match_parent"
                     android:gravity="center"
                     android:inputType="number"
-                    android:maxLength="10"/>
+                    android:background="@drawable/shape_rec_normal_no_padding"
+                    android:maxLength="6"/>
             </LinearLayout>
 
             <LinearLayout
@@ -491,7 +525,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
@@ -499,20 +534,27 @@
                     android:layout_weight="1"
                     android:gravity="left|center"
                     android:text="结算方式(결산방식)"/>
-
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dim5"
+                    android:background="@color/red">
                 <Spinner
                     android:id="@+id/spn_settlement_second"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dim36"
                     android:layout_weight="1"
                     android:entries="@array/settlement"/>
+                </LinearLayout>
                 <EditText
                     android:id="@+id/edt_settlement_second_cost"
                     android:layout_width="@dimen/dim48"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:gravity="center"
                     android:inputType="number"
-                    android:maxLength="10"/>
+                    android:background="@drawable/shape_rec_normal_no_padding"
+                    android:maxLength="6"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

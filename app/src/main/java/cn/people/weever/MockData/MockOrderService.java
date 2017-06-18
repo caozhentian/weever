@@ -68,23 +68,27 @@ public class MockOrderService extends MockService {
         BaseOrder baseOrder    =  new BaseOrder()    ;
         if(type == BaseOrder.ORDER_TYPE_DAY){
             DailyRentaOrder dailyRentaOrder = new DailyRentaOrder() ;
-            dailyRentaOrder.setDailyRentalCost(400) ;
+            dailyRentaOrder.setDailyRentalCost(500) ;
             baseOrder = dailyRentaOrder ;
         }
         else if(type == BaseOrder.ORDER_TYPE_DAY_HALF){
             HalfDayRentalOrder halfDayRentalOrder = new HalfDayRentalOrder() ;
-            halfDayRentalOrder.setHalfDayRentalCost(200) ;
+            halfDayRentalOrder.setHalfDayRentalCost(300) ;
             baseOrder = halfDayRentalOrder ;
         }
         else if(type == BaseOrder.ORDER_TYPE_PICK_UP || type == BaseOrder.ORDER_TYPE_AIRPORT_CONVEYOR){
             TransferOrder transferOrder = new TransferOrder() ;
             transferOrder.setFlightNumber("Hiai Hang") ;
-            transferOrder.setTransferCost(400) ;
+            transferOrder.setTransferCost(200) ;
             baseOrder = transferOrder ;
+        }
+        else{
+            FixTimeOrder fixTimeOrder = new FixTimeOrder() ;
+            baseOrder = fixTimeOrder ;
         }
 
         baseOrder.setOrderId(UUID.randomUUID().toString().substring(0 , 15));
-        baseOrder.setSubscribePerson("LiMing");
+        baseOrder.setSubscribePerson("李明");
 
         TripNode tripNode = new TripNode() ;
         tripNode.setTime(System.currentTimeMillis()/1000 - 70*60*60);
@@ -106,7 +110,7 @@ public class MockOrderService extends MockService {
 
         baseOrder.setPlanTotalTime("30分钟");
 
-        if(status == BaseOrder.ORDER_STAUS_PAY) {
+        if(status == BaseOrder.ORDER_STAUS_PAY || status == BaseOrder.ORDER_STAUS_FINISH) {
             TripNode tripNodeM = new TripNode();
             tripNodeM.setTime(System.currentTimeMillis() / 1000 - 66 * 60 * 60);
             Address addressM = new Address();
@@ -128,6 +132,7 @@ public class MockOrderService extends MockService {
 
         Company company = new Company() ;
         company.setCompanyNum("A000fdCDS");
+        company.setCompanyName("三星");
         baseOrder.setCompany(company);
 
         baseOrder.setPreDiscount(150);

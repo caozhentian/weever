@@ -14,6 +14,8 @@ public class Company implements Serializable{
     @SerializedName("companyNum")
     protected String mCompanyNum  ;
 
+    protected String mCompanyName   ;
+
     public String getCompanyNum() {
         return mCompanyNum;
     }
@@ -22,4 +24,11 @@ public class Company implements Serializable{
         mCompanyNum = companyNum;
     }
 
+    public String getCompanyName() {
+        return mCompanyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        mCompanyName = companyName;
+    }
 }
