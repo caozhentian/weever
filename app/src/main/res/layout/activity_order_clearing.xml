@@ -219,10 +219,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="@dimen/dim10"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:gravity="right|center"
                     android:text="会员编号(회원번호)"
-                    android:textSize="20sp"/>
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/tv_member"
@@ -232,7 +232,7 @@
                     android:layout_height="@dimen/dim48"
                     android:text="C907842"
                     android:textColor="@color/red"
-                    android:textSize="20sp"/>
+                    android:textSize="18sp"/>
             </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -243,10 +243,10 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="@dimen/dim10"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:gravity="right|center"
                         android:text="会员名称(회원명칭)"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/tv_member_name"
@@ -256,7 +256,7 @@
                         android:layout_height="@dimen/dim48"
                         android:text="三星"
                         android:textColor="@color/red"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -267,10 +267,10 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="@dimen/dim10"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:gravity="right|center"
                         android:text="折扣前费用"
-                        android:textSize="20sp"/>/>
+                        android:textSize="18sp"/>/>
 
                     <TextView
                         android:id="@+id/tv_pre_discount"
@@ -280,7 +280,7 @@
                         android:layout_height="@dimen/dim48"
                         android:text="150RMB"
                         android:textColor="@color/red"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -290,12 +290,12 @@
                     <TextView
                         android:id="@+id/textView7"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:gravity="right|center"
                         android:layout_height="match_parent"
                         android:layout_marginRight="@dimen/dim10"
                         android:text="折扣后费用"
-                        android:textSize="20sp"/>/>
+                        android:textSize="18sp"/>/>
 
                     <TextView
                         android:id="@+id/tv_post_discount"
@@ -305,7 +305,7 @@
                         android:layout_height="@dimen/dim48"
                         android:text="135RMB"
                         android:textColor="@color/red"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -314,12 +314,12 @@
 
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:gravity="right|center"
                         android:layout_height="match_parent"
                         android:layout_marginRight="@dimen/dim10"
                         android:text="折扣率(할인가격)"
-                        android:textSize="20sp"/>/>
+                        android:textSize="18sp"/>/>
 
                     <TextView
                         android:id="@+id/tv_percent_discount"
@@ -329,7 +329,7 @@
                         android:layout_height="@dimen/dim48"
                         android:text="90%"
                         android:textColor="@color/red"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                 </LinearLayout>
                 <include layout="@layout/inc_line"></include>
                 <LinearLayout
