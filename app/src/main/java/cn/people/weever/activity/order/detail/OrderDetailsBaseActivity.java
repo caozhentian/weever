@@ -28,6 +28,7 @@ import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.event.OrderStatusChangeEvent;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.net.BaseModel;
+import cn.people.weever.net.OrderApiService;
 import cn.people.weever.service.OrderService;
 
 public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
@@ -50,6 +51,10 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     TextView mTvPlantStartDate;
     @BindView(R.id.tv_plant_start_address)
     TextView mTvPlantStartAddress;
+    @BindView(R.id.tv_plant_end_date)
+    TextView mTvPlantEndDate;
+    @BindView(R.id.tv_plant_end_address)
+    TextView mTvPlantEndAddress;
     @BindView(R.id.tv_actual_start_date)
     TextView mTvActualStartDate;
     @BindView(R.id.tv_actual_start_address)
@@ -117,6 +122,8 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         mTvName.setText(mBaseOrder.getSubscribePerson());
         mTvPlantStartDate.setText(mBaseOrder.getPlanboardingTripNode().getDateStr());
         mTvPlantStartAddress.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
+        mTvPlantEndDate.setText(mBaseOrder.getPlanDropOffTripNode().getDateStr());
+        mTvPlantEndAddress.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
         if (mBaseOrder.getActualBoardingTripNode() != null) {
             mTvActualStartDate.setText(mBaseOrder.getActualBoardingTripNode().getDateStr());
             mTvActualStartAddress.setText(mBaseOrder.getActualBoardingTripNode().getAddress().getPlaceName());
@@ -166,7 +173,18 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     }
 
     private void take() {
-        mOrderService.takeOrder(mBaseOrder);
+        OKCancelDlg.createCancelOKDlg(this, "确定接单吗?", new ICancelOK() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void ok() {
+                mOrderService.takeOrder(mBaseOrder);
+            }
+        });
+
     }
 
     private void cancel() {
@@ -186,6 +204,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     private void start() {
         startActivity(HomeActivity.newIntent(this, mBaseOrder));
+        finish();
     }
 
     private void settlent() {
@@ -200,13 +219,18 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         } else if (mBaseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP) {
             startActivity(PickupOrderClearingActivity.newIntent(this, mBaseOrder));
         }
+        finish();
     }
 
     protected void dealSuccess(BaseModel baseModel){
         showToast("操作成功");
         setOtherDetailInfo() ;
 //        EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
- //      finish();
+        if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TAKE_NET_REQUST
+                || baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_CANCEL_NET_REQUST){
+            finish();
+        }
+
     }
 
     protected void setOtherDetailInfo(){

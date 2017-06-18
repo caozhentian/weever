@@ -38,7 +38,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="left|center"
-                        android:text="编号:"/>
+                        android:text="订单编号:"/>
 
                     <TextView
                         android:id="@+id/tv_num"
@@ -57,7 +57,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="left|center"
-                        android:text="乘车人:"/>
+                        android:text="预约人:"/>
 
                     <TextView
                         android:id="@+id/tv_name"
@@ -69,24 +69,24 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dim48">
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim48">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="left|center"
-                        android:text="预约上车时间:"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left|center"
+                    android:text="预约上车时间:"/>
 
-                    <TextView
-                        android:id="@+id/tv_plant_start_date"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="left|center"
-                        android:text=""/>
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_plant_start_date"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left|center"
+                    android:text=""/>
+            </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -101,6 +101,45 @@
 
                     <TextView
                         android:id="@+id/tv_plant_start_address"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:text=""/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dim48">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:text="预约下车时间:"/>
+
+                    <TextView
+                        android:id="@+id/tv_plant_end_date"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:text=""/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dim48">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:text="预约下车地点:"/>
+
+                    <TextView
+                        android:id="@+id/tv_plant_end_address"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -158,6 +197,25 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="left|center"
+                        android:text="实际下车时间:"/>
+
+                    <TextView
+                        android:id="@+id/tv_actual_end_date"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
+                        android:text=""/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dim48">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="left|center"
                         android:text="实际下车地点:"/>
 
                     <TextView
@@ -191,7 +249,7 @@
                 <include layout="@layout/inc_line"></include>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dim96">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="0dp"
@@ -214,7 +272,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="left|center"
-                                android:text="费用:"/>
+                                android:text="租车费用:"/>
 
                             <TextView
                                 android:id="@+id/tv_rental_cose"
@@ -233,7 +291,26 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="left|center"
-                                android:text="超时费用:"/>
+                                android:text="公里数:"/>
+
+                            <TextView
+                                android:id="@+id/tv_distance_cost"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="left|center"
+                                android:text=""/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dim48">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="left|center"
+                                android:text="时长费用:"/>
 
                             <TextView
                                 android:id="@+id/tv_expire_time_cose"
@@ -252,7 +329,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="left|center"
-                                android:text="超里程费用:"/>
+                                android:text="等待时间:"/>
 
                             <TextView
                                 android:id="@+id/tv_expire_distance_cose"

@@ -161,7 +161,7 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
         String  firstCost  =  mEdtSettlementFirstCost.getEditableText().toString()   ;
         String  secondCost =  mEdtSettlementSecondCost.getEditableText().toString()  ;
         if(TextUtils.isEmpty(firstCost) && TextUtils.isEmpty(secondCost)){
-            showToast("请选择结算方式");
+            showToast("请输入结算金额");
             return ;
         }
         OrderSubmitInfo orderSubmitInfo = new OrderSubmitInfo() ;

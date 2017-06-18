@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:gravity="center_vertical"
-            android:text="编号："/>
+            android:text="订单编号："/>
 
         <TextView
             android:id="@+id/tv_num"
@@ -55,7 +55,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:gravity="center_vertical"
-            android:text="乘客："/>
+            android:text="预约人："/>
 
         <TextView
             android:id="@+id/tv_passenger"
@@ -100,6 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:textColor="@color/red"
             android:text="预约中"/>
     </LinearLayout>
     <include layout="@layout/inc_line"></include>

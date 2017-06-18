@@ -971,6 +971,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             RouteOperateEvent routeOperateEvent = (RouteOperateEvent) baseModel.getData();
             if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE){
                 startActivity(OrderClearingBaseActivity.newIntent(HomeActivity.this , mBaseOrder));
+                mEdtDest.setText("");
+                mEdtSrc.setText("");
                 mBaseOrder = null ;
             }
         }

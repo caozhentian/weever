@@ -33,6 +33,10 @@ public class OrderService {
         if(orderSubmitInfo == null){
             return ;
         }
+        if(MockService.DEBUG_MOCK){
+            mockOrderService.submitOrder(orderSubmitInfo);
+            return ;
+        }
         mOrderRespository.submit(orderSubmitInfo);
     }
     // 订单详情

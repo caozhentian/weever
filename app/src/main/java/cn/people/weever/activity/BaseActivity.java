@@ -52,12 +52,12 @@ public abstract class BaseActivity extends AppCompatActivity{
 	}
 
 	public void processNetRequestPreEvent(@Nullable NetRequestPreEvent netRequestPreEvent){
-		mCustomProgressDialog = new CustomProgressDialog(this , R.style.progress_dialog) ;
-		mCustomProgressDialog.show();
+		//mCustomProgressDialog = new CustomProgressDialog(this , R.style.progress_dialog) ;
+		//mCustomProgressDialog.show();
 	}
 
 	public void processNetRequestPostEvent(@Nullable NetRequestPostEvent netRequestPostEvent){
-		mCustomProgressDialog.cancel();
+		//mCustomProgressDialog.cancel();
 	}
 
 
