@@ -54,9 +54,8 @@ public class PlaceholderFragment extends BaseFragment {
     ListView mLv;
     Unbinder unbinder;
 
-    private OrderAdapter mOrderAdapter  ;
-
-    private  List<BaseOrder>  mBaseOrderList ;
+    private  List<BaseOrder>  mBaseOrderList  = new LinkedList<>() ;
+    private OrderAdapter mOrderAdapter    ;
 
     private OrderService      mOrderService  ;
 
@@ -93,8 +92,7 @@ public class PlaceholderFragment extends BaseFragment {
         mOrderStatus = getArguments().getInt(ARG_ORDER_STATUS) ;
         mOrderService = new OrderService() ;
         mQueryModel   = new QueryModel()     ;
-        mBaseOrderList = new LinkedList<>() ;
-        mOrderAdapter = new OrderAdapter(this.getContext() , mBaseOrderList) ;
+        mOrderAdapter    = new OrderAdapter(this.getContext() , mBaseOrderList) ;
         mLv.setAdapter(mOrderAdapter);
         mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -145,7 +143,9 @@ public class PlaceholderFragment extends BaseFragment {
                 return ;
             }
             mBaseOrderList.addAll(baseOrderList) ;
-            mOrderAdapter.notifyDataSetChanged();
+            if(mOrderAdapter != null) {
+                mOrderAdapter.notifyDataSetChanged();
+            }
         }
     }
 
