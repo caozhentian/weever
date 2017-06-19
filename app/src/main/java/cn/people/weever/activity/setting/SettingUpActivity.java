@@ -12,13 +12,14 @@ import android.widget.TextView;
 
 import cn.people.weever.R;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
-import cn.people.weever.activity.login.LoginActivity;
 import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.ManifestUtil;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.model.VersionUpdating;
+import cn.people.weever.net.BaseModel;
+import cn.people.weever.service.DriverService;
 
 /**
  *  设置
@@ -31,7 +32,7 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
     private  TextView  tv_title,tv_versio_update;
     private RelativeLayout  rl_version_upgrade,rl_about_we;
     private  TextView   tv_log_out;
-    //private LogOutService logOutService;
+    private DriverService mService;
     private LinearLayout  ll_setting;
     private VersionUpdating versionUpdating;
 
@@ -50,7 +51,7 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
 
     @Override
     public void initData() {
-
+        mService = new DriverService() ;
     }
 
     @Override
@@ -103,16 +104,19 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
 
             @Override
             public void ok() {
-                WeeverApplication.exitLogin();
-                ActivityExitManage.finishAll();
-                startActivity(LoginActivity.newIntent(SettingUpActivity.this));
+                mService.loginOut();
+
+                //startActivity(LoginActivity.newIntent(SettingUpActivity.this));
             }
         });
 
     }
 
 
-
+    protected<T> void dealSuccess(BaseModel baseModel){
+        WeeverApplication.exitLogin();
+        ActivityExitManage.finishAll();
+    }
 
     @Override
     protected void onDestroy() {

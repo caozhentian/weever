@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -22,7 +21,6 @@ import cn.people.weever.R;
 import cn.people.weever.activity.order.detail.OrderDetailsBaseActivity;
 import cn.people.weever.event.OrderStatusChangeEvent;
 import cn.people.weever.fragment.BaseFragment;
-import cn.people.weever.fragment.SubscribeResumePauseBaseFragment;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.QueryModel;
 import cn.people.weever.net.BaseModel;
@@ -149,7 +147,7 @@ public class PlaceholderFragment extends BaseFragment {
         }
     }
 
-    @Subscribe(sticky = true ,threadMode = ThreadMode.MAIN)
+    //@Subscribe(sticky = true ,threadMode = ThreadMode.MAIN)
     public void dealSuccess(@Nullable OrderStatusChangeEvent orderStatusChangeEvent){
         mQueryModel.resetPage();
         queryOrderList() ;
@@ -160,14 +158,14 @@ public class PlaceholderFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser) {
-            EventBus.getDefault().register(this);
+            //EventBus.getDefault().register(this);
             mSectionNumber =  getArguments().getInt(ARG_SECTION_NUMBER) ;
             mOrderStatus = getArguments().getInt(ARG_ORDER_STATUS) ;
             mOrderService = new OrderService() ;
             mQueryModel   = new QueryModel()     ;
             queryOrderList() ;
         } else {
-            EventBus.getDefault().unregister(this);
+           // EventBus.getDefault().unregister(this);
         }
     }
 }

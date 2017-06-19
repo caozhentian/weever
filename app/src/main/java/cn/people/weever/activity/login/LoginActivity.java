@@ -121,6 +121,9 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         mLoginViewModel.setUserName(userName);
         String password = mEdtPassword.getText().toString() ;
         mLoginViewModel.setPassword(password);
+        if(mSpnCarNum.getSelectedItem() == null){
+           return ;
+        }
         String carNum = mSpnCarNum.getSelectedItem().toString() ;
         mLoginViewModel.setCardNum(carNum);
         try {

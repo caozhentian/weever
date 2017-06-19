@@ -7,12 +7,17 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
+import cn.people.weever.activity.HomeActivity;
+import cn.people.weever.activity.order.list.MyOrdersActivity;
+import cn.people.weever.common.util.SystemUtils;
 
 /**
  * 自定义接收器
@@ -45,13 +50,32 @@ public class MyReceiver extends BroadcastReceiver {
         	
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
-            
-//        	//打开自定义的Activity
-//        	Intent i = new Intent(context, TestActivity.class);
-//        	i.putExtras(bundle);
-//        	//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        	i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-//        	context.startActivity(i);
+
+			if(SystemUtils.isAppAlive(context)) { //app 进程存活
+				//如果存活的话，就直接启动DetailActivity，但要考虑一种情况，就是app的进程虽然仍然在
+				//但Task栈已经空了，比如用户点击Back键退出应用，但进程还没有被系统回收，如果直接启动
+				//DetailActivity,再按Back键就不会返回MainActivity了。所以在启动
+				//DetailActivity前，要先启动MainActivity。
+				Logger.i("NotificationReceiver", "the app process is alive");
+				//打开自定义的Activity
+				Intent mainIntent = new Intent(context, HomeActivity.class);
+				//将MainAtivity的launchMode设置成SingleTask, 或者在下面flag中加上Intent.FLAG_CLEAR_TOP,
+				//如果Task栈中有MainActivity的实例，就会把它移到栈顶，把在它之上的Activity都清理出栈，
+				//如果Task栈不存在MainActivity实例，则在栈顶创建
+				mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				Intent orderIntent = new Intent(context, MyOrdersActivity.class);
+				Intent[] intents = {mainIntent, orderIntent};
+				context.startActivities(intents);
+			}
+			else{// app 进程 需要重启
+				Intent launchIntent = context.getPackageManager().
+						getLaunchIntentForPackage("com.liangzili.notificationlaunch");
+				launchIntent.setFlags(
+						Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+//				Bundle args = new Bundle();
+//				args.putString(OrderApiService.ARG_NAME_NOTIFICATION_ORDER , OrderApiService.ARG_VALUE_NOTIFICATION_ORDER);
+				context.startActivity(launchIntent);
+			}
         	
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));

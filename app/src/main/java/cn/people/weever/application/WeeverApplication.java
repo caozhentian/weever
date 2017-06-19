@@ -11,6 +11,8 @@ import com.baidu.trace.api.entity.OnEntityListener;
 import com.baidu.trace.api.track.OnTrackListener;
 import com.baidu.trace.model.BaseRequest;
 import com.facebook.stetho.Stetho;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -86,6 +88,11 @@ public class WeeverApplication extends Application {
 //        LeakCanary.install(this);
     }
 
+    private void initLog(){
+        if(BuildConfig.DEBUG) {
+            Logger.addLogAdapter(new AndroidLogAdapter());
+        }
+    }
     private void initJPush(){
         if(BuildConfig.DEBUG) {
             JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
@@ -162,6 +169,7 @@ public class WeeverApplication extends Application {
 	public static final void exitLogin(){
         mClient.stopTrace(mTrace ,null);
         setCurUser(null);
+        JPushService.setAlias(getInstance(), null);
         setEntityName("");
     }
     /**

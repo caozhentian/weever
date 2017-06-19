@@ -41,6 +41,8 @@ public interface OrderApiService {
     public static final int TO_ORDER_TYPE_TRANSFER_DETAILS_NET_REQUST        =  422                      ;
     public static final int TO_ORDER_TYPE_FixTime_DETAILS_NET_REQUST        =   423                      ;
 
+    public static final String ARG_NAME_NOTIFICATION_ORDER = "ARG_NAME_NOTIFICATION_ORDER" ;
+    public static final String ARG_VALUE_NOTIFICATION_ORDER = "ARG_NOTIFICATION_ORDER" ;
     /**
      *查询订单
      * @param status

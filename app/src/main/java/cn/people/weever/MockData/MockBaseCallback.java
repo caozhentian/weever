@@ -4,6 +4,8 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
+import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.event.NetRequestPostEvent;
 import cn.people.weever.event.NetRequestPreEvent;
 import cn.people.weever.net.APIError;
@@ -26,6 +28,13 @@ public class MockBaseCallback<T> {
     public MockBaseCallback(int apiOperationCode  , MockResponse<T> response) {
         mApiOperationCode = apiOperationCode;
         mResponse = response ;
+        BaseActivity baseActivity = ActivityExitManage.getTopActivity() ;
+        if(baseActivity != null){
+            baseActivity.setApiOperationCode(mApiOperationCode);
+        }
+        if(ActivityExitManage.getCurBaseFragment() != null){
+            ActivityExitManage.getCurBaseFragment().setApiOperationCode(mApiOperationCode);
+        }
         //通知网络请求开始 UI层收到可展现进度条
         postEvent(new NetRequestPreEvent(apiOperationCode));
     }
