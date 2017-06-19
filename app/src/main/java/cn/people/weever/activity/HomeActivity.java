@@ -973,6 +973,9 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 startActivity(OrderClearingBaseActivity.newIntent(HomeActivity.this , mBaseOrder));
                 mEdtDest.setText("");
                 mEdtSrc.setText("");
+                mRadioBtnDayUse.setChecked(false)      ;
+                mRadioBtnTransfer.setChecked(false)    ;
+                mRadioBtnHalfDayUse.setChecked(false)  ;
                 mBaseOrder = null ;
             }
         }
