@@ -35,7 +35,7 @@ public class DriverService {
         }
         if(MockLoginService.DEBUG_MOCK){
             MockLoginService mockLoginService = new MockLoginService() ;
-            mockLoginService.getJsonData() ;
+            mockLoginService.getJsonData(driver) ;
             return ;
         }
         mDriverRepository.login(driver);

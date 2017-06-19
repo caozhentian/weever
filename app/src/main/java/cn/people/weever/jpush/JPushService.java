@@ -1,4 +1,4 @@
-package com.example.jpushdemo;
+package cn.people.weever.jpush;
 
 import android.content.Context;
 import android.os.Handler;

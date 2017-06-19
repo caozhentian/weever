@@ -20,6 +20,7 @@ import cn.people.weever.R;
 import cn.people.weever.activity.HomeActivity;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.common.util.ToastUtil;
+import cn.people.weever.jpush.JPushService;
 import cn.people.weever.model.Car;
 import cn.people.weever.model.Driver;
 import cn.people.weever.net.BaseModel;
@@ -143,6 +144,7 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_LOGIN){
             Driver driver = baseModel.getData() ;
             mDriverService.save(driver);
+            JPushService.setAlias(this , driver.getUserName());
             startActivity(HomeActivity.newIntent(this));
             finish() ;
         }

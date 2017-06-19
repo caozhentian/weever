@@ -14,9 +14,11 @@ import com.facebook.stetho.Stetho;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import cn.jpush.android.api.JPushInterface;
 import cn.people.weever.BuildConfig;
 import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.config.FileConfig;
+import cn.people.weever.jpush.JPushService;
 import cn.people.weever.model.Driver;
 import cn.people.weever.service.LocationService;
 
@@ -74,6 +76,7 @@ public class WeeverApplication extends Application {
         initMap()   ;
         initTrace() ;
         initdb();
+        initJPush() ;
 
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
 //            // This process is dedicated to LeakCanary for heap analysis.
@@ -83,6 +86,16 @@ public class WeeverApplication extends Application {
 //        LeakCanary.install(this);
     }
 
+    private void initJPush(){
+        if(BuildConfig.DEBUG) {
+            JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
+        }
+        JPushInterface.init(this);     		// 初始化 JPush
+        if(getCurUser() != null){
+            Driver driver = getCurUser() ;
+            JPushService.setAlias(this ,driver.getUserName() );
+        }
+    }
     /**after onCreate ,call this method
      * @return
      */

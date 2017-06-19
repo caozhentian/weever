@@ -10,11 +10,11 @@ import cn.people.weever.net.DriverApiService;
 public class MockLoginService extends MockService {
 
 
-    @Override
-    public MockResponse getJsonData() {
+
+    public MockResponse getJsonData(Driver driver) {
         MockResponse mockResponse = getSuccessResponse() ;
-        Driver driver = new Driver() ;
-        driver.setUserName("Demo");
+//        Driver driver = new Driver() ;
+//        driver.setUserName("131869");
         driver.setToken("dfdfdffda2434");
         mockResponse.getModel().setData(driver);
         MockBaseCallback<Driver> mockBaseCallback = new  MockBaseCallback<Driver>(DriverApiService.TO_USER_LOGIN, mockResponse) ;
@@ -42,5 +42,10 @@ public class MockLoginService extends MockService {
         MockBaseCallback<Driver> mockBaseCallback = new  MockBaseCallback<Driver>(DriverApiService.TO_USER_LOGIN_OUT, mockResponse) ;
         mockBaseCallback.onResponse();
         return  mockResponse ;
+    }
+
+    @Override
+    public MockResponse getJsonData() {
+        return null;
     }
 }
