@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -40,17 +39,26 @@ public class SubscribeResumePauseBaseFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void processNetRequestPreEvent(@Nullable NetRequestPreEvent netRequestPreEvent){
+        if(netRequestPreEvent.getApiOperationCode() != mApiOperationCode){
+            return ;
+        }
         mCustomProgressDialog = new CustomProgressDialog(this.getContext() , R.style.progress_dialog) ;
         mCustomProgressDialog.show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void processNetRequestPostEvent(@Nullable NetRequestPostEvent netRequestPostEvent){
+        if(netRequestPostEvent.getApiOperationCode() != mApiOperationCode){
+            return ;
+        }
         mCustomProgressDialog.cancel();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void processSuccessEvent(@NonNull BaseModel baseModel) {
+        if(baseModel.getApiOperationCode() != mApiOperationCode){
+            return ;
+        }
         if(baseModel.isSuccess()){
             showToast(baseModel.getMessage());
             dealSuccess(baseModel) ;
@@ -64,6 +72,9 @@ public class SubscribeResumePauseBaseFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void processErrorEvent(@NonNull APIError apiErrorError) {
+        if(apiErrorError.getTodo_code() != mApiOperationCode){
+            return ;
+        }
         if(apiErrorError.getThrowable() instanceof SocketTimeoutException){
             showToast("网络连接超时。请检查网络");
         }
@@ -74,6 +85,9 @@ public class SubscribeResumePauseBaseFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void processFailEvent(@NonNull APIFail apiFail) {
+        if(apiFail.getTodo_code() != mApiOperationCode){
+            return ;
+        }
         if(apiFail.getCode() == BaseModel.SUB_FAIL_STATUS_TOKEN_EXPIRE){
             showTokenExpireDialog() ;
         }
@@ -93,13 +107,11 @@ public class SubscribeResumePauseBaseFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //EventBus.getDefault().register(this);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        EventBus.getDefault().unregister(this);
     }
 //    @Override
 //    public void onResume() {

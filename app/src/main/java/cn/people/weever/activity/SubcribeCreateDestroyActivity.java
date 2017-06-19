@@ -28,7 +28,6 @@ public abstract class SubcribeCreateDestroyActivity extends BaseActivity{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		//EventBus.getDefault().register(this);
 	}
 
 	@Override
@@ -66,6 +65,16 @@ public abstract class SubcribeCreateDestroyActivity extends BaseActivity{
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void processSuccessEvent(@NonNull BaseModel baseModel) {
 		super.processSuccessEvent(baseModel);
+	}
+
+	//网络请求前的预处理设置
+	protected void preNetQuest( int ApiOperationCode){
+		mApiOperationCode = ApiOperationCode ;
+	}
+
+	//网络请求后的预处理
+	protected void postNetQuest(){
+
 	}
 
 }

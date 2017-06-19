@@ -46,6 +46,12 @@ public class MockBaseCallback<T> {
                 return ;
             }
             model.setApiOperationCode(mApiOperationCode);
+            //模拟网络耗时操作
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             postEvent(model);
         } else { //an application-level failure such as a 404 or 500
             postEvent(new APIFail(mApiOperationCode ,response.code(), response.message()));

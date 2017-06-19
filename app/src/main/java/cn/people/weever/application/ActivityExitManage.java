@@ -2,8 +2,10 @@ package cn.people.weever.application;
 
 import android.app.Activity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Stack;
+
+import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.fragment.BaseFragment;
 
 /**
  * 退出系统处理类
@@ -14,7 +16,9 @@ import java.util.List;
  *         removeActivity()方法，表明将一个马上要销毁的活动从活动管 理器里移除。
  */
 public class ActivityExitManage {
-	public static List<Activity> activities = new ArrayList<Activity>();
+	public static Stack<Activity> activities = new Stack<>();
+
+	private static BaseFragment curBaseFragment  ;
 
 	/**
 	 * 添加Activity到集合
@@ -22,7 +26,8 @@ public class ActivityExitManage {
 	 * @param activity
 	 */
 	public static void addActivity(Activity activity) {
-		activities.add(activity);
+		//activities.add(activity);
+		activities.push(activity) ;
 	}
 
 	/**
@@ -31,7 +36,7 @@ public class ActivityExitManage {
 	 * @param activity
 	 */
 	public static void removeActivity(Activity activity) {
-		activities.remove(activity);
+		activities.remove(activity) ;
 	}
 
 	/**
@@ -44,5 +49,24 @@ public class ActivityExitManage {
 				activity.finish();
 			}
 		}
+	}
+
+	public static BaseActivity  getTopActivity(){
+		if(activities.size() == 0){
+			return null ;
+		}
+		Activity topActivity = activities.peek() ;
+		if(topActivity instanceof  BaseActivity){
+			return (BaseActivity)topActivity ;
+		}
+		return null ;
+	}
+
+	public static BaseFragment getCurBaseFragment() {
+		return curBaseFragment;
+	}
+
+	public static void setCurBaseFragment(BaseFragment curBaseFragment) {
+		ActivityExitManage.curBaseFragment = curBaseFragment;
 	}
 }

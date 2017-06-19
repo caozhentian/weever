@@ -26,6 +26,7 @@ import cn.people.weever.net.BaseModel;
  */
 public abstract class BaseActivity extends AppCompatActivity{
 
+	protected  int mApiOperationCode ;
 	protected CustomProgressDialog mCustomProgressDialog;
 	public abstract void initData();
 	public abstract void initView();
@@ -52,16 +53,25 @@ public abstract class BaseActivity extends AppCompatActivity{
 	}
 
 	public void processNetRequestPreEvent(@Nullable NetRequestPreEvent netRequestPreEvent){
-		//mCustomProgressDialog = new CustomProgressDialog(this , R.style.progress_dialog) ;
-		//mCustomProgressDialog.show();
+		if(netRequestPreEvent.getApiOperationCode() != mApiOperationCode){
+			return ;
+		}
+		mCustomProgressDialog = new CustomProgressDialog(this , R.style.progress_dialog) ;
+		mCustomProgressDialog.show();
 	}
 
 	public void processNetRequestPostEvent(@Nullable NetRequestPostEvent netRequestPostEvent){
-		//mCustomProgressDialog.cancel();
+		if(netRequestPostEvent.getApiOperationCode() != mApiOperationCode){
+			return ;
+		}
+		mCustomProgressDialog.cancel();
 	}
 
 
 	public void processSuccessEvent(@NonNull BaseModel baseModel) {
+		if(baseModel.getApiOperationCode() != mApiOperationCode){
+			return ;
+		}
 		if(baseModel.isSuccess()){
 			showToast(baseModel.getMessage());
 			dealSuccess(baseModel) ;
@@ -74,6 +84,9 @@ public abstract class BaseActivity extends AppCompatActivity{
 	}
 
 	public void processErrorEvent(@NonNull APIError apiErrorError) {
+		if(apiErrorError.getTodo_code() != mApiOperationCode){
+			return ;
+		}
 		if(apiErrorError.getThrowable() instanceof SocketTimeoutException){
 			showToast("网络连接超时。请检查网络");
 		}
@@ -83,6 +96,9 @@ public abstract class BaseActivity extends AppCompatActivity{
 	}
 
 	public void processFailEvent(@NonNull APIFail apiFail) {
+		if(apiFail.getTodo_code() != mApiOperationCode){
+			return ;
+		}
 		if(apiFail.getCode() == BaseModel.SUB_FAIL_STATUS_TOKEN_EXPIRE){
 			showTokenExpireDialog() ;
 		}
@@ -112,6 +128,14 @@ public abstract class BaseActivity extends AppCompatActivity{
                 startActivity(LoginActivity.newIntent(BaseActivity.this));
 			}
 		});
+	}
+
+	public int getApiOperationCode() {
+		return mApiOperationCode;
+	}
+
+	public void setApiOperationCode(int apiOperationCode) {
+		mApiOperationCode = apiOperationCode;
 	}
 }
  
