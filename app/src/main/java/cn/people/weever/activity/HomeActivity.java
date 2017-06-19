@@ -468,8 +468,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             @Override
             public void ok() {
                 // 设置起终点信息，对于tranist search 来说，城市名无意义
-                //startNodeStr = "科技六路" ;
-                //endNodeStr   = "金宇蓝苑" ;
                 PlanNode stNode = PlanNode.withLocation(srcLating)   ;
                 PlanNode enNode = PlanNode.withLocation(destLating)  ;
                 mBaiduMap.clear();
@@ -525,14 +523,12 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             return ;
         }
         if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
-            // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
-            // result.getSuggestAddrInfo()
             return;
         }
         if (drivingRouteResult.getRouteLines().size() > 1 ) { //使用其中一条路线
             mRouteLine = drivingRouteResult.getRouteLines().get(0);
             setRelativeInfo() ;
-            DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
+            DrivingRouteOverlay overlay = new DrivingRouteOverlay(mBaiduMap);
             //routeOverlay = overlay;
             mBaiduMap.setOnMarkerClickListener(overlay);
             overlay.setData(drivingRouteResult.getRouteLines().get(0));
@@ -560,30 +556,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     @Override
     public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
 
-    }
-
-    // 定制RouteOverly
-    private class MyDrivingRouteOverlay extends DrivingRouteOverlay {
-
-        public MyDrivingRouteOverlay(BaiduMap baiduMap) {
-            super(baiduMap);
-        }
-
-        @Override
-        public BitmapDescriptor getStartMarker() {
-//            if (useDefaultIcon) {
-//                return BitmapDescriptorFactory.fromResource(R.drawable.icon_st);
-//            }
-            return null;
-        }
-
-        @Override
-        public BitmapDescriptor getTerminalMarker() {
-//            if (useDefaultIcon) {
-//                return BitmapDescriptorFactory.fromResource(R.drawable.icon_en);
-//            }
-            return null;
-        }
     }
 
     /**
@@ -665,17 +637,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         }
     }
 	
-	public void startRealTimeLoc(int interval) {
-        realTimeLocRunnable = new RealTimeLocRunnable(interval);
-        realTimeHandler.post(realTimeLocRunnable);
-    }
 
-    public void stopRealTimeLoc() {
-        if (null != realTimeHandler && null != realTimeLocRunnable) {
-            realTimeHandler.removeCallbacks(realTimeLocRunnable);
-            realTimeLocRunnable = null;
-        }
-    }
 	private void initListener() {
 
         trackListener = new OnTrackListener() {
@@ -688,7 +650,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 latLngs.add(currentLatLng) ;
                 OverlayOptions polylineOptions = new PolylineOptions().width(10)
                         .color(Color.RED).points(latLngs);
-                //polylineOverlay =
                 mBaiduMap.addOverlay(polylineOptions);
             }};
 
@@ -796,20 +757,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         if (!hasInitSuccess) {
             Toast.makeText(HomeActivity.this, "还未初始化!", Toast.LENGTH_SHORT).show();
         }
-        // 权限申请
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
-            // 保证导航功能完备
-//            if (!hasCompletePhoneAuth()) {
-//                if (!hasRequestComAuth) {
-//                    hasRequestComAuth = true;
-//                    this.requestPermissions(authComArr, authComRequestCode);
-//                    return;
-//                } else {
-//                    Toast.makeText(BNDemoMainActivity.this, "没有完备的权限!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-
-        }
         BNRoutePlanNode sNode = null;
         BNRoutePlanNode eNode = null;
         sNode = new BNRoutePlanNode(srcLating.longitude, srcLating.latitude, mEdtSrc.getText().toString(), null, BNRoutePlanNode.CoordinateType.BD09LL);
@@ -835,17 +782,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
         @Override
         public void onJumpToNavigator() {
-            /*
-             * 设置途径点以及resetEndNode会回调该接口
-             */
-
-//            for (Activity ac : activityList) {
-//
-//                if (ac.getClass().getName().endsWith("BNDemoGuideActivity")) {
-//
-//                    return;
-//                }
-//            }
             startActivity(BNDemoGuideActivity.newIntent(HomeActivity.this ,mBNRoutePlanNode ));
 
         }
