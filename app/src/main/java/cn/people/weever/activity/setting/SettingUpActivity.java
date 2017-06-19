@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import cn.people.weever.R;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
+import cn.people.weever.activity.login.LoginActivity;
 import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.ManifestUtil;
@@ -105,7 +106,6 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
             @Override
             public void ok() {
                 mService.loginOut();
-
                 //startActivity(LoginActivity.newIntent(SettingUpActivity.this));
             }
         });
@@ -116,6 +116,7 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
     protected<T> void dealSuccess(BaseModel baseModel){
         WeeverApplication.exitLogin();
         ActivityExitManage.finishAll();
+        startActivity(LoginActivity.newIntent(SettingUpActivity.this));
     }
 
     @Override

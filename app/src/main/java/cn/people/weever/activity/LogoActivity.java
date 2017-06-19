@@ -39,7 +39,6 @@ public class LogoActivity extends SubcribeCreateDestroyActivity {
             //startActivity(HomeActivity.newIntent(this));
             mDriverService.autoLogin();
         }
-        finish();
     }
 
     public void dealSuccess(@Nullable BaseModel baseModel){

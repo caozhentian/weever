@@ -225,7 +225,8 @@ public class WeeverApplication extends Application {
         if(TextUtils.isEmpty(entityName)){
             entityName = PreferencesUtil.getStringPreferences(sWeeverApplication , "CAR_KEY") ;
         }
-        return entityName;
+//        return entityName; TODO TESTCODE
+        return  "myTrace" ;
     }
 
     public static void setEntityName(String entityName) {

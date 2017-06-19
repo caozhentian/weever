@@ -39,8 +39,22 @@ public class MockBaseCallback<T> {
         postEvent(new NetRequestPreEvent(apiOperationCode));
     }
 
-
     public void onResponse( ) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                onResponse2( ) ;
+            }
+        }).start();
+    }
+
+
+    public void onResponse2( ) {
         MockResponse<T>  response = mResponse ;
         if (response.isSuccess() ) {
             BaseModel<T> model = response.body();
@@ -56,11 +70,11 @@ public class MockBaseCallback<T> {
             }
             model.setApiOperationCode(mApiOperationCode);
             //模拟网络耗时操作
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             postEvent(model);
         } else { //an application-level failure such as a 404 or 500
             postEvent(new APIFail(mApiOperationCode ,response.code(), response.message()));

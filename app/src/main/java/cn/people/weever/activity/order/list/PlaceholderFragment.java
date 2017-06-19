@@ -21,6 +21,7 @@ import cn.people.weever.R;
 import cn.people.weever.activity.order.detail.OrderDetailsBaseActivity;
 import cn.people.weever.event.OrderStatusChangeEvent;
 import cn.people.weever.fragment.BaseFragment;
+import cn.people.weever.fragment.SubscribeResumePauseBaseFragment;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.QueryModel;
 import cn.people.weever.net.BaseModel;
@@ -33,7 +34,7 @@ import cn.people.weever.widget.PullToRefreshView;
  * Created by Administrator on 2017/5/9.
  */
 
-public class PlaceholderFragment extends BaseFragment {
+public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
