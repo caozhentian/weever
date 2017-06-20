@@ -85,6 +85,8 @@ import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.activity.setting.SettingUpActivity;
 import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.common.timer.ITimerExecute;
+import cn.people.weever.common.timer.TimerByHandler;
 import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.MapUtil;
 import cn.people.weever.common.util.NumberFormat;
@@ -95,6 +97,7 @@ import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.Address;
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.RealTimeOrderInfo;
 import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.model.TripNode;
 import cn.people.weever.net.BaseModel;
@@ -138,12 +141,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
      * Entity监听器(用于接收实时定位回调)
      */
     private OnEntityListener entityListener = null;
-    /**
-     * 实时定位任务
-     */
-    private RealTimeHandler realTimeHandler = new RealTimeHandler();
-
-    private RealTimeLocRunnable realTimeLocRunnable = null;
 
     private PowerManager powerManager = null;
 
@@ -198,6 +195,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     private boolean[] status = new boolean[4] ;
 
     private BaseOrder mBaseOrder ;
+
+    private TimerByHandler mTimerByHandler ;
 
     public static final Intent newIntent(Context packageContext, BaseOrder baseOrder){
         Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
@@ -619,27 +618,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         }
     }
 
-
-	/**
-     * 实时定位任务
-     *
-     * @author baidu
-     */
-    class RealTimeLocRunnable implements Runnable {
-
-        private int interval = 0;
-
-        public RealTimeLocRunnable(int interval) {
-            this.interval = interval;
-        }
-
-        @Override
-        public void run() {
-            realTimeHandler.postDelayed(this, interval * 1000);
-        }
-    }
-	
-
 	private void initListener() {
 
         trackListener = new OnTrackListener() {
@@ -684,6 +662,15 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                     showToast( "轨迹采集开始");
                     mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE);
                     mOrderService.routeOperateOrder(mRouteOperateEvent);
+                    mTimerByHandler = new TimerByHandler(new ITimerExecute() {
+                        @Override
+                        public void onExecute() {
+                            if(mBaseOrder != null) {
+                                mOrderService.getRealTimeOrderInfo(mBaseOrder);
+                            }
+                        }
+                    });
+                    mTimerByHandler.start();
                 }
                 else{
                     showToast( "轨迹采集失败，请重新点击");
@@ -694,6 +681,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             public void onStopGatherCallback(int errorNo, String message) {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STOPPED == errorNo) {
                     showToast( "轨迹采集结束");
+                    mTimerByHandler.stop() ;
                     mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
                     mOrderService.routeOperateOrder(mRouteOperateEvent);
                 }
@@ -713,12 +701,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         WeeverApplication.mClient.startTrace(WeeverApplication.mTrace, traceListener);
 	}
 
-    static class RealTimeHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-        }
-    }
 
     /**
      * 注册电源锁广播
@@ -804,16 +786,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     private void initNavi() {
 
         BNOuterTTSPlayerCallback ttsCallback = null;
-
-        // 申请权限
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
-//            if (!hasBasePhoneAuth()) {
-//
-//                this.requestPermissions(authBaseArr, authBaseRequestCode);
-//                return;
-//
-//            }
-        }
 
         BaiduNaviManager.getInstance().init(this, FileConfig.S_SDCardPath, FileConfig.APP_FOLDER_NAME, new BaiduNaviManager.NaviInitListener() {
             @Override
@@ -916,6 +888,12 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 mRadioBtnHalfDayUse.setChecked(false)  ;
                 mBaseOrder = null ;
             }
+        }
+        if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_REAL_TIME_INFO_NET_REQUST){
+            showToast("操作成功");
+            RealTimeOrderInfo realTimeOrderInfo = (RealTimeOrderInfo) baseModel.getData();
+            mTxtAllWaitTime.setText(realTimeOrderInfo.getWaitTime())    ;
+            mTxtAllWaitAmount.setText(realTimeOrderInfo.getWaitCost())  ;
         }
     }
 }
