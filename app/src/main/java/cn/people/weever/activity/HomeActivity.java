@@ -766,7 +766,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
         @Override
         public void onJumpToNavigator() {
-            startActivity(BNDemoGuideActivity.newIntent(HomeActivity.this ,mBNRoutePlanNode ));
+            startActivity(BNDemoGuideActivity.newIntent(HomeActivity.this ,mBNRoutePlanNode , mBaseOrder));
 
         }
 

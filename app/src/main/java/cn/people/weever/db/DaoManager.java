@@ -5,6 +5,7 @@ import android.content.Context;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.query.QueryBuilder;
 
+import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.model.DaoMaster;
 import cn.people.weever.model.DaoSession;
 
@@ -15,7 +16,7 @@ public class DaoManager {
 	private static DaoMaster.DevOpenHelper mHelper;
 	private static DaoMaster mDaoMaster;
 	private static DaoSession mDaoSession;
-	private Context context;
+	private Context context = WeeverApplication.getInstance();
 	private Database sqLiteDatabase;
 
 	/**

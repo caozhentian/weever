@@ -77,16 +77,18 @@ public class PoiSearchActivity extends BaseActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poisearch2);
+
         initView() ;
         initData();
     }
 
     @Override
     public void initData() {
-        mAddressService  = new AddressService() ;
+
     }
 
     public void initView(){
+        mAddressService  = new AddressService() ;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);

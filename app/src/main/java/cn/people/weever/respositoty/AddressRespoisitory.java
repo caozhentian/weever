@@ -3,6 +3,7 @@ package cn.people.weever.respositoty;
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.List;
+import java.util.UUID;
 
 import cn.people.weever.db.DaoManager;
 import cn.people.weever.model.Address;
@@ -26,11 +27,12 @@ public class AddressRespoisitory {
     public void save(Address address){
         Address addressDB = query(address) ;
         if( addressDB != null) {
-            addressDB.setLatitude(address.getLatitude());
-            addressDB.setLongitude(address.getLongitude());
-            daoSession.update(address);
+//            addressDB.setLatitude(address.getLatitude());
+//            addressDB.setLongitude(address.getLongitude());
+//            daoSession.update(addressDB);
         }
         else{
+            address.setId(UUID.randomUUID().toString());
             daoSession.insert(address) ;
             QueryBuilder<Address> queryBuilder = daoSession.queryBuilder(Address.class) ;
             if( queryBuilder.count() > MAX_STORE_VALUE){

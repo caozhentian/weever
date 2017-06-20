@@ -42,6 +42,7 @@ public class AddressService {
             poiInfo.address = address.getAddress() ;
             poiInfo.name = address.getPlaceName()   ;
             poiInfo.location = new LatLng(address.getLatitude() , address.getLongitude()) ;
+            poiInfoList.add(poiInfo) ;
         }
         return poiInfoList ;
     }

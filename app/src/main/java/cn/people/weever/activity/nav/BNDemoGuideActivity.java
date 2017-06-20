@@ -27,6 +27,7 @@ import java.util.List;
 
 import cn.people.weever.R;
 import cn.people.weever.fragment.NavHeadFragment;
+import cn.people.weever.model.BaseOrder;
 
 
 /**
@@ -38,9 +39,11 @@ import cn.people.weever.fragment.NavHeadFragment;
 public class BNDemoGuideActivity extends Activity {
 
     public static final String ROUTE_PLAN_NODE = "ROUTE_PLAN_NODE" ;
+    public static final String BASE_ORDER = "BASE_ORDER" ;
     private final String TAG = BNDemoGuideActivity.class.getName();
     private BNRoutePlanNode mBNRoutePlanNode = null;
     private BaiduNaviCommonModule mBaiduNaviCommonModule = null;
+    private BaseOrder mBaseOrder ;
 
     /*
      * 对于导航模块有两种方式来实现发起导航。 1：使用通用接口来实现 2：使用传统接口来实现
@@ -49,10 +52,12 @@ public class BNDemoGuideActivity extends Activity {
     // 是否使用通用接口
     private boolean useCommonInterface = true;
 
-    public static final Intent newIntent(Context packageContext ,BNRoutePlanNode bNRoutePlanNode ){
+    public static final Intent newIntent(Context packageContext , BNRoutePlanNode bNRoutePlanNode,
+                                         BaseOrder baseOrder){
         Intent intent = new Intent(packageContext , BNDemoGuideActivity.class) ;
         Bundle bundle = new Bundle();
         bundle.putSerializable(ROUTE_PLAN_NODE, bNRoutePlanNode);
+        bundle.putSerializable(BASE_ORDER, baseOrder);
         intent.putExtras(bundle);
         return intent ;
     }
@@ -104,17 +109,22 @@ public class BNDemoGuideActivity extends Activity {
     }
 
     private void initFragment(){
+        Bundle bundle = getIntent().getExtras();
+        mBaseOrder =  (BaseOrder) bundle.getSerializable(ROUTE_PLAN_NODE);
+        if(mBaseOrder == null){
+            return ;
+        }
         FragmentManager fragmentManager = getFragmentManager();
         if(fragmentManager.findFragmentById(R.id.fl_nav_head) == null){
             FragmentTransaction fragmentTransaction = fragmentManager
                     .beginTransaction();
-            fragmentTransaction.add(R.id.fl_nav_head , NavHeadFragment.newInstance("qqq")) ;
+            fragmentTransaction.add(R.id.fl_nav_head , NavHeadFragment.newInstance(mBaseOrder)) ;
             fragmentTransaction.commit();
         }
         if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
             FragmentTransaction fragmentTransaction = fragmentManager
                     .beginTransaction();
-            fragmentTransaction.add(R.id.fl_nav_footer ,NavHeadFragment.newInstance("qqq")) ;
+            fragmentTransaction.add(R.id.fl_nav_footer ,NavHeadFragment.newInstance(mBaseOrder)) ;
             fragmentTransaction.commit();
         }
 

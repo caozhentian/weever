@@ -18,8 +18,9 @@ public class Address implements Serializable{
 
     private static final long serialVersionUID = -8940196742313994740L ;
 
-    @Id(autoincrement = true)
-    private long id;
+    @Property
+    @Id
+    private String id;
 
     @Property
     private boolean isSrc ;
@@ -39,8 +40,21 @@ public class Address implements Serializable{
     @SerializedName("longitude")
     private double mLongitude      ;
 
-    @Generated(hash = 369415501)
-    public Address(long id, boolean isSrc, String mPlaceName, String mAddress,
+//    public Address(String id, boolean isSrc, String mPlaceName, String mAddress,
+//            double mLatitude, double mLongitude) {
+//        this.id = id;
+//        this.isSrc = isSrc;
+//        this.mPlaceName = mPlaceName;
+//        this.mAddress = mAddress;
+//        this.mLatitude = mLatitude;
+//        this.mLongitude = mLongitude;
+//    }
+
+    public Address() {
+    }
+
+    @Generated(hash = 1333443384)
+    public Address(String id, boolean isSrc, String mPlaceName, String mAddress,
             double mLatitude, double mLongitude) {
         this.id = id;
         this.isSrc = isSrc;
@@ -48,10 +62,6 @@ public class Address implements Serializable{
         this.mAddress = mAddress;
         this.mLatitude = mLatitude;
         this.mLongitude = mLongitude;
-    }
-
-    @Generated(hash = 388317431)
-    public Address() {
     }
 
     public String getPlaceName() {
@@ -78,11 +88,11 @@ public class Address implements Serializable{
         mLongitude = longitude;
     }
 
-    public long getId() {
-        return this.id;
+    public String getId() {
+        return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
