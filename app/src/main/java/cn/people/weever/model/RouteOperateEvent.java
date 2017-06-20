@@ -1,5 +1,7 @@
 package cn.people.weever.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Administrator on 2017/6/7.
  */
@@ -15,10 +17,11 @@ public class RouteOperateEvent {
     //去结算
     public static final int TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE      =             403          ;
 
+    @SerializedName("operateType")
     private int        mOperateType    ;
-
+    @SerializedName("orderId")
     private String     mOrderId           ;
-
+    @SerializedName("tripNode")
     private TripNode    mTripNode       ;
 
 

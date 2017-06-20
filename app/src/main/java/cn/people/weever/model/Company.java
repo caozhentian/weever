@@ -14,6 +14,7 @@ public class Company implements Serializable{
     @SerializedName("companyNum")
     protected String mCompanyNum  ;
 
+    @SerializedName("companyName")
     protected String mCompanyName   ;
 
     public String getCompanyNum() {

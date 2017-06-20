@@ -1,5 +1,7 @@
 package cn.people.weever.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /** 接送机订单
  * Created by Administrator on 2017/4/8.
  */
@@ -7,8 +9,9 @@ package cn.people.weever.model;
 public class TransferOrder extends BaseOrder{
 
     //接送机费用
+    @SerializedName("transferCost")
     private int mTransferCost           ;
-
+    @SerializedName("flightNumber")
     private String mFlightNumber         ;
 
     public String getFlightNumber() {
