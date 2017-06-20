@@ -618,6 +618,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             destLating = o.getmPoiInfo().location  ;
         }
     }
+
+
 	/**
      * 实时定位任务
      *

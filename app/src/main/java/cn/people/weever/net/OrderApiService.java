@@ -6,6 +6,7 @@ import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.DailyRentaOrder;
 import cn.people.weever.model.FixTimeOrder;
 import cn.people.weever.model.HalfDayRentalOrder;
+import cn.people.weever.model.RealTimeOrderInfo;
 import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.model.TransferOrder;
 import okhttp3.RequestBody;
@@ -25,6 +26,7 @@ public interface OrderApiService {
     public static final int TO_ORDER_SUBMIT_NET_REQUST              =             404          ;
     public static final int TO_ORDER_TAKE_NET_REQUST                  =           405           ;
     public static final int TO_ORDER_CANCEL_NET_REQUST              =             406           ;
+    public static final int TO_ORDER_REAL_TIME_INFO_NET_REQUST              =             407           ;
 
     public static final int TO_ORDER_LIST_NET_REQUST                          =             410           ;
 //    public static final int TO_ORDER_LIST_ALL_NET_REQUST                          =             410           ;
@@ -99,4 +101,7 @@ public interface OrderApiService {
     @POST("order/getFixTimeOrderInfo")
     Call<BaseModel<FixTimeOrder>>  getFixTimeOrderDetails( @Field("order_id") String id) ;
 
+    @FormUrlEncoded
+    @POST("order/getRealTimeOrderInfo")
+    Call<BaseModel<RealTimeOrderInfo>>  getRealTimeOrderInfo(@Field("order_id") String id) ;
 }

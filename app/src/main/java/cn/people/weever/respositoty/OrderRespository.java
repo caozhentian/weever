@@ -8,6 +8,7 @@ import cn.people.weever.model.FixTimeOrder;
 import cn.people.weever.model.HalfDayRentalOrder;
 import cn.people.weever.model.OrderSubmitInfo;
 import cn.people.weever.model.QueryModel;
+import cn.people.weever.model.RealTimeOrderInfo;
 import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.model.TransferOrder;
 import cn.people.weever.net.BaseCallback;
@@ -91,4 +92,10 @@ public class OrderRespository {
         Call<BaseModel<Object>> call = mOrderApiService.takeOrder(baseOrder.getOrderId())        ;
         call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_CANCEL_NET_REQUST))     ;
     }
+
+    public void getRealTimeOrderInfo(BaseOrder baseOrder){
+        Call<BaseModel<RealTimeOrderInfo>> call = mOrderApiService.getRealTimeOrderInfo(baseOrder.getOrderId())        ;
+        call.enqueue(new BaseCallback<RealTimeOrderInfo>(OrderApiService.TO_ORDER_REAL_TIME_INFO_NET_REQUST))     ;
+    }
+
 }

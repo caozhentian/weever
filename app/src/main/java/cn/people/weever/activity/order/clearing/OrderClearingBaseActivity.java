@@ -100,7 +100,10 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
     public void initData() {
         mOrderService = new OrderService() ;
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(BaseOrder.ORDER_ID);
-        setViewByBaseOrder();
+        if(mBaseOrder != null) {
+            setViewByBaseOrder();
+            queryOrderDetails(mBaseOrder);
+        }
     }
 
     @Override

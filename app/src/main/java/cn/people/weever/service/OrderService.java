@@ -78,4 +78,8 @@ public class OrderService {
         }
         mOrderRespository.routeOperateOrder(routeOperateEvent);
     }
+
+    public void getRealTimeOrderInfo(BaseOrder baseOrder){
+        mOrderRespository.getRealTimeOrderInfo(baseOrder);
+    }
 }
