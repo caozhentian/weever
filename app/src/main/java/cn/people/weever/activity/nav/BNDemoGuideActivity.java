@@ -110,7 +110,7 @@ public class BNDemoGuideActivity extends Activity {
 
     private void initFragment(){
         Bundle bundle = getIntent().getExtras();
-        mBaseOrder =  (BaseOrder) bundle.getSerializable(ROUTE_PLAN_NODE);
+        mBaseOrder =  (BaseOrder) bundle.getSerializable(BASE_ORDER);
         if(mBaseOrder == null){
             return ;
         }
