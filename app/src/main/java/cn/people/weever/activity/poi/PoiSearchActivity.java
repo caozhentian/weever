@@ -1,8 +1,6 @@
 package cn.people.weever.activity.poi;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -17,11 +15,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.baidu.mapapi.map.Text;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
-import com.baidu.mapapi.navi.BaiduMapNavigation;
-import com.baidu.mapapi.navi.NaviParaOption;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
@@ -30,7 +23,6 @@ import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
-import com.baidu.mapapi.utils.OpenClientUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -40,6 +32,7 @@ import java.util.List;
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
 import cn.people.weever.activity.car.AddressGpsAdapter;
+import cn.people.weever.service.AddressService;
 
 /**
  * 演示poi搜索功能
@@ -70,7 +63,8 @@ public class PoiSearchActivity extends BaseActivity implements
     private ListView lv_location ; 
     
     private AddressGpsAdapter mAddressGpsAdapter ;
-    
+
+    private AddressService mAddressService ;
 
     public static final Intent newIntent(Context packageContext , boolean src ){
     	Intent intent = new Intent(packageContext , PoiSearchActivity.class) ;
@@ -84,11 +78,12 @@ public class PoiSearchActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_poisearch2);
         initView() ;
+        initData();
     }
 
     @Override
     public void initData() {
-
+        mAddressService  = new AddressService() ;
     }
 
     public void initView(){
@@ -168,6 +163,7 @@ public class PoiSearchActivity extends BaseActivity implements
                  	ll_tabs.setVisibility(View.VISIBLE) ;
                  	mPoiInfoList.clear() ;
      				//加入其它地址
+                    mPoiInfoList.addAll(mAddressService.queryAll(mSrc)) ;
      				mAddressGpsAdapter.notifyDataSetChanged() ;
                     return;
                  }
@@ -195,6 +191,7 @@ public class PoiSearchActivity extends BaseActivity implements
 
         lv_location = (ListView)findViewById(R.id.lv_location);
         mPoiInfoList = new LinkedList<PoiInfo>();
+        mPoiInfoList.addAll(mAddressService.queryAll(mSrc)) ;
         mAddressGpsAdapter = new AddressGpsAdapter(this,mPoiInfoList);
         lv_location.setAdapter(mAddressGpsAdapter);
         lv_location.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -202,6 +199,7 @@ public class PoiSearchActivity extends BaseActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	PoiInfo poiInfo = mPoiInfoList.get(position) ;
                 EventBus.getDefault().post(new AddressSelectVM(mSrc ,poiInfo ));
+                mAddressService.save(poiInfo,mSrc);
                 finish() ;
             }
         });
@@ -286,50 +284,5 @@ public class PoiSearchActivity extends BaseActivity implements
     public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
 
     }
-    
-    /**
-     * 启动百度地图导航(Native)
-     */
-    public void startNavi(LatLng srcLatLng ,   String src ,
-    		              LatLng destLatLng ,  String dest ) {
-        
-        // 构建 导航参数
-        NaviParaOption para = new NaviParaOption()
-                .startPoint(srcLatLng).endPoint(destLatLng)
-                .startName(src).endName(src);
 
-        try {
-            BaiduMapNavigation.openBaiduMapNavi(para, this);
-        } catch (BaiduMapAppNotSupportNaviException e) {
-            e.printStackTrace();
-            showDialog();
-        }
-
-    }
-
-    /**
-     * 提示未安装百度地图app或app版本过低
-     */
-    public void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("您尚未安装百度地图app或app版本过低，点击确认安装？");
-        builder.setTitle("提示");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                OpenClientUtil.getLatestBaiduMapApp(PoiSearchActivity.this);
-            }
-        });
-
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        builder.create().show();
-
-    }
 }

@@ -20,6 +20,7 @@ import cn.jpush.android.api.JPushInterface;
 import cn.people.weever.BuildConfig;
 import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.config.FileConfig;
+import cn.people.weever.db.DaoManager;
 import cn.people.weever.jpush.JPushService;
 import cn.people.weever.model.Driver;
 import cn.people.weever.service.LocationService;
@@ -139,6 +140,7 @@ public class WeeverApplication extends Application {
     }
 
     private void initdb(){
+        DaoManager.getInstance() ;
 //        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db");
 //        Database db = helper.getWritableDb();
 //        sDaoSession = new DaoMaster(db).newSession();
