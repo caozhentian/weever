@@ -51,6 +51,7 @@ dependencies {
     // add library
     //compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     compile files('libs/bos-android-sdk-1.0.2.jar')
+
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -59,7 +60,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'com.orhanobut:logger:2.1.1'
+    compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
 }

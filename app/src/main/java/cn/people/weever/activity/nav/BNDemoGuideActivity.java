@@ -1,6 +1,8 @@
 package cn.people.weever.activity.nav;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.baidu.navisdk.adapter.BNRouteGuideManager;
 import com.baidu.navisdk.adapter.BNRouteGuideManager.CustomizedLayerItem;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.people.weever.R;
+import cn.people.weever.fragment.NavHeadFragment;
 
 
 /**
@@ -56,7 +60,7 @@ public class BNDemoGuideActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_nav);
         createHandler();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
         }
@@ -75,10 +79,12 @@ public class BNDemoGuideActivity extends Activity {
             //使用传统接口
             view = BNRouteGuideManager.getInstance().onCreate(this,mOnNavigationListener);
         }
-        
+
+        initFragment();
+        LinearLayout llContent= (LinearLayout) findViewById(R.id.ll_nav_content) ;
 
         if (view != null) {
-            setContentView(view);
+            llContent.addView(view);
         }
 
         Intent intent = getIntent();
@@ -97,6 +103,22 @@ public class BNDemoGuideActivity extends Activity {
         // BNEventHandler.getInstance().showDialog();
     }
 
+    private void initFragment(){
+        FragmentManager fragmentManager = getFragmentManager();
+        if(fragmentManager.findFragmentById(R.id.fl_nav_head) == null){
+            FragmentTransaction fragmentTransaction = fragmentManager
+                    .beginTransaction();
+            fragmentTransaction.add(R.id.fl_nav_head , NavHeadFragment.newInstance("qqq")) ;
+            fragmentTransaction.commit();
+        }
+        if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
+            FragmentTransaction fragmentTransaction = fragmentManager
+                    .beginTransaction();
+            fragmentTransaction.add(R.id.fl_nav_footer ,NavHeadFragment.newInstance("qqq")) ;
+            fragmentTransaction.commit();
+        }
+
+    }
     @Override
     protected void onResume() {
         super.onResume();

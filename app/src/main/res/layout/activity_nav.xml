@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".BNDemoMainActivity" >
+
+    
+    <FrameLayout 
+        android:id="@+id/fl_nav_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </FrameLayout>
+    
+    <LinearLayout
+        android:id="@+id/ll_nav_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        
+    </LinearLayout>
+    
+    <FrameLayout 
+        android:id="@+id/fl_nav_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </FrameLayout>
+
+</LinearLayout>
