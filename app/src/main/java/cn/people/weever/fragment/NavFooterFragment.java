@@ -23,6 +23,10 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.trace.model.OnTraceListener;
 import com.baidu.trace.model.PushMessage;
 import com.baidu.trace.model.StatusCodes;
+import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +34,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.people.weever.R;
 import cn.people.weever.activity.order.clearing.OrderClearingBaseActivity;
+import cn.people.weever.activity.poi.AddressSelectVM;
+import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.dialog.ICancelOK;
@@ -100,11 +106,6 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
     private PowerReceiver powerReceiver = null;
 
-    /**
-     * 打包周期
-     */
-    public int packInterval = 5;
-
     public NavFooterFragment() {
         // Required empty public constructor
     }
@@ -165,17 +166,15 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                     mBaseOrder.getType() == BaseOrder.ORDER_STAUS_APPOINTMENT){
                 mRadioBtnTransfer.setChecked(true);
             }
-            if(mBaseOrder != null) {
-                mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
-                //根据订单初始化
-                if (mBaseOrder.getPlanboardingTripNode().getAddress() != null) {
-                    srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude(),
-                            mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude());
-                }
-                if (mBaseOrder.getPlanDropOffTripNode().getAddress() != null) {
-                    destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude(),
-                            mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
-                }
+            mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
+            //根据订单初始化
+            if (mBaseOrder.getPlanboardingTripNode().getAddress() != null) {
+                srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude(),
+                        mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude());
+            }
+            if (mBaseOrder.getPlanDropOffTripNode().getAddress() != null) {
+                destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude(),
+                        mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
             }
         }
         powerManager =  (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
@@ -191,11 +190,11 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
+//        if (context instanceof OnFragmentInteractionRoutineListener) {
+//            mListener = (OnFragmentInteractionRoutineListener) context;
 //        } else {
 //            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
+//                    + " must implement OnFragmentInteractionRoutineListener");
 //        }
     }
 
@@ -229,7 +228,25 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 break;
         }
     }
-
+    @OnClick({R.id.edtSrc, R.id.edtDest})
+    public void onViewClickedAddress(View view) {
+        switch (view.getId()) {
+            case R.id.edtSrc:
+                if(mBaseOrder != null){
+                    showToast("已关联订单，无法更改目的地址");
+                    return ;
+                }
+                startActivity(PoiSearchActivity.newIntent(getContext(),true));
+                break;
+            case R.id.edtDest:
+                if(mBaseOrder != null){
+                    showToast("已关联订单，无法更改目的地址");
+                    return ;
+                }
+                startActivity(PoiSearchActivity.newIntent(getContext(),false));
+                break;
+        }
+    }
     private void start(){
         if(mBaseOrder == null){
 
@@ -247,6 +264,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             @Override
             public void ok() {
                 // 设置起终点信息，对于tranist search 来说，城市名无意义
+                mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
+                mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE);
+                mOrderService.routeOperateOrder(mRouteOperateEvent);
                 PlanNode stNode = PlanNode.withLocation(srcLating)   ;
                 PlanNode enNode = PlanNode.withLocation(destLating)  ;
                 WeeverApplication.mClient.startGather(traceListener);
@@ -262,7 +282,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.START_TRACE_NETWORK_CONNECT_FAILED <= errorNo) {
                     registerPowerReceiver();
                 }
-                //showToast(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                Logger.d(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                 //showToast(String.format("%s", message));
             }
 
@@ -276,26 +296,19 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             @Override
             public void onStartGatherCallback(int errorNo, String message) {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STARTED == errorNo) {
-                    //showToast( "轨迹采集开始");
-                    mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
-                    mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE);
-                    mOrderService.routeOperateOrder(mRouteOperateEvent);
+
                 }
                 else{
-                    //showToast( "轨迹采集失败，请重新点击");
                 }
             }
 
             @Override
             public void onStopGatherCallback(int errorNo, String message) {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STOPPED == errorNo) {
-                    //showToast( "轨迹采集结束");
-                    mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
-                    mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
-                    mOrderService.routeOperateOrder(mRouteOperateEvent);
+
                 }
                 else{
-                    //showToast( "轨迹采集失败，请重新点击");
+
                 }
             }
 
@@ -337,6 +350,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
             @Override
             public void ok() {
+                mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
+                mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
+                mOrderService.routeOperateOrder(mRouteOperateEvent);
                 WeeverApplication.mClient.stopGather(traceListener);
             }
         });
@@ -377,18 +393,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         }
         WeeverApplication.isRegisterPower = false;
     }
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 
@@ -409,4 +416,16 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             }
         }
     }
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void process(AddressSelectVM o){
+        if(o.isSrc()){
+            mEdtSrc.setText(o.getmPoiInfo().name)   ;
+            srcLating = o.getmPoiInfo().location   ;
+        }
+        else{
+            mEdtDest.setText(o.getmPoiInfo().name)  ;
+            destLating = o.getmPoiInfo().location  ;
+        }
+    }
+
 }

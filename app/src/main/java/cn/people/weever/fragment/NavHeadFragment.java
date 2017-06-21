@@ -12,12 +12,27 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.RouteLine;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.route.BikingRouteResult;
+import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
+import com.baidu.mapapi.search.route.DrivingRouteResult;
+import com.baidu.mapapi.search.route.IndoorRouteResult;
+import com.baidu.mapapi.search.route.MassTransitRouteResult;
+import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRouteResult;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import cn.people.weever.R;
 import cn.people.weever.common.timer.ITimerExecute;
 import cn.people.weever.common.timer.TimerByHandler;
+import cn.people.weever.common.util.NumberFormat;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.RealTimeOrderInfo;
 import cn.people.weever.net.BaseModel;
@@ -27,7 +42,7 @@ import cn.people.weever.service.OrderService;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionRoutineListener} interface
  * to handle interaction events.
  * Use the {@link NavHeadFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -56,7 +71,12 @@ public class NavHeadFragment extends SubscribeResumePauseBaseFragment {
 
     private OrderService mOrderService;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionRoutineListener mListener;
+
+    // 搜索相关
+    RoutePlanSearch mSearch = null ;    // 搜索模块，也可去掉地图模块独立使用
+    private LatLng srcLating      ;
+    private LatLng destLating     ;
 
     public NavHeadFragment() {
         // Required empty public constructor
@@ -80,12 +100,94 @@ public class NavHeadFragment extends SubscribeResumePauseBaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initVar() ;
+    }
+
+    private void initVar(){
+        mOrderService = new OrderService();
         if (getArguments() != null) {
             mBaseOrder = (BaseOrder) getArguments().getSerializable(ARG_PARAM1);
         }
-        mOrderService = new OrderService();
+        mOrderService = new OrderService() ;
+        if(mBaseOrder != null){
+            if (mBaseOrder.getPlanboardingTripNode().getAddress() != null) {
+                srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude(),
+                        mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude());
+            }
+            if (mBaseOrder.getPlanDropOffTripNode().getAddress() != null) {
+                destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude(),
+                        mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
+            }
+        }
+        initSearch() ;
+
     }
 
+    private void initSearch(){
+        mSearch = RoutePlanSearch.newInstance();
+        mSearch.setOnGetRoutePlanResultListener(new OnGetRoutePlanResultListener() {
+            @Override
+            public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
+
+            }
+
+            @Override
+            public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
+
+            }
+
+            @Override
+            public void onGetMassTransitRouteResult(MassTransitRouteResult massTransitRouteResult) {
+
+            }
+
+            @Override
+            public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
+                if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
+                    showToast("抱歉，未找到结果" )  ;
+                    return ;
+                }
+                if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+                    return;
+                }
+                if (drivingRouteResult.getRouteLines().size() > 1 ) { //使用其中一条路线
+                    RouteLine routeLine = drivingRouteResult.getRouteLines().get(0);
+                    setRelativeInfo(routeLine) ;
+//                    DrivingRouteOverlay overlay = new DrivingRouteOverlay(mBaiduMap);
+//                    mBaiduMap.setOnMarkerClickListener(overlay);
+//                    overlay.setData(drivingRouteResult.getRouteLines().get(0));
+//                    overlay.addToMap();
+//                    overlay.zoomToSpan();
+                }
+            }
+
+            @Override
+            public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {
+
+            }
+
+            @Override
+            public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
+
+            }
+        });
+        PlanNode stNode = PlanNode.withLocation(srcLating)   ;
+        PlanNode enNode = PlanNode.withLocation(destLating)  ;
+        mSearch.drivingSearch((new DrivingRoutePlanOption())
+                .from(stNode).to(enNode));
+    }
+
+    private void setRelativeInfo(RouteLine routeLine){
+        long  time = routeLine.getDuration();
+        if ( time / 3600 == 0 ) {
+            mTxtAllTime.setText( "" + time / 60 + "分钟" );
+        } else {
+            mTxtAllTime.setText( "" + time / 3600 + "小时" + (time % 3600) / 60 + "分钟" );
+        }
+        double  distance = routeLine.getDistance() ;
+
+        mTxtAllDistance.setText(NumberFormat.getdouble(distance/1000, 1)+"公里") ;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,7 +197,6 @@ public class NavHeadFragment extends SubscribeResumePauseBaseFragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -105,12 +206,6 @@ public class NavHeadFragment extends SubscribeResumePauseBaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
     }
 
     @Override
@@ -125,18 +220,7 @@ public class NavHeadFragment extends SubscribeResumePauseBaseFragment {
         unbinder.unbind();
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+    public interface OnFragmentInteractionRoutineListener {
         void onFragmentInteraction(Uri uri);
     }
 

@@ -27,7 +27,6 @@ import java.util.List;
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
 import cn.people.weever.fragment.NavFooterFragment;
-import cn.people.weever.fragment.NavHeadFragment;
 import cn.people.weever.model.BaseOrder;
 
 
@@ -126,12 +125,12 @@ public class BNDemoGuideActivity extends BaseActivity {
             return ;
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(fragmentManager.findFragmentById(R.id.fl_nav_head) == null){
-            FragmentTransaction fragmentTransaction = fragmentManager
-                    .beginTransaction();
-            fragmentTransaction.add(R.id.fl_nav_head , NavHeadFragment.newInstance(mBaseOrder)) ;
-            fragmentTransaction.commit();
-        }
+//        if(fragmentManager.findFragmentById(R.id.fl_nav_head) == null){
+//            FragmentTransaction fragmentTransaction = fragmentManager
+//                    .beginTransaction();
+//            fragmentTransaction.add(R.id.fl_nav_head , NavHeadFragment.newInstance(mBaseOrder)) ;
+//            fragmentTransaction.commit();
+//        }
         if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
             FragmentTransaction fragmentTransaction = fragmentManager
                     .beginTransaction();

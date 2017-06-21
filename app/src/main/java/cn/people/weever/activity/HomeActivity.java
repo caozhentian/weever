@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -54,10 +54,7 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
-import com.baidu.navisdk.adapter.BNCommonSettingParam;
-import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
-import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.baidu.trace.api.entity.OnEntityListener;
 import com.baidu.trace.api.track.LatestPointResponse;
@@ -89,10 +86,11 @@ import cn.people.weever.common.timer.ITimerExecute;
 import cn.people.weever.common.timer.TimerByHandler;
 import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.MapUtil;
+import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.common.util.NumberFormat;
-import cn.people.weever.config.FileConfig;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
+import cn.people.weever.fragment.NavFooterFragment;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.Address;
@@ -148,10 +146,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
     private PowerReceiver powerReceiver = null;
 
-    /**
-     * 打包周期
-     */
-    public int packInterval = 5;
     //UI相关
     @BindView(R.id.txtAllTime)
     TextView mTxtAllTime;
@@ -308,6 +302,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     @Override
     public void initView() {
       mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
+
       if(mBaseOrder != null){
          mEdtSrc.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
          mEdtDest.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName()) ;
@@ -334,8 +329,29 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
               }
           }
       }
+      initFragment() ;
     }
 
+    private void initFragment(){
+        Bundle bundle = getIntent().getExtras();
+        if(mBaseOrder == null){
+            return ;
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+//        if(fragmentManager.findFragmentById(R.id.fl_nav_head) == null){
+//            FragmentTransaction fragmentTransaction = fragmentManager
+//                    .beginTransaction();
+//            fragmentTransaction.add(R.id.fl_nav_head , NavHeadFragment.newInstance(mBaseOrder)) ;
+//            fragmentTransaction.commit();
+//        }
+        if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
+            FragmentTransaction fragmentTransaction = fragmentManager
+                    .beginTransaction();
+            fragmentTransaction.add(R.id.fl_nav_footer , NavFooterFragment.newInstance(mBaseOrder)) ;
+            fragmentTransaction.commit();
+        }
+
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -386,7 +402,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         super.onDestroy();
     }
 
-    @OnClick({R.id.btnStart, R.id.btnWait, R.id.btnReturn, R.id.btnRestart, R.id.btnCompute})
+    @OnClick({R.id.btnStart, R.id.btnWait, R.id.btnRestart, R.id.btnCompute})
     public void onViewClickedOperate(View view) {
         switch (view.getId()) {
             case R.id.btnStart:
@@ -395,8 +411,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             case R.id.btnWait:
                 waitting() ;
                 break;
-//            case R.id.btnReturn:
-//                break;
             case R.id.btnRestart:
                 restart() ;
                 break;
@@ -734,12 +748,9 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         WeeverApplication.isRegisterPower = false;
     }
 
-    private boolean hasInitSuccess = false;
-    String authinfo = "";
-
     private void routeplanToNavi() {
 
-        if (!hasInitSuccess) {
+        if (!NavUtils.hasInitSuccess) {
             Toast.makeText(HomeActivity.this, "还未初始化!", Toast.LENGTH_SHORT).show();
         }
         BNRoutePlanNode sNode = null;
@@ -784,95 +795,12 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             BNEventHandler.getInstance().handleNaviEvent(what, arg1, arg2, bundle);
         }
     };
+
     private void initNavi() {
-
-        BNOuterTTSPlayerCallback ttsCallback = null;
-
-        BaiduNaviManager.getInstance().init(this, FileConfig.S_SDCardPath, FileConfig.APP_FOLDER_NAME, new BaiduNaviManager.NaviInitListener() {
-            @Override
-            public void onAuthResult(int status, String msg) {
-
-                if (0 == status) {
-                    authinfo = "key校验成功!";
-                } else {
-                    authinfo = "key校验失败, " + msg;
-                }
-                HomeActivity.this.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Toast.makeText(HomeActivity.this, authinfo, Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-
-            public void initSuccess() {
-                Toast.makeText(HomeActivity.this, "百度导航引擎初始化成功", Toast.LENGTH_SHORT).show();
-                hasInitSuccess = true;
-                initSetting();
-            }
-
-            public void initStart() {
-                Toast.makeText(HomeActivity.this, "百度导航引擎初始化开始", Toast.LENGTH_SHORT).show();
-            }
-
-            public void initFailed() {
-                Toast.makeText(HomeActivity.this, "百度导航引擎初始化失败", Toast.LENGTH_SHORT).show();
-            }
-
-        }, null, ttsHandler, ttsPlayStateListener);
+        NavUtils.initNavi(this) ;
     }
 
-    /**
-     * 内部TTS播报状态回传handler
-     */
-    private Handler ttsHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            int type = msg.what;
-            switch (type) {
-                case BaiduNaviManager.TTSPlayMsgType.PLAY_START_MSG: {
-                    // showToastMsg("Handler : TTS play start");
-                    break;
-                }
-                case BaiduNaviManager.TTSPlayMsgType.PLAY_END_MSG: {
-                    // showToastMsg("Handler : TTS play end");
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-    };
 
-    /**
-     * 内部TTS播报状态回调接口
-     */
-    private BaiduNaviManager.TTSPlayStateListener ttsPlayStateListener = new BaiduNaviManager.TTSPlayStateListener() {
-
-        @Override
-        public void playEnd() {
-            // showToastMsg("TTSPlayStateListener : TTS play end");
-        }
-
-        @Override
-        public void playStart() {
-            // showToastMsg("TTSPlayStateListener : TTS play start");
-        }
-    };
-
-    private void initSetting() {
-        // BNaviSettingManager.setDayNightMode(BNaviSettingManager.DayNightMode.DAY_NIGHT_MODE_DAY);
-        BNaviSettingManager
-                .setShowTotalRoadConditionBar(BNaviSettingManager.PreViewRoadCondition.ROAD_CONDITION_BAR_SHOW_ON);
-        BNaviSettingManager.setVoiceMode(BNaviSettingManager.VoiceMode.Veteran);
-        // BNaviSettingManager.setPowerSaveMode(BNaviSettingManager.PowerSaveMode.DISABLE_MODE);
-        BNaviSettingManager.setRealRoadCondition(BNaviSettingManager.RealRoadCondition.NAVI_ITS_ON);
-        BNaviSettingManager.setIsAutoQuitWhenArrived(true);
-        Bundle bundle = new Bundle();
-        // 必须设置APPID，否则会静音
-        bundle.putString(BNCommonSettingParam.TTS_APP_ID, "9458069");
-        BNaviSettingManager.setNaviSdkParam(bundle);
-    }
 
     @Override
     protected  void dealSuccess(@Nullable BaseModel baseModel){
