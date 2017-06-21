@@ -25,6 +25,7 @@ public abstract class BaseFragment extends Fragment {
             mIsRegisterEventBus = true;
             EventBus.getDefault().register(this);
         }
+
     }
 
     @Override
@@ -34,6 +35,7 @@ public abstract class BaseFragment extends Fragment {
             mIsUnRegisterEventBus = true ;
             EventBus.getDefault().unregister(this);
         }
+
     }
 
     public int getApiOperationCode() {
@@ -47,11 +49,13 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        //ActivityExitManage.setCurBaseFragment( this)  ;
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        //ActivityExitManage.setCurBaseFragment( null)  ;
     }
 
     @Override

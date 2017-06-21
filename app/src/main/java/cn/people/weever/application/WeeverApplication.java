@@ -23,6 +23,7 @@ import cn.people.weever.config.FileConfig;
 import cn.people.weever.db.DaoManager;
 import cn.people.weever.jpush.JPushService;
 import cn.people.weever.model.Driver;
+import cn.people.weever.model.TripNode;
 import cn.people.weever.service.LocationService;
 
 /**
@@ -31,9 +32,13 @@ import cn.people.weever.service.LocationService;
 
 public class WeeverApplication extends Application {
 
+    public static final String CUR_TRIP_NODE = "CurTripNode" ;
+
     private static WeeverApplication sWeeverApplication ;
 
-    private static Driver sCurDriver;
+    private TripNode mCurTripNode          ;
+
+    private static Driver sCurDriver        ;
 
     //private static DaoSession sDaoSession ;
 	
@@ -235,5 +240,17 @@ public class WeeverApplication extends Application {
         WeeverApplication.entityName = entityName;
         PreferencesUtil.setPreferences(sWeeverApplication,"CAR_KEY",entityName);
         mTrace.setEntityName(entityName);
+    }
+
+    public TripNode getCurTripNode() {
+        if(mCurTripNode == null){
+            mCurTripNode = PreferencesUtil.getPreferences(this , CUR_TRIP_NODE) ;
+        }
+        return mCurTripNode;
+    }
+
+    public void setCurTripNode(TripNode curTripNode) {
+        mCurTripNode = curTripNode;
+        PreferencesUtil.setPreferences(this ,CUR_TRIP_NODE ,  curTripNode);
     }
 }

@@ -602,6 +602,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             address.setLatitude(location.getLatitude())    ;
             address.setLongitude(location.getLongitude())  ;
             tripNode.setAddress(address);
+            WeeverApplication.getInstance().setCurTripNode(tripNode);
             mRouteOperateEvent.setTripNode(tripNode);
         }
     }

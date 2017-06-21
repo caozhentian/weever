@@ -296,7 +296,7 @@ public class BNDemoGuideActivity extends BaseActivity {
         @Override
         public void onNaviGuideEnd() {
             //退出导航
-            //finish();
+            finish();
         }
 
         @Override

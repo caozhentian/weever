@@ -30,6 +30,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.people.weever.R;
 import cn.people.weever.activity.order.clearing.OrderClearingBaseActivity;
+import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
@@ -212,6 +213,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
     @OnClick({R.id.btnStart, R.id.btnWait, R.id.btnRestart, R.id.btnCompute})
     public void onViewClicked(View view) {
+        ActivityExitManage.setCurBaseFragment( this)  ;
         switch (view.getId()) {
             case R.id.btnStart:
                 start() ;
@@ -275,6 +277,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             public void onStartGatherCallback(int errorNo, String message) {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STARTED == errorNo) {
                     //showToast( "轨迹采集开始");
+                    mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
                     mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE);
                     mOrderService.routeOperateOrder(mRouteOperateEvent);
                 }
@@ -287,6 +290,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             public void onStopGatherCallback(int errorNo, String message) {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STOPPED == errorNo) {
                     //showToast( "轨迹采集结束");
+                    mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
                     mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
                     mOrderService.routeOperateOrder(mRouteOperateEvent);
                 }
@@ -306,6 +310,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         if(mBaseOrder == null){
             return ;
         }
+        mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
         mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE);
         mOrderService.routeOperateOrder(mRouteOperateEvent);
     }
@@ -314,6 +319,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         if(mBaseOrder == null){
             return ;
         }
+        mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
         mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE);
         mOrderService.routeOperateOrder(mRouteOperateEvent);
     }
