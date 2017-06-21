@@ -65,15 +65,20 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     TextView mTvActualStartDate;
     @BindView(R.id.tv_actual_start_address)
     TextView mTvActualStartAddress;
+    @BindView(R.id.tv_actual_end_date)
+    TextView mTvActualEndDate;
     @BindView(R.id.tv_actual_end_address)
     TextView mTvActualEndAddress;
     @BindView(R.id.tv_actual_all_cost)
     TextView mTvActualAllCost;
+    @BindView(R.id.tv_rental_cose)
+    TextView mTvRentalCose;
     @BindView(R.id.tv_expire_time_cose)
     TextView mTvExpireTimeCose;
     @BindView(R.id.tv_expire_distance_cose)
     TextView mTvExpireDistanceCose;
     @BindView(R.id.btn_take)
+
     Button mBtnTake;
     @BindView(R.id.btn_cancel)
     Button mBtnCancel;
@@ -113,7 +118,6 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     public void initData() {
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE);
         mOrderService = new OrderService();
-        setViewByBaseOrder();
         mOrderService.getDetails(mBaseOrder);
     }
 
@@ -122,7 +126,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     }
 
-    private void setViewByBaseOrder() {
+    protected void setViewByBaseOrder() {
         mTvTitle.setText(BaseOrder.getTypeStr(mBaseOrder.getType()));
         mTvNum.setText(mBaseOrder.getOrderId()) ;
         mTvName.setText(mBaseOrder.getSubscribePerson());
@@ -134,6 +138,10 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
             mTvActualStartDate.setText(mBaseOrder.getActualBoardingTripNode().getDateStr());
             mTvActualStartAddress.setText(mBaseOrder.getActualBoardingTripNode().getAddress().getPlaceName());
         }
+        if(mBaseOrder.getActualDropOffTripNode() != null){
+            mTvActualEndDate.setText(mBaseOrder.getActualDropOffTripNode().getDateStr());
+            mTvActualEndAddress.setText(mBaseOrder.getActualDropOffTripNode().getAddress().getPlaceName());
+        }
         mTvExpireDistanceCose.setText(mBaseOrder.getActualMileageCost() + "");
         mTvActualAllCost.setText(mBaseOrder.getPostDiscount() + "");
         mTvExpireTimeCose.setText(mBaseOrder.getActualWaitTimeCost() + "");
@@ -144,6 +152,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY) {
             mLlSettlent.setVisibility(View.VISIBLE);
         }
+        setOtherDetailInfo() ;
     }
 
     @Override
@@ -263,7 +272,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     protected void dealSuccess(BaseModel baseModel){
         showToast("操作成功");
-        setOtherDetailInfo() ;
+        setViewByBaseOrder();
 //        EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TAKE_NET_REQUST
                 || baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_CANCEL_NET_REQUST){

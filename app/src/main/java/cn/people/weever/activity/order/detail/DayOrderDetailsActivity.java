@@ -1,5 +1,7 @@
 package cn.people.weever.activity.order.detail;
 
+import cn.people.weever.model.DailyRentaOrder;
+
 public class DayOrderDetailsActivity extends OrderDetailsBaseActivity {
 
     @Override
@@ -8,10 +10,10 @@ public class DayOrderDetailsActivity extends OrderDetailsBaseActivity {
     }
 
     protected void setOtherDetailInfo(){
-//        if(mBaseOrder instanceof  DailyRentaOrder) {
-//            DailyRentaOrder dailyRentaOrder = (DailyRentaOrder) mBaseOrder;
-//            mTvActualAllCost.setText(dailyRentaOrder.getDailyRentalCost() );
-//        }
+        if(mBaseOrder instanceof DailyRentaOrder) {
+            DailyRentaOrder dailyRentaOrder = (DailyRentaOrder) mBaseOrder;
+            mTvRentalCose.setText(dailyRentaOrder.getDailyRentalCost() );
+        }
 
     }
 }
