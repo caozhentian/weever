@@ -1,13 +1,12 @@
 package cn.people.weever.activity.nav;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -26,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.people.weever.R;
+import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.fragment.NavFooterFragment;
 import cn.people.weever.fragment.NavHeadFragment;
 import cn.people.weever.model.BaseOrder;
 
@@ -36,7 +37,7 @@ import cn.people.weever.model.BaseOrder;
  * @author sunhao04
  *
  */
-public class BNDemoGuideActivity extends Activity {
+public class BNDemoGuideActivity extends BaseActivity {
 
     public static final String ROUTE_PLAN_NODE = "ROUTE_PLAN_NODE" ;
     public static final String BASE_ORDER = "BASE_ORDER" ;
@@ -60,6 +61,16 @@ public class BNDemoGuideActivity extends Activity {
         bundle.putSerializable(BASE_ORDER, baseOrder);
         intent.putExtras(bundle);
         return intent ;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initView() {
+
     }
 
     @Override
@@ -114,7 +125,7 @@ public class BNDemoGuideActivity extends Activity {
         if(mBaseOrder == null){
             return ;
         }
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         if(fragmentManager.findFragmentById(R.id.fl_nav_head) == null){
             FragmentTransaction fragmentTransaction = fragmentManager
                     .beginTransaction();
@@ -124,7 +135,7 @@ public class BNDemoGuideActivity extends Activity {
         if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
             FragmentTransaction fragmentTransaction = fragmentManager
                     .beginTransaction();
-            fragmentTransaction.add(R.id.fl_nav_footer ,NavHeadFragment.newInstance(mBaseOrder)) ;
+            fragmentTransaction.add(R.id.fl_nav_footer , NavFooterFragment.newInstance(mBaseOrder)) ;
             fragmentTransaction.commit();
         }
 
@@ -285,7 +296,7 @@ public class BNDemoGuideActivity extends Activity {
         @Override
         public void onNaviGuideEnd() {
             //退出导航
-            finish();
+            //finish();
         }
 
         @Override
