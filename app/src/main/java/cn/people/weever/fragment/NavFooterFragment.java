@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,31 +153,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         if (getArguments() != null) {
             mBaseOrder = (BaseOrder) getArguments().getSerializable(ARG_PARAM1);
         }
+        setOrder(mBaseOrder) ;
         mOrderService = new OrderService() ;
-        if(mBaseOrder != null){
-            mEdtSrc.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
-            mEdtDest.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName()) ;
-            if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY){
-                mRadioBtnDayUse.setChecked(true);
-            }
-            else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF){
-                mRadioBtnHalfDayUse.setChecked(true);
-            }
-            else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP ||
-                    mBaseOrder.getType() == BaseOrder.ORDER_STAUS_APPOINTMENT){
-                mRadioBtnTransfer.setChecked(true);
-            }
-            mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
-            //根据订单初始化
-            if (mBaseOrder.getPlanboardingTripNode().getAddress() != null) {
-                srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude(),
-                        mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude());
-            }
-            if (mBaseOrder.getPlanDropOffTripNode().getAddress() != null) {
-                destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude(),
-                        mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
-            }
-        }
+
         powerManager =  (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
 
     }
@@ -210,8 +189,38 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         unbinder.unbind();
     }
 
+    public void setOrder(BaseOrder baseOrder){
+        if(mBaseOrder != null){
+            mEdtSrc.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
+            mEdtDest.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName()) ;
+            if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY){
+                mRadioBtnDayUse.setChecked(true);
+            }
+            else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF){
+                mRadioBtnHalfDayUse.setChecked(true);
+            }
+            else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP ||
+                    mBaseOrder.getType() == BaseOrder.ORDER_STAUS_APPOINTMENT){
+                mRadioBtnTransfer.setChecked(true);
+            }
+            mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
+            //根据订单初始化
+            if (mBaseOrder.getPlanboardingTripNode().getAddress() != null) {
+                srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude(),
+                        mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude());
+            }
+            if (mBaseOrder.getPlanDropOffTripNode().getAddress() != null) {
+                destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude(),
+                        mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
+            }
+        }
+    }
     @OnClick({R.id.btnStart, R.id.btnWait, R.id.btnRestart, R.id.btnCompute})
     public void onViewClicked(View view) {
+        if(mBaseOrder == null){
+            showToast(getString(R.string.select_order));
+            return ;
+        }
         ActivityExitManage.setCurBaseFragment( this)  ;
         switch (view.getId()) {
             case R.id.btnStart:
@@ -249,12 +258,18 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     }
     private void start(){
         if(mBaseOrder == null){
-
             return ;
         }
         String startNodeStr = mEdtSrc.getText().toString()   ;
         String endNodeStr   = mEdtDest.getText().toString() ;
-
+        if(TextUtils.isEmpty(startNodeStr)){
+            showToast("出发地不能为空");
+            return ;
+        }
+        if(TextUtils.isEmpty(endNodeStr)){
+            showToast("目的地不能为空");
+            return ;
+        }
         OKCancelDlg.createCancelOKDlg(getContext(), "确定开始计费吗", new ICancelOK() {
             @Override
             public void cancel() {
@@ -397,6 +412,12 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     public interface OnFragmentInteractionListener {
 
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void setLocationSrc(String name){
+        if(mBaseOrder == null){
+            mEdtSrc.setText(name);
+        }
     }
 
     @Override

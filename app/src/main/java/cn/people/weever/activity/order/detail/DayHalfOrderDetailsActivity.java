@@ -12,7 +12,7 @@ public class DayHalfOrderDetailsActivity extends OrderDetailsBaseActivity {
     protected void setOtherDetailInfo() {
         if (mBaseOrder instanceof HalfDayRentalOrder) {
             HalfDayRentalOrder halfDayRentalOrder = (HalfDayRentalOrder) mBaseOrder;
-            mTvRentalCose.setText(halfDayRentalOrder.getHalfDayRentalCost());
+            mTvRentalCose.setText(halfDayRentalOrder.getHalfDayRentalCost()+"");
         }
     }
 }

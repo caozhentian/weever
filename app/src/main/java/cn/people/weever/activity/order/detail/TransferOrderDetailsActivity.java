@@ -7,7 +7,7 @@ public class TransferOrderDetailsActivity extends OrderDetailsBaseActivity {
     protected void setOtherDetailInfo() {
         if (mBaseOrder instanceof TransferOrder) {
             TransferOrder transferOrder = (TransferOrder) mBaseOrder;
-            mTvRentalCose.setText(transferOrder.getTransferCost());
+            mTvRentalCose.setText(transferOrder.getTransferCost()+"");
         }
     }
 }

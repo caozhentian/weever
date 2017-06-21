@@ -84,14 +84,14 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:layout_above="@+id/ll_bottom"
+        android:layout_above="@+id/fl_nav_footer"
         android:layout_below="@+id/ll_top"
         android:clickable="true"/>
     <!--底部操作按钮-->
     <FrameLayout
         android:id="@+id/fl_nav_footer"
-        android:layout_below="@id/bmapView"
         android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
         android:layout_height="wrap_content">
     </FrameLayout>
     <LinearLayout
@@ -99,7 +99,7 @@
         android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+
         android:minWidth="100dip"
         android:orientation="vertical"
         android:background="@color/white"

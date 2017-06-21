@@ -155,38 +155,16 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     TextView mTxtAllWaitAmount;
     @BindView(R.id.ll_top)
     LinearLayout mLlTop;
-    @BindView(R.id.radioBtnHalfDayUse)
-    RadioButton mRadioBtnHalfDayUse;
-    @BindView(R.id.radioBtnDayUse)
-    RadioButton mRadioBtnDayUse;
-    @BindView(R.id.radioBtnTransfer)
-    RadioButton mRadioBtnTransfer;
-    @BindView(R.id.radioGroup)
-    RadioGroup mRadioGroup;
-    @BindView(R.id.btnStart)
-    Button mBtnStart;
-    @BindView(R.id.btnWait)
-    Button mBtnWait;
-    @BindView(R.id.btnReturn)
-    Button mBtnReturn;
-    @BindView(R.id.btnRestart)
-    Button mBtnRestart;
-    @BindView(R.id.btnCompute)
-    Button mBtnCompute;
-    @BindView(R.id.ll_bottom)
-    LinearLayout mLlBottom;
     @BindView(R.id.txtAllDistance)
     TextView mTxtAllDistance;
-    @BindView(R.id.edtSrc)
-    TextView mEdtSrc;
-    @BindView(R.id.edtDest)
-    TextView mEdtDest;
     private MyLocationConfiguration.LocationMode mCurrentMode;
 
     private LatLng srcLating ;
     private LatLng destLating ;
+    private String mSrcAddress    ;
+    private String mDestAddress   ;
 
-    private boolean[] status = new boolean[4] ;
+    private NavFooterFragment mNavFooterFragment ;
 
     private BaseOrder mBaseOrder ;
 
@@ -295,48 +273,17 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         mSearch.setOnGetRoutePlanResultListener(this);
         powerManager =  (PowerManager) getSystemService(Context.POWER_SERVICE);
         mOrderService = new OrderService() ;
-
-
     }
 
     @Override
     public void initView() {
       mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
-
-      if(mBaseOrder != null){
-         mEdtSrc.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
-         mEdtDest.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName()) ;
-         if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY){
-             mRadioBtnDayUse.setChecked(true);
-         }
-         else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY_HALF){
-             mRadioBtnHalfDayUse.setChecked(true);
-         }
-         else if(mBaseOrder.getType() == BaseOrder.ORDER_TYPE_PICK_UP ||
-                 mBaseOrder.getType() == BaseOrder.ORDER_STAUS_APPOINTMENT){
-             mRadioBtnTransfer.setChecked(true);
-         }
-          if(mBaseOrder != null) {
-              mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
-              //根据订单初始化
-              if (mBaseOrder.getPlanboardingTripNode().getAddress() != null) {
-                  srcLating = new LatLng(mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude(),
-                          mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude());
-              }
-              if (mBaseOrder.getPlanDropOffTripNode().getAddress() != null) {
-                  destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude(),
-                          mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
-              }
-          }
-      }
       initFragment() ;
     }
 
     private void initFragment(){
         Bundle bundle = getIntent().getExtras();
-        if(mBaseOrder == null){
-            return ;
-        }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
 //        if(fragmentManager.findFragmentById(R.id.fl_nav_head) == null){
 //            FragmentTransaction fragmentTransaction = fragmentManager
@@ -344,10 +291,17 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 //            fragmentTransaction.add(R.id.fl_nav_head , NavHeadFragment.newInstance(mBaseOrder)) ;
 //            fragmentTransaction.commit();
 //        }
+        FragmentTransaction fragmentTransaction = fragmentManager
+                .beginTransaction();
         if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
-            FragmentTransaction fragmentTransaction = fragmentManager
-                    .beginTransaction();
-            fragmentTransaction.add(R.id.fl_nav_footer , NavFooterFragment.newInstance(mBaseOrder)) ;
+
+            mNavFooterFragment =  NavFooterFragment.newInstance(mBaseOrder);
+            fragmentTransaction.add(R.id.fl_nav_footer , mNavFooterFragment) ;
+            fragmentTransaction.commit();
+        }
+        else{
+            mNavFooterFragment =  NavFooterFragment.newInstance(mBaseOrder);
+            fragmentTransaction.replace(R.id.fl_nav_footer , mNavFooterFragment) ;
             fragmentTransaction.commit();
         }
 
@@ -400,117 +354,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         mMapView.onDestroy();
         mMapView = null;
         super.onDestroy();
-    }
-
-    @OnClick({R.id.btnStart, R.id.btnWait, R.id.btnRestart, R.id.btnCompute})
-    public void onViewClickedOperate(View view) {
-        switch (view.getId()) {
-            case R.id.btnStart:
-                start();
-                break;
-            case R.id.btnWait:
-                waitting() ;
-                break;
-            case R.id.btnRestart:
-                restart() ;
-                break;
-            case R.id.btnCompute:
-                compute() ;
-                break;
-        }
-    }
-
-    private void waitting(){
-        if(mBaseOrder == null){
-            showToast("无关联订单，请先关联订单");
-            return ;
-        }
-        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE);
-        mOrderService.routeOperateOrder(mRouteOperateEvent);
-    }
-
-    private  void restart(){
-        if(mBaseOrder == null){
-            showToast("无关联订单，请先关联订单");
-            return ;
-        }
-        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE);
-        mOrderService.routeOperateOrder(mRouteOperateEvent);
-    }
-
-	private void compute(){
-        if(mBaseOrder == null){
-            showToast("无关联订单，请先关联订单");
-            return ;
-        }
-        OKCancelDlg.createCancelOKDlg(this, "确定结算吗", new ICancelOK() {
-            @Override
-            public void cancel() {
-
-            }
-
-            @Override
-            public void ok() {
-                WeeverApplication.mClient.stopGather(traceListener);
-            }
-        });
-
-	}
-
-    private void start(){
-        if(mBaseOrder == null){
-            showToast("无关联订单，请先关联订单");
-            return ;
-        }
-        String startNodeStr = mEdtSrc.getText().toString()   ;
-        String endNodeStr   = mEdtDest.getText().toString() ;
-        if(TextUtils.isEmpty(startNodeStr)){
-            showToast("出发地不能为空");
-            return ;
-        }
-        if(TextUtils.isEmpty(endNodeStr)){
-            showToast("目的地不能为空");
-            return ;
-        }
-        OKCancelDlg.createCancelOKDlg(this, "确定开始计费吗", new ICancelOK() {
-            @Override
-            public void cancel() {
-
-            }
-
-            @Override
-            public void ok() {
-                // 设置起终点信息，对于tranist search 来说，城市名无意义
-                PlanNode stNode = PlanNode.withLocation(srcLating)   ;
-                PlanNode enNode = PlanNode.withLocation(destLating)  ;
-                mBaiduMap.clear();
-                mSearch.drivingSearch((new DrivingRoutePlanOption())
-                        .from(stNode).to(enNode));
-                mLlTop.setVisibility(View.VISIBLE);
-                WeeverApplication.mClient.startGather(traceListener);
-            }
-        });
-
-    }
-
-    @OnClick({R.id.edtSrc, R.id.edtDest})
-    public void onViewClickedAddress(View view) {
-        switch (view.getId()) {
-            case R.id.edtSrc:
-                if(mBaseOrder != null){
-                   showToast("已关联订单，无法更改目的地址");
-                   return ;
-                }
-                startActivity(PoiSearchActivity.newIntent(this,true));
-                break;
-            case R.id.edtDest:
-                if(mBaseOrder != null){
-                    showToast("已关联订单，无法更改目的地址");
-                    return ;
-                }
-                startActivity(PoiSearchActivity.newIntent(this,false));
-                break;
-        }
     }
 
     @Override
@@ -602,7 +445,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 if(poiList != null && poiList.size() > 1) {
                     Poi poi = poiList.get(0);
                     if(mBaseOrder == null) {
-                        mEdtSrc.setText(poi.getName());
+                        mNavFooterFragment.setLocationSrc(poi.getName());
                     }
                 }
                 MapStatus.Builder builder = new MapStatus.Builder();
@@ -624,11 +467,11 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void process(AddressSelectVM o){
         if(o.isSrc()){
-            mEdtSrc.setText(o.getmPoiInfo().name)   ;
+            mSrcAddress = (o.getmPoiInfo().name)   ;
             srcLating = o.getmPoiInfo().location   ;
         }
         else{
-            mEdtDest.setText(o.getmPoiInfo().name)  ;
+            mDestAddress = (o.getmPoiInfo().name)  ;
             destLating = o.getmPoiInfo().location  ;
         }
     }
@@ -660,8 +503,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.START_TRACE_NETWORK_CONNECT_FAILED <= errorNo) {
                     registerPowerReceiver();
                 }
-                //showToast(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
-                //showToast(String.format("%s", message));
             }
 
             @Override
@@ -755,15 +596,14 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         }
         BNRoutePlanNode sNode = null;
         BNRoutePlanNode eNode = null;
-        sNode = new BNRoutePlanNode(srcLating.longitude, srcLating.latitude, mEdtSrc.getText().toString(), null, BNRoutePlanNode.CoordinateType.BD09LL);
-        eNode = new BNRoutePlanNode(destLating.longitude, destLating.latitude, mEdtDest.getText().toString(), null, BNRoutePlanNode.CoordinateType.BD09LL);
+        sNode = new BNRoutePlanNode(srcLating.longitude, srcLating.latitude, mSrcAddress, null, BNRoutePlanNode.CoordinateType.BD09LL);
+        eNode = new BNRoutePlanNode(destLating.longitude, destLating.latitude, mDestAddress, null, BNRoutePlanNode.CoordinateType.BD09LL);
         if (sNode != null && eNode != null) {
             List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
             list.add(sNode);
             list.add(eNode);
 
             // 开发者可以使用旧的算路接口，也可以使用新的算路接口,可以接收诱导信息等
-            // BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new DemoRoutePlanListener(sNode));
             BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new DemoRoutePlanListener(sNode),
                     eventListerner);
         }
@@ -804,20 +644,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
     @Override
     protected  void dealSuccess(@Nullable BaseModel baseModel){
-        if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST){
-            showToast("操作成功");
-
-            RouteOperateEvent routeOperateEvent = (RouteOperateEvent) baseModel.getData();
-            if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE){
-                startActivity(OrderClearingBaseActivity.newIntent(HomeActivity.this , mBaseOrder));
-                mEdtDest.setText("");
-                mEdtSrc.setText("");
-                mRadioBtnDayUse.setChecked(false)      ;
-                mRadioBtnTransfer.setChecked(false)    ;
-                mRadioBtnHalfDayUse.setChecked(false)  ;
-                mBaseOrder = null ;
-            }
-        }
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_REAL_TIME_INFO_NET_REQUST){
             showToast("操作成功");
             RealTimeOrderInfo realTimeOrderInfo = (RealTimeOrderInfo) baseModel.getData();

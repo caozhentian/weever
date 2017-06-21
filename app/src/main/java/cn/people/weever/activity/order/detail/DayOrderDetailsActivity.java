@@ -12,7 +12,7 @@ public class DayOrderDetailsActivity extends OrderDetailsBaseActivity {
     protected void setOtherDetailInfo(){
         if(mBaseOrder instanceof DailyRentaOrder) {
             DailyRentaOrder dailyRentaOrder = (DailyRentaOrder) mBaseOrder;
-            mTvRentalCose.setText(dailyRentaOrder.getDailyRentalCost() );
+            mTvRentalCose.setText(dailyRentaOrder.getDailyRentalCost()+"" );
         }
 
     }
