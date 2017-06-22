@@ -1,30 +1,22 @@
 package cn.people.weever.application;
 
 import android.app.Application;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.trace.LBSTraceClient;
-import com.baidu.trace.Trace;
-import com.baidu.trace.api.entity.OnEntityListener;
-import com.baidu.trace.api.track.OnTrackListener;
 import com.baidu.trace.model.BaseRequest;
 import com.facebook.stetho.Stetho;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import cn.jpush.android.api.JPushInterface;
 import cn.people.weever.BuildConfig;
 import cn.people.weever.common.util.PreferencesUtil;
-import cn.people.weever.config.FileConfig;
 import cn.people.weever.db.DaoManager;
 import cn.people.weever.jpush.JPushService;
 import cn.people.weever.model.Driver;
 import cn.people.weever.model.TripNode;
 import cn.people.weever.service.LocationService;
+import cn.people.weever.service.TraceService;
 
 /**
  * Created by ztcao on 2016/12/20.
@@ -41,28 +33,6 @@ public class WeeverApplication extends Application {
     private static Driver sCurDriver        ;
 
     //private static DaoSession sDaoSession ;
-	
-	/**
-     * 轨迹客户端
-     */
-    public static LBSTraceClient mClient = null;
-
-    /**
-     * 轨迹服务
-     */
-    public static Trace mTrace = null;
-
-    /**
-     * 轨迹服务ID
-     */
-    public static long serviceId = 140822;
-
-    /**
-     * Entity标识
-     */
-    public static String entityName = "myTrace";
-
-    public static boolean isRegisterPower = false;
 
     public static int screenWidth = 0;
 
@@ -70,6 +40,7 @@ public class WeeverApplication extends Application {
 
     private static  AtomicInteger mSequenceGenerator = new AtomicInteger();
 
+    public static  boolean isRegisterPower ;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -80,11 +51,8 @@ public class WeeverApplication extends Application {
         }
         sWeeverApplication = this ;
         getScreenSize() ;
-        FileConfig.initDirs() ;
-        initMap()   ;
-        initTrace() ;
+        StartExitAppManager.initApp(this);
         initdb();
-        initJPush() ;
 
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
 //            // This process is dedicated to LeakCanary for heap analysis.
@@ -94,21 +62,6 @@ public class WeeverApplication extends Application {
 //        LeakCanary.install(this);
     }
 
-    private void initLog(){
-        if(BuildConfig.DEBUG) {
-            Logger.addLogAdapter(new AndroidLogAdapter());
-        }
-    }
-    private void initJPush(){
-        if(BuildConfig.DEBUG) {
-            JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
-        }
-        JPushInterface.init(this);     		// 初始化 JPush
-        if(getCurUser() != null){
-            Driver driver = getCurUser() ;
-            JPushService.setAlias(this ,driver.getUserName() );
-        }
-    }
     /**after onCreate ,call this method
      * @return
      */
@@ -146,9 +99,6 @@ public class WeeverApplication extends Application {
 
     private void initdb(){
         DaoManager.getInstance() ;
-//        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db");
-//        Database db = helper.getWritableDb();
-//        sDaoSession = new DaoMaster(db).newSession();
     }
 
     private void initMap(){
@@ -159,45 +109,13 @@ public class WeeverApplication extends Application {
         SDKInitializer.initialize(this);
     }
 
-	private void initTrace(){
-		mClient = new LBSTraceClient(this);
-        // 定位周期(单位:秒)
-        int gatherInterval = 5;
-        // 打包回传周期(单位:秒)
-        int packInterval = 10;
-        // 设置定位和打包周期
-        mClient.setInterval(gatherInterval, packInterval);
-        mTrace = new Trace(serviceId, entityName);
-        // 初始化轨迹服务监听器
-        // 开启服务
-        //mClient.startTrace(mTrace, null) ;
-	}
+
 
 	public static final void exitLogin(){
-        mClient.stopTrace(mTrace ,null);
+        TraceService.getInstance(WeeverApplication.getInstance()).stopTrace();
         setCurUser(null);
         JPushService.setAlias(getInstance(), null);
         setEntityName("");
-    }
-    /**
-     * 获取当前位置
-     */
-    public void getCurrentLocation(OnEntityListener entityListener, OnTrackListener trackListener) {
-        // 网络连接正常，开启服务及采集，则查询纠偏后实时位置；否则进行实时定位
-//        if (NetUtil.isNetworkAvailable(mContext)
-//                && trackConf.contains("is_trace_started")
-//                && trackConf.contains("is_gather_started")
-//                && trackConf.getBoolean("is_trace_started", false)
-//                && trackConf.getBoolean("is_gather_started", false)) {
-//            LatestPointRequest request = new LatestPointRequest(getTag(), serviceId, entityName);
-//            ProcessOption processOption = new ProcessOption();
-//            processOption.setNeedDenoise(true);
-//            processOption.setRadiusThreshold(100);
-//            request.setProcessOption(processOption);
-//            mClient.queryLatestPoint(request, trackListener);
-//        } else {
-//            mClient.queryRealTimeLoc(locRequest, entityListener);
-//        }
     }
 
     /**
@@ -215,8 +133,7 @@ public class WeeverApplication extends Application {
      * @param request
      */
     public static  void initRequest(BaseRequest request) {
-        request.setTag(getTag());
-        request.setServiceId(serviceId);
+       TraceService.getInstance(WeeverApplication.getInstance()).initRequest(request);
     }
 
     /**
@@ -229,17 +146,12 @@ public class WeeverApplication extends Application {
     }
 
     public static String getEntityName() {
-        if(TextUtils.isEmpty(entityName)){
-            entityName = PreferencesUtil.getStringPreferences(sWeeverApplication , "CAR_KEY") ;
-        }
 //        return entityName; TODO TESTCODE
         return  "myTrace" ;
     }
 
     public static void setEntityName(String entityName) {
-        WeeverApplication.entityName = entityName;
-        PreferencesUtil.setPreferences(sWeeverApplication,"CAR_KEY",entityName);
-        mTrace.setEntityName(entityName);
+        TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(entityName);
     }
 
     public TripNode getCurTripNode() {

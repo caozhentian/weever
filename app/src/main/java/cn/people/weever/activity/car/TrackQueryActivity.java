@@ -43,6 +43,7 @@ import cn.people.weever.common.constant.TraceConstants;
 import cn.people.weever.common.util.BitmapUtil;
 import cn.people.weever.common.util.CommonUtil;
 import cn.people.weever.common.util.MapUtil;
+import cn.people.weever.service.TraceService;
 
 /**
  * 轨迹查询
@@ -311,7 +312,7 @@ public class TrackQueryActivity extends BaseActivity
         historyTrackRequest.setEndTime(endTime);
         historyTrackRequest.setPageIndex(pageIndex);
         historyTrackRequest.setPageSize(TraceConstants.PAGE_SIZE);
-        trackApp.mClient.queryHistoryTrack(historyTrackRequest, mTrackListener);
+        TraceService.getInstance(WeeverApplication.getInstance()).queryHistoryTrack(historyTrackRequest, mTrackListener);
     }
 
     /**

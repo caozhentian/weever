@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.navisdk.adapter.BNRoutePlanNode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -221,22 +220,14 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     }
     private void routeplanToNavi() {
 
-//        if (!hasInitSuccess) {
-//            Toast.makeText(HomeActivity.this, "还未初始化!", Toast.LENGTH_SHORT).show();
-//        }
-        BNRoutePlanNode sNode = null;
-        BNRoutePlanNode eNode = null;
-
-        LatLng srcLating = null ;
-        LatLng destLating = null ;
         //根据订单初始化
         Address srcAddress  = mBaseOrder.getPlanboardingTripNode().getAddress() ;
         String  src = srcAddress.getPlaceName() ;
         Address destAddress = mBaseOrder.getPlanDropOffTripNode().getAddress()  ;
         String  dest = destAddress.getPlaceName() ;
 
-        srcLating = new LatLng(srcAddress.getLatitude(), srcAddress.getLongitude());
-        destLating = new LatLng(destAddress.getLatitude(), destAddress.getLongitude());
+        LatLng srcLating   =  new LatLng(srcAddress.getLatitude(), srcAddress.getLongitude());
+        LatLng destLating  =  new LatLng(destAddress.getLatitude(), destAddress.getLongitude());
 
         NavUtils.routeplanToNavi(this ,srcLating , src , destLating , dest , mBaseOrder);
     }

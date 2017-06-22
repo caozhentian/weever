@@ -18,8 +18,6 @@ import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -66,10 +64,10 @@ import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.Address;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.RealTimeOrderInfo;
-import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.model.TripNode;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
+import cn.people.weever.service.LocationService;
 import cn.people.weever.service.OrderService;
 
 public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
@@ -85,13 +83,11 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     RoutePlanSearch mSearch = null;    // 搜索模块，也可去掉地图模块独立使用
     RouteLine mRouteLine = null;
     // 定位相关
-    LocationClient mLocClient;
+    LocationService mLocationService;
     BitmapDescriptor mCurrentMarker;
     MapView mMapView;
     BaiduMap mBaiduMap;
     boolean isFirstLoc = true; // 是否首次定位
-
-    private RouteOperateEvent mRouteOperateEvent = new RouteOperateEvent();
 
     private OrderService mOrderService ;
 
@@ -160,23 +156,15 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
         // 定位初始化
-        mLocClient = new LocationClient(this);
-        mLocClient.registerLocationListener(myListener);
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true); // 打开gps
-        option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1000);
-        option.setProdName("WeeverDemo");
-        option.setIsNeedLocationPoiList(true);
-        option.setIsNeedAddress(true);
+        mLocationService = LocationService.getLocationService(this);
+        mLocationService.registerListener(myListener);
 		BitmapDescriptor currentMarker = BitmapDescriptorFactory
                            .fromResource(R.drawable.ic_map_location);
         mBaiduMap
                 .setMyLocationConfigeration(new MyLocationConfiguration(
                         mCurrentMode, true, currentMarker,
                         accuracyCircleFillColor, accuracyCircleStrokeColor));
-        mLocClient.setLocOption(option);
-        mLocClient.start();
+        mLocationService.start();
         initListener();
     }
 
@@ -296,7 +284,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     @Override
     protected void onDestroy() {
         // 退出时销毁定位
-        mLocClient.stop();
+        mLocationService.stop();
         // 关闭定位图层
         mBaiduMap.setMyLocationEnabled(false);
         mMapView.onDestroy();
@@ -408,7 +396,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             address.setLongitude(location.getLongitude())  ;
             tripNode.setAddress(address);
             WeeverApplication.getInstance().setCurTripNode(tripNode);
-            mRouteOperateEvent.setTripNode(tripNode);
         }
     }
 

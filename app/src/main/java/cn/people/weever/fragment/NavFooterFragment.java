@@ -47,6 +47,7 @@ import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
 import cn.people.weever.receiver.PowerReceiver;
 import cn.people.weever.service.OrderService;
+import cn.people.weever.service.TraceService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -135,7 +136,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        WeeverApplication.getInstance().mClient.stopTrace(WeeverApplication.mTrace, null);
+        TraceService.getInstance(WeeverApplication.getInstance()).stopTrace();
     }
 
     @Override
@@ -284,7 +285,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 mOrderService.routeOperateOrder(mRouteOperateEvent);
                 PlanNode stNode = PlanNode.withLocation(srcLating)   ;
                 PlanNode enNode = PlanNode.withLocation(destLating)  ;
-                WeeverApplication.mClient.startGather(traceListener);
+                TraceService.getInstance(WeeverApplication.getInstance()).startGather(traceListener);
             }
         });
 
@@ -368,13 +369,13 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
                 mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
                 mOrderService.routeOperateOrder(mRouteOperateEvent);
-                WeeverApplication.mClient.stopGather(traceListener);
+                TraceService.getInstance(WeeverApplication.getInstance()).stopGather(traceListener);
             }
         });
 
     }
     private void startTrace(){
-        WeeverApplication.mClient.startTrace(WeeverApplication.mTrace, traceListener);
+        TraceService.getInstance(WeeverApplication.getInstance()).startTrace( traceListener);
     }
 
 
