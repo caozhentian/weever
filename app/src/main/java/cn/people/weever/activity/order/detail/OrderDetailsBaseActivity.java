@@ -9,26 +9,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
-import com.baidu.navisdk.adapter.BaiduNaviManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
-import cn.people.weever.activity.nav.BNDemoGuideActivity;
 import cn.people.weever.activity.order.clearing.AirportConverorOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.DayHalfOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.DayOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.FixedTimeOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.PickupOrderClearingActivity;
+import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.model.Address;
@@ -116,6 +111,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     @Override
     public void initData() {
+        NavUtils.initNavi(this);
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE);
         mOrderService = new OrderService();
         mOrderService.getDetails(mBaseOrder);
@@ -235,25 +231,14 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         LatLng destLating = null ;
         //根据订单初始化
         Address srcAddress  = mBaseOrder.getPlanboardingTripNode().getAddress() ;
+        String  src = srcAddress.getPlaceName() ;
         Address destAddress = mBaseOrder.getPlanDropOffTripNode().getAddress()  ;
+        String  dest = destAddress.getPlaceName() ;
 
         srcLating = new LatLng(srcAddress.getLatitude(), srcAddress.getLongitude());
         destLating = new LatLng(destAddress.getLatitude(), destAddress.getLongitude());
 
-
-        sNode = new BNRoutePlanNode(srcLating.longitude, srcLating.latitude, srcAddress.getPlaceName(),
-                null, BNRoutePlanNode.CoordinateType.BD09LL);
-        eNode = new BNRoutePlanNode(destLating.longitude, destLating.latitude, destAddress.getPlaceName(), null, BNRoutePlanNode.CoordinateType.BD09LL);
-        if (sNode != null && eNode != null) {
-            List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
-            list.add(sNode);
-            list.add(eNode);
-
-            // 开发者可以使用旧的算路接口，也可以使用新的算路接口,可以接收诱导信息等
-            // BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new DemoRoutePlanListener(sNode));
-            BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new OrderDetailsBaseActivity.DemoRoutePlanListener(sNode),
-                    null);
-        }
+        NavUtils.routeplanToNavi(this ,srcLating , src , destLating , dest , mBaseOrder);
     }
     private void settlent() {
         if (mBaseOrder.getType() == BaseOrder.ORDER_TYPE_DAY) {
@@ -283,26 +268,5 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     protected void setOtherDetailInfo(){
 
-    }
-
-    public class DemoRoutePlanListener implements BaiduNaviManager.RoutePlanListener {
-
-        private BNRoutePlanNode mBNRoutePlanNode = null;
-
-        public DemoRoutePlanListener(BNRoutePlanNode node) {
-            mBNRoutePlanNode = node;
-        }
-
-        @Override
-        public void onJumpToNavigator() {
-            startActivity(BNDemoGuideActivity.newIntent(OrderDetailsBaseActivity.this ,mBNRoutePlanNode , mBaseOrder));
-
-        }
-
-        @Override
-        public void onRoutePlanFailed() {
-            // TODO Auto-generated method stub
-            Toast.makeText(OrderDetailsBaseActivity.this, "算路失败", Toast.LENGTH_SHORT).show();
-        }
     }
 }

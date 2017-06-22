@@ -2,10 +2,7 @@ package cn.people.weever.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -14,16 +11,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -39,53 +30,32 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.RouteLine;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.BikingRouteResult;
-import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.IndoorRouteResult;
 import com.baidu.mapapi.search.route.MassTransitRouteResult;
 import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
-import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
-import com.baidu.navisdk.adapter.BNRoutePlanNode;
-import com.baidu.navisdk.adapter.BaiduNaviManager;
-import com.baidu.trace.api.entity.OnEntityListener;
-import com.baidu.trace.api.track.LatestPointResponse;
-import com.baidu.trace.api.track.OnTrackListener;
-import com.baidu.trace.model.OnTraceListener;
-import com.baidu.trace.model.PushMessage;
-import com.baidu.trace.model.StatusCodes;
-import com.baidu.trace.model.TraceLocation;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.people.weever.R;
-import cn.people.weever.activity.nav.BNDemoGuideActivity;
-import cn.people.weever.activity.nav.BNEventHandler;
-import cn.people.weever.activity.order.clearing.OrderClearingBaseActivity;
 import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
-import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.activity.setting.SettingUpActivity;
 import cn.people.weever.application.WeeverApplication;
-import cn.people.weever.common.timer.ITimerExecute;
 import cn.people.weever.common.timer.TimerByHandler;
 import cn.people.weever.common.util.DatetimeUtil;
-import cn.people.weever.common.util.MapUtil;
 import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.common.util.NumberFormat;
 import cn.people.weever.dialog.ICancelOK;
@@ -100,7 +70,6 @@ import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.model.TripNode;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
-import cn.people.weever.receiver.PowerReceiver;
 import cn.people.weever.service.OrderService;
 
 public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
@@ -125,26 +94,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     private RouteOperateEvent mRouteOperateEvent = new RouteOperateEvent();
 
     private OrderService mOrderService ;
-    /**
-     * 轨迹服务监听器
-     */
-    private OnTraceListener traceListener = null;
 
-    /**
-     * 轨迹监听器(用于接收纠偏后实时位置回调)
-     */
-    private OnTrackListener trackListener = null;
-
-    /**
-     * Entity监听器(用于接收实时定位回调)
-     */
-    private OnEntityListener entityListener = null;
-
-    private PowerManager powerManager = null;
-
-    private PowerManager.WakeLock wakeLock = null;
-
-    private PowerReceiver powerReceiver = null;
 
     //UI相关
     @BindView(R.id.txtAllTime)
@@ -227,7 +177,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                         accuracyCircleFillColor, accuracyCircleStrokeColor));
         mLocClient.setLocOption(option);
         mLocClient.start();
-        startTrace() ;
         initListener();
     }
 
@@ -271,7 +220,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         // 初始化搜索模块，注册事件监听
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(this);
-        powerManager =  (PowerManager) getSystemService(Context.POWER_SERVICE);
         mOrderService = new OrderService() ;
     }
 
@@ -478,163 +426,12 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
 	private void initListener() {
 
-        trackListener = new OnTrackListener() {
-            @Override
-            public void onLatestPointCallback(LatestPointResponse response) {
-                // 添加路线（轨迹）
-                MapUtil mapUtil = MapUtil.getInstance();
-                LatLng currentLatLng = mapUtil.convertTrace2Map(response.getLatestPoint().getLocation());
-                List<LatLng> latLngs = new ArrayList<>(1) ;
-                latLngs.add(currentLatLng) ;
-                OverlayOptions polylineOptions = new PolylineOptions().width(10)
-                        .color(Color.RED).points(latLngs);
-                mBaiduMap.addOverlay(polylineOptions);
-            }};
-
-        entityListener = new OnEntityListener() {
-
-            @Override
-            public void onReceiveLocation(TraceLocation location) {
-
-            }} ;
-        traceListener = new OnTraceListener() {
-            @Override
-            public void onStartTraceCallback(int errorNo, String message) {
-                if (StatusCodes.SUCCESS == errorNo || StatusCodes.START_TRACE_NETWORK_CONNECT_FAILED <= errorNo) {
-                    registerPowerReceiver();
-                }
-            }
-
-            @Override
-            public void onStopTraceCallback(int errorNo, String message) {
-                if (StatusCodes.SUCCESS == errorNo || StatusCodes.CACHE_TRACK_NOT_UPLOAD == errorNo) {
-                    unregisterPowerReceiver();
-                }
-            }
-
-            @Override
-            public void onStartGatherCallback(int errorNo, String message) {
-                if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STARTED == errorNo) {
-                    showToast( "轨迹采集开始");
-                    mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE);
-                    mOrderService.routeOperateOrder(mRouteOperateEvent);
-                    mTimerByHandler = new TimerByHandler(new ITimerExecute() {
-                        @Override
-                        public void onExecute() {
-                            if(mBaseOrder != null) {
-                                mOrderService.getRealTimeOrderInfo(mBaseOrder);
-                            }
-                        }
-                    });
-                    mTimerByHandler.start();
-                }
-                else{
-                    showToast( "轨迹采集失败，请重新点击");
-                }
-            }
-
-            @Override
-            public void onStopGatherCallback(int errorNo, String message) {
-                if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STOPPED == errorNo) {
-                    showToast( "轨迹采集结束");
-                    mTimerByHandler.stop() ;
-                    mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
-                    mOrderService.routeOperateOrder(mRouteOperateEvent);
-                }
-                else{
-                    showToast( "轨迹采集失败，请重新点击");
-                }
-            }
-
-            @Override
-            public void onPushCallback(byte messageType, PushMessage pushMessage) {
-
-            }
-        };
-    }
-    
-	private void startTrace(){
-        WeeverApplication.mClient.startTrace(WeeverApplication.mTrace, traceListener);
-	}
-
-
-    /**
-     * 注册电源锁广播
-     */
-    private void registerPowerReceiver() {
-        if (WeeverApplication.isRegisterPower || powerManager == null) {
-            return;
-        }
-        if (null == wakeLock) {
-            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "track upload");
-        }
-        if (null == powerReceiver) {
-            powerReceiver = new PowerReceiver(wakeLock);
-        }
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_USER_PRESENT);
-        registerReceiver(powerReceiver, filter);
-        WeeverApplication.isRegisterPower = true;
-    }
-
-    private void unregisterPowerReceiver() {
-        if (!WeeverApplication.isRegisterPower) {
-            return;
-        }
-        if (null != powerReceiver) {
-            unregisterReceiver(powerReceiver);
-        }
-        WeeverApplication.isRegisterPower = false;
     }
 
     private void routeplanToNavi() {
-
-        if (!NavUtils.hasInitSuccess) {
-            Toast.makeText(HomeActivity.this, "还未初始化!", Toast.LENGTH_SHORT).show();
-        }
-        BNRoutePlanNode sNode = null;
-        BNRoutePlanNode eNode = null;
-        sNode = new BNRoutePlanNode(srcLating.longitude, srcLating.latitude, mSrcAddress, null, BNRoutePlanNode.CoordinateType.BD09LL);
-        eNode = new BNRoutePlanNode(destLating.longitude, destLating.latitude, mDestAddress, null, BNRoutePlanNode.CoordinateType.BD09LL);
-        if (sNode != null && eNode != null) {
-            List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
-            list.add(sNode);
-            list.add(eNode);
-
-            // 开发者可以使用旧的算路接口，也可以使用新的算路接口,可以接收诱导信息等
-            BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new DemoRoutePlanListener(sNode),
-                    eventListerner);
-        }
+        NavUtils.routeplanToNavi(this , srcLating , mSrcAddress ,destLating ,  mDestAddress , mBaseOrder) ;
     }
-    public class DemoRoutePlanListener implements BaiduNaviManager.RoutePlanListener {
 
-        private BNRoutePlanNode mBNRoutePlanNode = null;
-
-        public DemoRoutePlanListener(BNRoutePlanNode node) {
-            mBNRoutePlanNode = node;
-        }
-
-        @Override
-        public void onJumpToNavigator() {
-            startActivity(BNDemoGuideActivity.newIntent(HomeActivity.this ,mBNRoutePlanNode , mBaseOrder));
-
-        }
-
-        @Override
-        public void onRoutePlanFailed() {
-            // TODO Auto-generated method stub
-            Toast.makeText(HomeActivity.this, "算路失败", Toast.LENGTH_SHORT).show();
-        }
-    }
-    BaiduNaviManager.NavEventListener eventListerner = new BaiduNaviManager.NavEventListener() {
-
-        @Override
-        public void onCommonEventCall(int what, int arg1, int arg2, Bundle bundle) {
-            BNEventHandler.getInstance().handleNaviEvent(what, arg1, arg2, bundle);
-        }
-    };
 
     private void initNavi() {
         NavUtils.initNavi(this) ;
