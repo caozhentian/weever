@@ -112,7 +112,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         mBaiduMap.setMyLocationEnabled(true);
         // 定位初始化
         mLocationService = LocationService.getLocationService(this);
-        mLocationService.registerListener(myListener);
 		BitmapDescriptor currentMarker = BitmapDescriptorFactory
                            .fromResource(R.drawable.ic_map_location);
         mBaiduMap

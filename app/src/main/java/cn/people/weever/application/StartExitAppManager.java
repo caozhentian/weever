@@ -29,7 +29,7 @@ public class StartExitAppManager {
 
     public static void initBaiduService(Context context){
         MapService.initMap(context);
-        LocationService.getLocationService(context).start();
+        LocationService.getLocationService(context);
         TraceService.getInstance(context).startTrace(null);
     }
 
