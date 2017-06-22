@@ -3,7 +3,6 @@ package cn.people.weever.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,12 +12,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -29,77 +24,39 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.RouteLine;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.route.BikingRouteResult;
-import com.baidu.mapapi.search.route.DrivingRouteResult;
-import com.baidu.mapapi.search.route.IndoorRouteResult;
-import com.baidu.mapapi.search.route.MassTransitRouteResult;
-import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
-import com.baidu.mapapi.search.route.RoutePlanSearch;
-import com.baidu.mapapi.search.route.TransitRouteResult;
-import com.baidu.mapapi.search.route.WalkingRouteResult;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.people.weever.R;
 import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.setting.SettingUpActivity;
 import cn.people.weever.application.StartExitAppManager;
-import cn.people.weever.common.timer.TimerByHandler;
 import cn.people.weever.common.util.NavUtils;
-import cn.people.weever.common.util.NumberFormat;
-import cn.people.weever.dialog.ICancelOK;
-import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.fragment.NavFooterFragment;
+import cn.people.weever.fragment.NavHeadFragment;
 import cn.people.weever.map.LocationService;
+import cn.people.weever.map.TLocationListener;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
-import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
 import cn.people.weever.model.BaseOrder;
-import cn.people.weever.model.RealTimeOrderInfo;
-import cn.people.weever.net.BaseModel;
-import cn.people.weever.net.OrderApiService;
-import cn.people.weever.service.OrderService;
+import cn.people.weever.model.RouteOperateEvent;
 
-public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
-       ,NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends SubcribeCreateDestroyActivity implements NavigationView.OnNavigationItemSelectedListener
+        , NavFooterFragment.OnFragmentInteractionNavFooterListener{
 
     public static final String ARG_BASE_ORDER = "baseorder" ;
 
     private static final int accuracyCircleFillColor = 0xAAFFFF88;
     private static final int accuracyCircleStrokeColor = 0xAA00FF00;
-    public MyLocationListener myListener = new MyLocationListener();
+    public NavLocationListener myListener = new NavLocationListener();
 
-    // 搜索相关
-    RoutePlanSearch mSearch = null;    // 搜索模块，也可去掉地图模块独立使用
-    RouteLine mRouteLine = null;
     // 定位相关
     LocationService mLocationService;
-    BitmapDescriptor mCurrentMarker;
     MapView mMapView;
     BaiduMap mBaiduMap;
-    boolean isFirstLoc = true; // 是否首次定位
 
-    private OrderService mOrderService ;
-
-
-    //UI相关
-    @BindView(R.id.txtAllTime)
-    TextView mTxtAllTime;
-    @BindView(R.id.txtAllWaitTime)
-    TextView mTxtAllWaitTime;
-    @BindView(R.id.txtAllWaitAmount)
-    TextView mTxtAllWaitAmount;
-    @BindView(R.id.ll_top)
-    LinearLayout mLlTop;
-    @BindView(R.id.txtAllDistance)
-    TextView mTxtAllDistance;
     private MyLocationConfiguration.LocationMode mCurrentMode;
 
     private LatLng srcLating ;
@@ -110,8 +67,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     private NavFooterFragment mNavFooterFragment ;
 
     private BaseOrder mBaseOrder ;
-
-    private TimerByHandler mTimerByHandler ;
 
     public static final Intent newIntent(Context packageContext, BaseOrder baseOrder){
         Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
@@ -175,17 +130,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            OKCancelDlg.createCancelOKDlg(this, "确认退出应用吗?", new ICancelOK() {
-                @Override
-                public void cancel() {
-
-                }
-
-                @Override
-                public void ok() {
-                    StartExitAppManager.exitApp(HomeActivity.this);
-                }
-            });
+            StartExitAppManager.exitApp(HomeActivity.this);
 
         }
     }
@@ -200,10 +145,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     @Override
     public void initData() {
         initNavi();
-        // 初始化搜索模块，注册事件监听
-        mSearch = RoutePlanSearch.newInstance();
-        mSearch.setOnGetRoutePlanResultListener(this);
-        mOrderService = new OrderService() ;
     }
 
     @Override
@@ -216,12 +157,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         Bundle bundle = getIntent().getExtras();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-//        if(fragmentManager.findFragmentById(R.id.fl_nav_head) == null){
-//            FragmentTransaction fragmentTransaction = fragmentManager
-//                    .beginTransaction();
-//            fragmentTransaction.add(R.id.fl_nav_head , NavHeadFragment.newInstance(mBaseOrder)) ;
-//            fragmentTransaction.commit();
-//        }
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
         if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
@@ -291,98 +226,46 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     }
 
     @Override
-    public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
-
-    }
-
-    @Override
-    public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
-
-    }
-
-    @Override
-    public void onGetMassTransitRouteResult(MassTransitRouteResult massTransitRouteResult) {
-
-    }
-
-    @Override
-    public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
-
-        if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
-            showToast("抱歉，未找到结果" )  ;
-            return ;
+    public void onFragmentInteraction(RouteOperateEvent routeOperateEvent) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager
+                .beginTransaction();
+        if(fragmentManager.findFragmentById(R.id.fl_nav_head) == null){
+            fragmentTransaction.add(R.id.fl_nav_head , NavHeadFragment.newInstance(mBaseOrder)) ;
+            fragmentTransaction.commit();
         }
-        if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
-            return;
-        }
-        if (drivingRouteResult.getRouteLines().size() > 1 ) { //使用其中一条路线
-            mRouteLine = drivingRouteResult.getRouteLines().get(0);
-            setRelativeInfo() ;
-            DrivingRouteOverlay overlay = new DrivingRouteOverlay(mBaiduMap);
-            //routeOverlay = overlay;
-            mBaiduMap.setOnMarkerClickListener(overlay);
-            overlay.setData(drivingRouteResult.getRouteLines().get(0));
-            overlay.addToMap();
-            overlay.zoomToSpan();
+        else{
+            fragmentTransaction.replace(R.id.fl_nav_head , NavHeadFragment.newInstance(mBaseOrder)) ;
+            fragmentTransaction.commit();
         }
     }
 
-    private void setRelativeInfo(){
-        long  time = mRouteLine.getDuration();
-        if ( time / 3600 == 0 ) {
-            mTxtAllTime.setText( "" + time / 60 + "分钟" );
-        } else {
-            mTxtAllTime.setText( "" + time / 3600 + "小时" + (time % 3600) / 60 + "分钟" );
-        }
-        double  distance = mRouteLine.getDistance() ;
-
-        mTxtAllDistance.setText(NumberFormat.getdouble(distance/1000, 1)+"公里") ;
-    }
-    @Override
-    public void onGetIndoorRouteResult(IndoorRouteResult indoorRouteResult) {
-
-    }
-
-    @Override
-    public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
-
-    }
-
-    /**
-     * 定位SDK监听函数
-     */
-    public class MyLocationListener implements BDLocationListener {
+    public class NavLocationListener extends TLocationListener {
 
         @Override
-        public void onReceiveLocation(BDLocation location) {
-            // map view 销毁后不在处理新接收的位置
-            if (location == null || location.getLocType() == BDLocation.TypeServerError || mMapView == null) {
-                return;
-            }
-
+        public void process(BDLocation location) {
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360
                     .direction(0).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
             mBaiduMap.setMyLocationData(locData);
-            //使用街道
-            List<Poi> poiList = location.getPoiList() ;
             LatLng ll = new LatLng(location.getLatitude(),
                     location.getLongitude());
-            if(mBaseOrder == null) { //如果有订单关联，出发地是订单的出发地
-                srcLating = ll;
-            }
-            if (isFirstLoc) {
-                isFirstLoc = false;
-                //使用街道
-                if(poiList != null && poiList.size() > 1) {
-                    Poi poi = poiList.get(0);
-                }
-                MapStatus.Builder builder = new MapStatus.Builder();
-                builder.target(ll).zoom(18.0f);
-                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-            }
+            srcLating = ll;
+            MapStatus.Builder builder = new MapStatus.Builder();
+            builder.target(ll).zoom(18.0f);
+            mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+        }
+
+        @Override
+        public void processFirstLoc(BDLocation location) {
+
+        }
+
+        @Override
+        public void processLocFail(BDLocation location) {
+
         }
     }
 
@@ -407,15 +290,4 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
         NavUtils.initNavi(this) ;
     }
 
-
-
-    @Override
-    protected  void dealSuccess(@Nullable BaseModel baseModel){
-        if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_REAL_TIME_INFO_NET_REQUST){
-            showToast("操作成功");
-            RealTimeOrderInfo realTimeOrderInfo = (RealTimeOrderInfo) baseModel.getData();
-            mTxtAllWaitTime.setText(realTimeOrderInfo.getWaitTime())    ;
-            mTxtAllWaitAmount.setText(realTimeOrderInfo.getWaitCost())  ;
-        }
-    }
 }

@@ -3,7 +3,6 @@ package cn.people.weever.fragment;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -52,13 +51,13 @@ import cn.people.weever.service.OrderService;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link NavFooterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 @SuppressLint("NewApi")
 public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
+
     private static final String ARG_PARAM1 = "param1";
     @BindView(R.id.edtSrc)
     TextView mEdtSrc;
@@ -98,8 +97,10 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
     private LatLng srcLating ;
     private LatLng destLating ;
+    private String mSrcAddress    ;
+    private String mDestAddress   ;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionNavFooterListener mListener;
     /**
      * 轨迹服务监听器
      */
@@ -148,21 +149,21 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
     }
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(RouteOperateEvent routeOperateEvent) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(routeOperateEvent);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionRoutineListener) {
-//            mListener = (OnFragmentInteractionRoutineListener) context;
-//        } else {
+        if (context instanceof OnFragmentInteractionNavFooterListener) {
+            mListener = (OnFragmentInteractionNavFooterListener) context;
+        } else {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionRoutineListener");
-//        }
+        }
     }
 
     @Override
@@ -361,9 +362,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             }) ;
         }
     }
-    public interface OnFragmentInteractionListener {
+    public interface OnFragmentInteractionNavFooterListener {
 
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(RouteOperateEvent routeOperateEvent);
     }
 
     public void setLocationSrc(){
@@ -373,14 +374,15 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             LocationService.getLocationService(getContext()).registerListener(new TLocationListener() {
                 @Override
                 public void process(BDLocation location) {
+                    List<Poi> poiList = location.getPoiList() ;
+                    mEdtSrc.setText(poiList.get(0).getName());
+                    srcLating =  new LatLng(location.getLatitude(),
+                            location.getLongitude());
                 }
 
                 @Override
                 public void processFirstLoc(BDLocation location) {
-                    List<Poi> poiList = location.getPoiList() ;
-                    mEdtSrc.setText(poiList.get(0).getName());
-                    LocationService.getLocationService(getContext()).stop();
-                    LocationService.getLocationService(getContext()).unregisterListener(this);
+
                 }
 
                 @Override

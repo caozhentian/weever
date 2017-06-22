@@ -185,7 +185,6 @@ public class NavHeadFragment extends SubscribeResumePauseBaseFragment {
             mTxtAllTime.setText( "" + time / 3600 + "小时" + (time % 3600) / 60 + "分钟" );
         }
         double  distance = routeLine.getDistance() ;
-
         mTxtAllDistance.setText(NumberFormat.getdouble(distance/1000, 1)+"公里") ;
     }
     @Override
