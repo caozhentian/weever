@@ -12,6 +12,7 @@ import cn.people.weever.common.util.DatetimeUtil;
 
 public class TripNode implements Serializable{
 
+
     //时间 单位秒
     @SerializedName("time")
     private long   mTime        ;
@@ -37,5 +38,13 @@ public class TripNode implements Serializable{
 
     public String  getDateStr(){
         return DatetimeUtil.getDate(mTime * 1000 , DatetimeUtil.DEFAULT_FORMAT1) ;
+    }
+
+    @Override
+    public String toString() {
+        return "TripNode{" +
+                "mTime=" + getDateStr() +
+                ", mAddress=" + mAddress +
+                '}';
     }
 }

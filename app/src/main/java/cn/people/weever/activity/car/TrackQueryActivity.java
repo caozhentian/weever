@@ -306,8 +306,8 @@ public class TrackQueryActivity extends BaseActivity
         historyTrackRequest.setProcessOption(processOption);
 // 设置里程填充方式为驾车
         historyTrackRequest.setSupplementMode(SupplementMode.driving);
-        trackApp.initRequest(historyTrackRequest);
-        historyTrackRequest.setEntityName(WeeverApplication.getEntityName());
+        TraceService.getInstance(this).initRequest(historyTrackRequest);
+        historyTrackRequest.setEntityName(TraceService.getInstance(this).getEntityName());
         historyTrackRequest.setStartTime(startTime);
         historyTrackRequest.setEndTime(endTime);
         historyTrackRequest.setPageIndex(pageIndex);

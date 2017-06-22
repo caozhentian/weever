@@ -52,23 +52,19 @@ import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.setting.SettingUpActivity;
 import cn.people.weever.application.StartExitAppManager;
-import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.timer.TimerByHandler;
-import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.common.util.NumberFormat;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.fragment.NavFooterFragment;
+import cn.people.weever.map.LocationService;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.mapapi.overlayutil.DrivingRouteOverlay;
-import cn.people.weever.model.Address;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.RealTimeOrderInfo;
-import cn.people.weever.model.TripNode;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
-import cn.people.weever.map.LocationService;
 import cn.people.weever.service.OrderService;
 
 public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
@@ -165,8 +161,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 .setMyLocationConfigeration(new MyLocationConfiguration(
                         mCurrentMode, true, currentMarker,
                         accuracyCircleFillColor, accuracyCircleStrokeColor));
-        mLocationService.start();
-        initListener();
     }
 
     @Override
@@ -273,19 +267,22 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
     @Override
     protected void onPause() {
         mMapView.onPause();
+        mLocationService.unregisterListener(myListener);
+        mLocationService.stop();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         mMapView.onResume();
+        // 退出时销毁定位
+        mLocationService.registerListener(myListener);
+        mLocationService.start();
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        // 退出时销毁定位
-        mLocationService.stop();
         // 关闭定位图层
         mBaiduMap.setMyLocationEnabled(false);
         mMapView.onDestroy();
@@ -381,22 +378,11 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
                 //使用街道
                 if(poiList != null && poiList.size() > 1) {
                     Poi poi = poiList.get(0);
-                    if(mBaseOrder == null) {
-                        mNavFooterFragment.setLocationSrc(poi.getName());
-                    }
                 }
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(18.0f);
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
-            TripNode tripNode  = new TripNode() ;
-            tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
-            Address address = new Address() ;
-            address.setPlaceName(poiList.get(0).getName()) ;
-            address.setLatitude(location.getLatitude())    ;
-            address.setLongitude(location.getLongitude())  ;
-            tripNode.setAddress(address);
-            WeeverApplication.getInstance().setCurTripNode(tripNode);
         }
     }
 
@@ -410,10 +396,6 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
             mDestAddress = (o.getmPoiInfo().name)  ;
             destLating = o.getmPoiInfo().location  ;
         }
-    }
-
-	private void initListener() {
-
     }
 
     private void routeplanToNavi() {

@@ -151,4 +151,16 @@ public class Address implements Serializable{
     public void setMAddress(String mAddress) {
         this.mAddress = mAddress;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id='" + id + '\'' +
+                ", isSrc=" + isSrc +
+                ", mPlaceName='" + mPlaceName + '\'' +
+                ", mAddress='" + mAddress + '\'' +
+                ", mLatitude=" + mLatitude +
+                ", mLongitude=" + mLongitude +
+                '}';
+    }
 }

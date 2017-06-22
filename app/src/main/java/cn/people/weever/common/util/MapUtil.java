@@ -25,6 +25,7 @@ import com.baidu.trace.model.TraceLocation;
 import java.util.List;
 
 import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.model.CurrentLocation;
 
 import static cn.people.weever.common.util.BitmapUtil.bmArrowPoint;
@@ -65,6 +66,8 @@ public class MapUtil {
     public void init(MapView view) {
         mapView = view;
         baiduMap = mapView.getMap();
+        MapStatusUpdate u2 = MapStatusUpdateFactory.newLatLng(CityConstant.GEO_XIAN);
+        baiduMap.setMapStatus(u2);
         mapView.showZoomControls(false);
     }
 

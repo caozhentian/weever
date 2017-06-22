@@ -13,15 +13,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.Poi;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.trace.model.OnTraceListener;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,11 +35,16 @@ import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
+import cn.people.weever.map.LocationService;
+import cn.people.weever.map.TLocationListener;
 import cn.people.weever.map.TraceService;
+import cn.people.weever.model.Address;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.RouteOperateEvent;
+import cn.people.weever.model.TripNode;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
 import cn.people.weever.service.OrderService;
@@ -52,8 +59,6 @@ import cn.people.weever.service.OrderService;
  */
 @SuppressLint("NewApi")
 public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     @BindView(R.id.edtSrc)
     TextView mEdtSrc;
@@ -65,8 +70,6 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     RadioButton mRadioBtnHalfDayUse;
     @BindView(R.id.radioBtnTransfer)
     RadioButton mRadioBtnTransfer;
-    @BindView(R.id.radioGroup)
-    RadioGroup mRadioGroup;
     @BindView(R.id.btnStart)
     Button mBtnStart;
     @BindView(R.id.btnWait)
@@ -79,6 +82,13 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     Button mBtnCompute;
     @BindView(R.id.ll_bottom)
     LinearLayout mLlBottom;
+    @BindView(R.id.ll_src_dest_address)
+    LinearLayout mLlSrcDestAddress;
+    @BindView(R.id.radioGroup)
+    LinearLayout mRadioGroup;
+    @BindView(R.id.ll_operate)
+    LinearLayout mLlOperate;
+
     Unbinder unbinder;
 
     private RouteOperateEvent mRouteOperateEvent = new RouteOperateEvent();
@@ -133,6 +143,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             mBaseOrder = (BaseOrder) getArguments().getSerializable(ARG_PARAM1);
         }
         setOrder(mBaseOrder) ;
+        setLocationSrc() ;
         mOrderService = new OrderService() ;
 
     }
@@ -167,6 +178,16 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     }
 
     public void setOrder(BaseOrder baseOrder){
+        if(mBaseOrder == null){
+            mLlSrcDestAddress.setVisibility(View.VISIBLE);
+            mRadioGroup.setVisibility(View.GONE);
+            mLlOperate.setVisibility(View.GONE);
+        }
+        else{
+            mLlSrcDestAddress.setVisibility(View.GONE);
+            mRadioGroup.setVisibility(View.GONE);
+            mLlOperate.setVisibility(View.VISIBLE);
+        }
         if(mBaseOrder != null){
             mEdtSrc.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
             mEdtDest.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName()) ;
@@ -255,13 +276,8 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
             @Override
             public void ok() {
-                // 设置起终点信息，对于tranist search 来说，城市名无意义
-                mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
-                mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE);
-                mOrderService.routeOperateOrder(mRouteOperateEvent);
-                PlanNode stNode = PlanNode.withLocation(srcLating)   ;
-                PlanNode enNode = PlanNode.withLocation(destLating)  ;
                 TraceService.getInstance(WeeverApplication.getInstance()).startGather(traceListener);
+                operate(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE) ;
             }
         });
 
@@ -271,7 +287,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         if(mBaseOrder == null){
             return ;
         }
-        mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
+        TripNode tripNode  = new TripNode() ;
+        tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
+        mRouteOperateEvent.setTripNode(tripNode);
         mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE);
         mOrderService.routeOperateOrder(mRouteOperateEvent);
     }
@@ -280,7 +298,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         if(mBaseOrder == null){
             return ;
         }
-        mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
+        TripNode tripNode  = new TripNode() ;
+        tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
+        mRouteOperateEvent.setTripNode(tripNode);
         mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE);
         mOrderService.routeOperateOrder(mRouteOperateEvent);
     }
@@ -298,23 +318,75 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
             @Override
             public void ok() {
-                mRouteOperateEvent.setTripNode(WeeverApplication.getInstance().getCurTripNode());
-                mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
-                mOrderService.routeOperateOrder(mRouteOperateEvent);
                 TraceService.getInstance(WeeverApplication.getInstance()).stopGather(traceListener);
+                operate(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE) ;
             }
         });
 
     }
 
+    private void operate(int type){
+        {
+            TripNode tripNode  = new TripNode() ;
+            tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
+            mRouteOperateEvent.setTripNode(tripNode);
+            mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
+            mOrderService.routeOperateOrder(mRouteOperateEvent);
+
+            LocationService.getLocationService(getContext()).start();
+            LocationService.getLocationService(getContext()).registerListener(new TLocationListener() {
+                @Override
+                public void process(BDLocation location) {
+                    TripNode tripNode  = mRouteOperateEvent.getTripNode() ;
+                    Address address = new Address() ;
+                    List<Poi> poiList = location.getPoiList() ;
+                    address.setPlaceName(poiList.get(0).getName()) ;
+                    address.setLatitude(location.getLatitude())    ;
+                    address.setLongitude(location.getLongitude())  ;
+                    tripNode.setAddress(address);
+                    mOrderService.routeOperateOrder(mRouteOperateEvent);
+                    LocationService.getLocationService(getContext()).stop();
+                    LocationService.getLocationService(getContext()).unregisterListener(this);
+                }
+
+                @Override
+                public void processFirstLoc(BDLocation location) {
+
+                }
+
+                @Override
+                public void processLocFail(BDLocation location) {
+                    mOrderService.routeOperateOrder(mRouteOperateEvent);
+                }
+            }) ;
+        }
+    }
     public interface OnFragmentInteractionListener {
 
         void onFragmentInteraction(Uri uri);
     }
 
-    public void setLocationSrc(String name){
+    public void setLocationSrc(){
         if(mBaseOrder == null){
-            mEdtSrc.setText(name);
+
+            LocationService.getLocationService(getContext()).start();
+            LocationService.getLocationService(getContext()).registerListener(new TLocationListener() {
+                @Override
+                public void process(BDLocation location) {
+                }
+
+                @Override
+                public void processFirstLoc(BDLocation location) {
+                    List<Poi> poiList = location.getPoiList() ;
+                    mEdtSrc.setText(poiList.get(0).getName());
+                    LocationService.getLocationService(getContext()).stop();
+                    LocationService.getLocationService(getContext()).unregisterListener(this);
+                }
+
+                @Override
+                public void processLocFail(BDLocation location) {
+                }
+            }) ;
         }
     }
 

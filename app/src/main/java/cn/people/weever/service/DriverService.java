@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import cn.people.weever.MockData.MockLoginService;
 import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.map.TraceService;
 import cn.people.weever.model.Driver;
 import cn.people.weever.respositoty.DriverRepository;
 
@@ -64,7 +65,7 @@ public class DriverService {
             return ;
         }
         WeeverApplication.setCurUser(driver)                  ;
-        WeeverApplication.setEntityName(driver.getCardNum())  ;
+        TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(driver.getCardNum())  ;
     }
 
     public Driver getCurDriver(){
