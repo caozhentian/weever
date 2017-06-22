@@ -2,17 +2,17 @@ package cn.people.weever.application;
 
 import android.content.Context;
 
-import com.baidu.mapapi.SDKInitializer;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
-
 import cn.jpush.android.api.JPushInterface;
 import cn.people.weever.BuildConfig;
 import cn.people.weever.config.FileConfig;
+import cn.people.weever.dialog.ICancelOK;
+import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.jpush.JPushService;
+import cn.people.weever.log.LogUtil;
+import cn.people.weever.map.LocationService;
+import cn.people.weever.map.MapService;
+import cn.people.weever.map.TraceService;
 import cn.people.weever.model.Driver;
-import cn.people.weever.service.LocationService;
-import cn.people.weever.service.TraceService;
 
 /**
  * Created by Administrator on 2017/6/7.
@@ -21,25 +21,16 @@ import cn.people.weever.service.TraceService;
 public class StartExitAppManager {
 
     public static final void initApp(Context context){
-        initLog() ;
+        LogUtil.initLog(); ;
         FileConfig.initDirs() ;
         initJPushService(context) ;
         initBaiduService(context) ;
     }
 
-    public static void  initLog(){
-        if(BuildConfig.DEBUG) {
-            Logger.addLogAdapter(new AndroidLogAdapter());
-        }
-    }
-
     public static void initBaiduService(Context context){
-        /***
-         * 初始化定位sdk，建议在Application中创建
-         */
-        SDKInitializer.initialize(context);
+        MapService.initMap(context);
         LocationService.getLocationService(context).start();
-        TraceService.getInstance(context);
+        TraceService.getInstance(context).startTrace(null);
     }
 
     public static void initJPushService(Context context){
@@ -55,10 +46,23 @@ public class StartExitAppManager {
     }
 
     public static final void exitLogin(){
-        WeeverApplication.exitLogin();
+        WeeverApplication.getInstance().setCurUser(null);
+        JPushService.setAlias(WeeverApplication.getInstance(), null);
     }
 
-    public static final void exitApp(){
+    public static final void exitApp(Context context){
+        OKCancelDlg.createCancelOKDlg(context, "确认退出应用吗?", new ICancelOK() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void ok() {
+                ActivityExitManage.finishAll();
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        });
 
     }
 }

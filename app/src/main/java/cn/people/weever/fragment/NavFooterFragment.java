@@ -3,11 +3,8 @@ package cn.people.weever.fragment;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -22,9 +19,6 @@ import android.widget.TextView;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.trace.model.OnTraceListener;
-import com.baidu.trace.model.PushMessage;
-import com.baidu.trace.model.StatusCodes;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -41,13 +35,12 @@ import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
+import cn.people.weever.map.TraceService;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
-import cn.people.weever.receiver.PowerReceiver;
 import cn.people.weever.service.OrderService;
-import cn.people.weever.service.TraceService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -102,23 +95,11 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
      */
     private OnTraceListener traceListener = null;
 
-    private PowerManager powerManager = null;
-
-    private PowerManager.WakeLock wakeLock = null;
-
-    private PowerReceiver powerReceiver = null;
 
     public NavFooterFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment NavHeadFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static NavFooterFragment newInstance(BaseOrder baseOrder) {
         NavFooterFragment fragment = new NavFooterFragment();
         Bundle args = new Bundle();
@@ -130,13 +111,11 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startTrace() ;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        TraceService.getInstance(WeeverApplication.getInstance()).stopTrace();
     }
 
     @Override
@@ -146,7 +125,6 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         View view = inflater.inflate(R.layout.fragment_nav_footer, container, false);
         unbinder = ButterKnife.bind(this, view);
         initVar();
-        initListener() ;
         return view;
     }
 
@@ -156,8 +134,6 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         }
         setOrder(mBaseOrder) ;
         mOrderService = new OrderService() ;
-
-        powerManager =  (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
 
     }
     // TODO: Rename method, update argument and hook method into UI event
@@ -291,50 +267,6 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
     }
 
-    private void initListener() {
-        traceListener = new OnTraceListener() {
-            @Override
-            public void onStartTraceCallback(int errorNo, String message) {
-                if (StatusCodes.SUCCESS == errorNo || StatusCodes.START_TRACE_NETWORK_CONNECT_FAILED <= errorNo) {
-                    registerPowerReceiver();
-                }
-                Logger.d(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
-                //showToast(String.format("%s", message));
-            }
-
-            @Override
-            public void onStopTraceCallback(int errorNo, String message) {
-                if (StatusCodes.SUCCESS == errorNo || StatusCodes.CACHE_TRACK_NOT_UPLOAD == errorNo) {
-                    unregisterPowerReceiver();
-                }
-            }
-
-            @Override
-            public void onStartGatherCallback(int errorNo, String message) {
-                if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STARTED == errorNo) {
-
-                }
-                else{
-                }
-            }
-
-            @Override
-            public void onStopGatherCallback(int errorNo, String message) {
-                if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STOPPED == errorNo) {
-
-                }
-                else{
-
-                }
-            }
-
-            @Override
-            public void onPushCallback(byte messageType, PushMessage pushMessage) {
-
-            }
-        };
-    }
-
     private void waitting(){
         if(mBaseOrder == null){
             return ;
@@ -373,41 +305,6 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             }
         });
 
-    }
-    private void startTrace(){
-        TraceService.getInstance(WeeverApplication.getInstance()).startTrace( traceListener);
-    }
-
-
-    /**
-     * 注册电源锁广播
-     */
-    private void registerPowerReceiver() {
-        if (WeeverApplication.isRegisterPower || powerManager == null) {
-            return;
-        }
-        if (null == wakeLock) {
-            wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "track upload");
-        }
-        if (null == powerReceiver) {
-            powerReceiver = new PowerReceiver(wakeLock);
-        }
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_USER_PRESENT);
-        getContext().registerReceiver(powerReceiver, filter);
-        WeeverApplication.isRegisterPower = true;
-    }
-
-    private void unregisterPowerReceiver() {
-        if (!WeeverApplication.isRegisterPower) {
-            return;
-        }
-        if (null != powerReceiver) {
-            getContext().unregisterReceiver(powerReceiver);
-        }
-        WeeverApplication.isRegisterPower = false;
     }
 
     public interface OnFragmentInteractionListener {

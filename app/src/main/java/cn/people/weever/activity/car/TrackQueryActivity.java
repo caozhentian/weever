@@ -43,7 +43,7 @@ import cn.people.weever.common.constant.TraceConstants;
 import cn.people.weever.common.util.BitmapUtil;
 import cn.people.weever.common.util.CommonUtil;
 import cn.people.weever.common.util.MapUtil;
-import cn.people.weever.service.TraceService;
+import cn.people.weever.map.TraceService;
 
 /**
  * 轨迹查询

@@ -1,4 +1,4 @@
-package cn.people.weever.service;
+package cn.people.weever.map;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -9,11 +9,15 @@ import com.baidu.trace.api.track.HistoryTrackRequest;
 import com.baidu.trace.api.track.OnTrackListener;
 import com.baidu.trace.model.BaseRequest;
 import com.baidu.trace.model.OnTraceListener;
+import com.baidu.trace.model.PushMessage;
+import com.baidu.trace.model.StatusCodes;
+import com.orhanobut.logger.Logger;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.PreferencesUtil;
+import cn.people.weever.service.RegisterPowerService;
 
 /**
  * Created by Administrator on 2017/6/22.
@@ -96,7 +100,50 @@ public class TraceService {
     }
 
     public void startTrace(OnTraceListener traceListener){
-        mClient.stopTrace(mTrace , traceListener);
+        mClient.startTrace(mTrace , traceListener);
+    }
+
+    public void startTrace(){
+        mClient.startTrace(mTrace , new OnTraceListener() {
+            @Override
+            public void onStartTraceCallback(int errorNo, String message) {
+                if (StatusCodes.SUCCESS == errorNo || StatusCodes.START_TRACE_NETWORK_CONNECT_FAILED <= errorNo) {
+                    RegisterPowerService.registerPowerReceiver();
+                }
+                Logger.d(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+
+            }
+
+            @Override
+            public void onStopTraceCallback(int errorNo, String message) {
+                if (StatusCodes.SUCCESS == errorNo || StatusCodes.CACHE_TRACK_NOT_UPLOAD == errorNo) {
+                    RegisterPowerService.unregisterPowerReceiver();
+                }
+            }
+
+            @Override
+            public void onStartGatherCallback(int errorNo, String message) {
+                if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STARTED == errorNo) {
+
+                }
+                else{
+                }
+            }
+
+            @Override
+            public void onStopGatherCallback(int errorNo, String message) {
+                if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STOPPED == errorNo) {
+
+                }
+                else{
+
+                }
+            }
+            @Override
+            public void onPushCallback(byte messageType, PushMessage pushMessage) {
+
+            }
+        });
     }
     public void stopTrace() {
         mClient.stopTrace(mTrace, null);

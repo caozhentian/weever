@@ -13,7 +13,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 
 import cn.people.weever.R;
-import cn.people.weever.service.LocationService;
+import cn.people.weever.map.LocationService;
 
 /***
  * 单点定位示例，用来展示基本的定位结果，配置在LocationService.java中

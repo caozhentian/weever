@@ -12,11 +12,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import cn.people.weever.BuildConfig;
 import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.db.DaoManager;
-import cn.people.weever.jpush.JPushService;
+import cn.people.weever.map.LocationService;
+import cn.people.weever.map.TraceService;
 import cn.people.weever.model.Driver;
 import cn.people.weever.model.TripNode;
-import cn.people.weever.service.LocationService;
-import cn.people.weever.service.TraceService;
 
 /**
  * Created by ztcao on 2016/12/20.
@@ -40,7 +39,6 @@ public class WeeverApplication extends Application {
 
     private static  AtomicInteger mSequenceGenerator = new AtomicInteger();
 
-    public static  boolean isRegisterPower ;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -107,15 +105,6 @@ public class WeeverApplication extends Application {
          */
         LocationService locationService = LocationService.getLocationService(this);
         SDKInitializer.initialize(this);
-    }
-
-
-
-	public static final void exitLogin(){
-        TraceService.getInstance(WeeverApplication.getInstance()).stopTrace();
-        setCurUser(null);
-        JPushService.setAlias(getInstance(), null);
-        setEntityName("");
     }
 
     /**

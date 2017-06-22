@@ -13,7 +13,7 @@ import android.widget.TextView;
 import cn.people.weever.R;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.activity.login.LoginActivity;
-import cn.people.weever.application.ActivityExitManage;
+import cn.people.weever.application.StartExitAppManager;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.ManifestUtil;
 import cn.people.weever.dialog.ICancelOK;
@@ -114,8 +114,7 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
 
 
     protected<T> void dealSuccess(BaseModel baseModel){
-        WeeverApplication.exitLogin();
-        ActivityExitManage.finishAll();
+        StartExitAppManager.exitLogin();
         startActivity(LoginActivity.newIntent(SettingUpActivity.this));
     }
 

@@ -51,6 +51,7 @@ import cn.people.weever.R;
 import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.setting.SettingUpActivity;
+import cn.people.weever.application.StartExitAppManager;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.timer.TimerByHandler;
 import cn.people.weever.common.util.DatetimeUtil;
@@ -67,7 +68,7 @@ import cn.people.weever.model.RealTimeOrderInfo;
 import cn.people.weever.model.TripNode;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
-import cn.people.weever.service.LocationService;
+import cn.people.weever.map.LocationService;
 import cn.people.weever.service.OrderService;
 
 public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGetRoutePlanResultListener
@@ -188,7 +189,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements OnGet
 
                 @Override
                 public void ok() {
-                    finish();
+                    StartExitAppManager.exitApp(HomeActivity.this);
                 }
             });
 

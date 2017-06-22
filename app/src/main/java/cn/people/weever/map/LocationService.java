@@ -1,4 +1,4 @@
-package cn.people.weever.service;
+package cn.people.weever.map;
 
 import android.content.Context;
 
