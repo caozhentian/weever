@@ -121,22 +121,16 @@ public class BNDemoGuideActivity extends BaseActivity {
     private void initFragment(){
         Bundle bundle = getIntent().getExtras();
         mBaseOrder =  (BaseOrder) bundle.getSerializable(BASE_ORDER);
-        if(mBaseOrder == null){
-            return ;
+        if(mBaseOrder != null){
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
+                FragmentTransaction fragmentTransaction = fragmentManager
+                        .beginTransaction();
+                fragmentTransaction.add(R.id.fl_nav_footer , NavFooterFragment.newInstance(mBaseOrder)) ;
+                fragmentTransaction.commit();
+            }
         }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-//        if(fragmentManager.findFragmentById(R.id.fl_nav_head) == null){
-//            FragmentTransaction fragmentTransaction = fragmentManager
-//                    .beginTransaction();
-//            fragmentTransaction.add(R.id.fl_nav_head , NavHeadFragment.newInstance(mBaseOrder)) ;
-//            fragmentTransaction.commit();
-//        }
-        if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
-            FragmentTransaction fragmentTransaction = fragmentManager
-                    .beginTransaction();
-            fragmentTransaction.add(R.id.fl_nav_footer , NavFooterFragment.newInstance(mBaseOrder)) ;
-            fragmentTransaction.commit();
-        }
+
 
     }
     @Override

@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.baidu.location.BDLocation;
+import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -27,6 +28,8 @@ import com.baidu.mapapi.model.LatLng;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import cn.people.weever.R;
@@ -253,6 +256,13 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
             LatLng ll = new LatLng(location.getLatitude(),
                     location.getLongitude());
             srcLating = ll;
+            List<Poi> poiList = location.getPoiList() ;
+            //使用街道
+            if(poiList != null && poiList.size() > 1) {
+                Poi poi = poiList.get(0);
+                mNavFooterFragment.setLocationSrc(poi.getName());
+            }
+
             MapStatus.Builder builder = new MapStatus.Builder();
             builder.target(ll).zoom(18.0f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));

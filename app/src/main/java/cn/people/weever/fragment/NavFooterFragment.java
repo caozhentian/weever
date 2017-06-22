@@ -144,7 +144,6 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             mBaseOrder = (BaseOrder) getArguments().getSerializable(ARG_PARAM1);
         }
         setOrder(mBaseOrder) ;
-        setLocationSrc() ;
         mOrderService = new OrderService() ;
 
     }
@@ -331,9 +330,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             TripNode tripNode  = new TripNode() ;
             tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
             mRouteOperateEvent.setTripNode(tripNode);
-            mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE);
-            mOrderService.routeOperateOrder(mRouteOperateEvent);
-
+            mRouteOperateEvent.setOperateType(type);
             LocationService.getLocationService(getContext()).start();
             LocationService.getLocationService(getContext()).registerListener(new TLocationListener() {
                 @Override
@@ -367,28 +364,28 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         void onFragmentInteraction(RouteOperateEvent routeOperateEvent);
     }
 
-    public void setLocationSrc(){
+    public void setLocationSrc(String name){
         if(mBaseOrder == null){
-
-            LocationService.getLocationService(getContext()).start();
-            LocationService.getLocationService(getContext()).registerListener(new TLocationListener() {
-                @Override
-                public void process(BDLocation location) {
-                    List<Poi> poiList = location.getPoiList() ;
-                    mEdtSrc.setText(poiList.get(0).getName());
-                    srcLating =  new LatLng(location.getLatitude(),
-                            location.getLongitude());
-                }
-
-                @Override
-                public void processFirstLoc(BDLocation location) {
-
-                }
-
-                @Override
-                public void processLocFail(BDLocation location) {
-                }
-            }) ;
+            mEdtSrc.setText(name);
+//            LocationService.getLocationService(getContext()).start();
+//            LocationService.getLocationService(getContext()).registerListener(new TLocationListener() {
+//                @Override
+//                public void process(BDLocation location) {
+//                    List<Poi> poiList = location.getPoiList() ;
+//                    mEdtSrc.setText(poiList.get(0).getName());
+//                    srcLating =  new LatLng(location.getLatitude(),
+//                            location.getLongitude());
+//                }
+//
+//                @Override
+//                public void processFirstLoc(BDLocation location) {
+//
+//                }
+//
+//                @Override
+//                public void processLocFail(BDLocation location) {
+//                }
+//            }) ;
         }
     }
 

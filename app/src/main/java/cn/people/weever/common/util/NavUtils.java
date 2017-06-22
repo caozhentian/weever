@@ -68,7 +68,7 @@ public class NavUtils {
         }, null, ttsHandler, ttsPlayStateListener);
     }
 
-    public static  void routeplanToNavi(BaseActivity context ,LatLng srcLating , String srcAddress , LatLng destLating , String destAddress ,
+    public static  void routeplanToNavi(BaseActivity baseActivity ,LatLng srcLating , String srcAddress , LatLng destLating , String destAddress ,
                                    BaseOrder baseOrder ) {
 
         if (!NavUtils.hasInitSuccess) {
@@ -84,26 +84,27 @@ public class NavUtils {
             list.add(eNode);
 
             // 开发者可以使用旧的算路接口，也可以使用新的算路接口,可以接收诱导信息等
-            BaiduNaviManager.getInstance().launchNavigator(context, list, 1, true, new DemoRoutePlanListener(sNode ,baseOrder),
+            BaiduNaviManager.getInstance().launchNavigator(baseActivity, list, 1, true, new DemoRoutePlanListener(sNode ,baseActivity ,baseOrder),
                     eventListerner);
         }
     }
 
     public static class DemoRoutePlanListener implements BaiduNaviManager.RoutePlanListener {
 
+        private BaseActivity mBaseActivity ;
         private BNRoutePlanNode mBNRoutePlanNode = null;
 
         private BaseOrder mBaseOrder  ;
 
-        public DemoRoutePlanListener(BNRoutePlanNode node ,BaseOrder baseOrder) {
+        public DemoRoutePlanListener(BNRoutePlanNode node ,BaseActivity baseActivity ,BaseOrder baseOrder) {
             mBNRoutePlanNode = node ;
+            mBaseActivity = baseActivity ;
             mBaseOrder = baseOrder   ;
         }
 
         @Override
         public void onJumpToNavigator() {
-            WeeverApplication.getInstance().startActivity(
-                    BNDemoGuideActivity.newIntent(WeeverApplication.getInstance() ,mBNRoutePlanNode , mBaseOrder));
+            mBaseActivity.startActivity(BNDemoGuideActivity.newIntent(mBaseActivity ,mBNRoutePlanNode , mBaseOrder));
         }
 
         @Override
