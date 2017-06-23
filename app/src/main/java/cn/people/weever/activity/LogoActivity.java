@@ -3,8 +3,7 @@ package cn.people.weever.activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.orhanobut.logger.Logger;
 
 import cn.people.weever.R;
 import cn.people.weever.activity.login.LoginActivity;
@@ -33,10 +32,12 @@ public class LogoActivity extends SubcribeCreateDestroyActivity {
         initView();
         initData();
         if(WeeverApplication.getCurUser() == null) { //需要登录
+            Logger.d("登录") ;
             startActivity(LoginActivity.newIntent(this));
         }
         else{ //自动登录
             //startActivity(HomeActivity.newIntent(this));
+            Logger.d("自动登录") ;
             mDriverService.autoLogin();
         }
     }

@@ -8,6 +8,8 @@ import com.orhanobut.logger.PrettyFormatStrategy;
 
 import cn.people.weever.BuildConfig;
 
+import static com.orhanobut.logger.Logger.ERROR;
+
 /**
  * Created by Administrator on 2017/6/19.
  */
@@ -19,17 +21,26 @@ public class LogUtil {
                 .showThreadInfo(false)  // (Optional) Whether to show thread info or not. Default true
                 .methodCount(0)         // (Optional) How many method line to show. Default 2
                 .methodOffset(3)        // (Optional) Skips some method invokes in stack trace. Default 5
-//        .logStrategy(customLog) // (Optional) Changes the log strategy to print out. Default LogCat
-                .tag("W")   // (Optional) Custom tag for each log. Default PRETTY_LOGGER
+                .tag("PRETTY_LOGGER")   // (Optional) Custom tag for each log. Default PRETTY_LOGGER
                 .build();
          Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy){
              @Override public boolean isLoggable(int priority, String tag) {
-                 return BuildConfig.DEBUG ;
+                 if(BuildConfig.DEBUG) {
+                     return BuildConfig.DEBUG;
+                 }
+                 else{
+                     return priority >= ERROR ;
+                 }
              }
          }) ;
         Logger.addLogAdapter(new DiskLogAdapter(){
             @Override public boolean isLoggable(int priority, String tag) {
-                return BuildConfig.DEBUG ;
+                if( BuildConfig.DEBUG ){
+                    return true ;
+                }
+                else{
+                    return priority >= ERROR ;
+                }
             }
         });
     }

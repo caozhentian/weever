@@ -6,12 +6,13 @@ import android.support.v4.app.Fragment;
 import org.greenrobot.eventbus.EventBus;
 
 import cn.people.weever.application.ActivityExitManage;
+import cn.people.weever.net.IApiOperationCode;
 
 /**
  * Created by Administrator on 2017/6/9.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements IApiOperationCode{
 
     protected  int mApiOperationCode ;
 
@@ -49,13 +50,11 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //ActivityExitManage.setCurBaseFragment( this)  ;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        //ActivityExitManage.setCurBaseFragment( null)  ;
     }
 
     @Override

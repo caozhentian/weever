@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import cn.people.weever.MockData.MockLoginService;
 import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.jpush.JPushService;
 import cn.people.weever.map.TraceService;
 import cn.people.weever.model.Driver;
 import cn.people.weever.respositoty.DriverRepository;
@@ -52,11 +53,11 @@ public class DriverService {
     }
 
     public void loginOut(){
-//        if(MockLoginService.DEBUG_MOCK){
-//            MockLoginService mockLoginService = new MockLoginService() ;
-//            mockLoginService.getloginOutJsonData();
-//            return ;
-//        }
+        if(MockLoginService.DEBUG_MOCK){
+            MockLoginService mockLoginService = new MockLoginService() ;
+            mockLoginService.getloginOutJsonData();
+            return ;
+        }
         mDriverRepository.loginOut();
     }
 
@@ -66,6 +67,7 @@ public class DriverService {
         }
         WeeverApplication.setCurUser(driver)                  ;
         TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(driver.getCardNum())  ;
+        JPushService.setAlias(WeeverApplication.getInstance() , driver.getUserName());
     }
 
     public Driver getCurDriver(){

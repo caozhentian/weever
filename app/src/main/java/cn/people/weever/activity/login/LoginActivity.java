@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.orhanobut.logger.Logger;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,7 +22,6 @@ import cn.people.weever.R;
 import cn.people.weever.activity.HomeActivity;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.common.util.ToastUtil;
-import cn.people.weever.jpush.JPushService;
 import cn.people.weever.model.Car;
 import cn.people.weever.model.Driver;
 import cn.people.weever.net.BaseModel;
@@ -59,12 +60,6 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
     public void initData() {
         mLoginViewModel = new Driver() ;
         mDriverService =  new DriverService() ;
-        //tetst
-//        Driver driver = new Driver() ;
-//        driver.setId("111");
-//        driver.setUserName("55");
-//        driver.setPassword("8989");
-//        mDriverService.save(driver);
         mCarService     = new CarService()     ;
         //查询车辆编号
         mCarService.query();
@@ -128,7 +123,6 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         mLoginViewModel.setCardNum(carNum);
         try {
             mDriverService.login(mLoginViewModel);
-            //startActivity(HomeActivity.newIntent(this));
         }catch(IllegalArgumentException e){
             ToastUtil.showToast(e.getMessage());
         }
@@ -146,8 +140,8 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
     public void processLoginEvent(@Nullable BaseModel<Driver> baseModel){
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_LOGIN){
             Driver driver = baseModel.getData() ;
+            Logger.d(driver)  ;
             mDriverService.save(driver);
-            JPushService.setAlias(this , driver.getUserName());
             startActivity(HomeActivity.newIntent(this));
             finish() ;
         }
@@ -156,6 +150,7 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
     public void processCarNumEvent(@Nullable BaseModel<List<Car>> baseModel){
         if(baseModel.getApiOperationCode() == CarApiService.TO_CAR){
                 mCarList = baseModel.getData()  ;
+                Logger.d(mCarList)  ;
                 carNums = new String[mCarList.size()] ;
                 for(int index = 0 ; index < mCarList.size() ; index++){
                     carNums[index] = mCarList.get(index).getNum() ;

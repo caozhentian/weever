@@ -110,7 +110,15 @@ public class Driver extends WeeverBean {
     }
 
 
-
-
-
+    @Override
+    public String toString() {
+        return "Driver{" +
+                "mId='" + mId + '\'' +
+                ", mUserName='" + mUserName + '\'' +
+                ", mPassword='" +  '\'' +
+                ", mCardNum='" + mCardNum + '\'' +
+                ", mWorkTimeType=" + mWorkTimeType +
+                ", mToken='" + mToken + '\'' +
+                '}';
+    }
 }

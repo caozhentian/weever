@@ -93,4 +93,16 @@ public class BaseModel<T> {
 	public void setSubFailStatus(int subFailStatus) {
 		this.subFailStatus = subFailStatus;
 	}
+
+	@Override
+	public String toString() {
+		return "BaseModel{" +
+				"status='" + status + '\'' +
+				", subSuccessStatus=" + subSuccessStatus +
+				", subFailStatus=" + subFailStatus +
+				", message='" + message + '\'' +
+				", data=" + data +
+				", mApiOperationCode=" + mApiOperationCode +
+				'}';
+	}
 }
