@@ -3,7 +3,6 @@ package cn.people.weever.model;
 import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Property;
-import org.greenrobot.greendao.annotation.Transient;
 
 /** 司机
  * Created by weever on 2017/4/6.
@@ -37,7 +36,7 @@ public class Driver extends WeeverBean {
     //班次 具体字段值服务器端可定义
     //@Property(nameInDb = "WORKTIME_TYPE")
     @SerializedName("workTimeType") //JSON序列化的字段名
-    private int  mWorkTimeType  ;
+    private int  mWorkTimeType  = 1 ;
 
     //token ,服务器返回值
     //@Property(nameInDb = "TOKEN")

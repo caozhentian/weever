@@ -100,6 +100,10 @@ public class TraceService {
     }
 
     public void startTrace(OnTraceListener traceListener){
+        if(traceListener == null){
+            startTrace() ;
+            return ;
+        }
         mClient.startTrace(mTrace , traceListener);
     }
 
@@ -109,13 +113,17 @@ public class TraceService {
             public void onStartTraceCallback(int errorNo, String message) {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.START_TRACE_NETWORK_CONNECT_FAILED <= errorNo) {
                     RegisterPowerService.registerPowerReceiver();
+                    Logger.d(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                 }
-                Logger.d(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                else{
+                    Logger.e(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                }
 
             }
 
             @Override
             public void onStopTraceCallback(int errorNo, String message) {
+                Logger.d(String.format("onStopTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.CACHE_TRACK_NOT_UPLOAD == errorNo) {
                     RegisterPowerService.unregisterPowerReceiver();
                 }
@@ -123,6 +131,7 @@ public class TraceService {
 
             @Override
             public void onStartGatherCallback(int errorNo, String message) {
+                Logger.d(String.format("onStartGatherCallback, errorNo:%d, message:%s ", errorNo, message));
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STARTED == errorNo) {
 
                 }
@@ -132,6 +141,7 @@ public class TraceService {
 
             @Override
             public void onStopGatherCallback(int errorNo, String message) {
+                Logger.d(String.format("onStopGatherCallback, errorNo:%d, message:%s ", errorNo, message));
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STOPPED == errorNo) {
 
                 }

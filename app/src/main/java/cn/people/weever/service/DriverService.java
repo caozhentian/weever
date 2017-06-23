@@ -34,11 +34,11 @@ public class DriverService {
         if(TextUtils.isEmpty(driver.getPassword())){
             throw new IllegalArgumentException("请输入密码") ;
         }
-        if(MockLoginService.DEBUG_MOCK){
-            MockLoginService mockLoginService = new MockLoginService() ;
-            mockLoginService.getJsonData(driver) ;
-            return ;
-        }
+//        if(MockLoginService.DEBUG_MOCK){
+//            MockLoginService mockLoginService = new MockLoginService() ;
+//            mockLoginService.getJsonData(driver) ;
+//            return ;
+//        }
         mDriverRepository.login(driver);
     }
 
@@ -52,11 +52,11 @@ public class DriverService {
     }
 
     public void loginOut(){
-        if(MockLoginService.DEBUG_MOCK){
-            MockLoginService mockLoginService = new MockLoginService() ;
-            mockLoginService.getloginOutJsonData();
-            return ;
-        }
+//        if(MockLoginService.DEBUG_MOCK){
+//            MockLoginService mockLoginService = new MockLoginService() ;
+//            mockLoginService.getloginOutJsonData();
+//            return ;
+//        }
         mDriverRepository.loginOut();
     }
 

@@ -77,7 +77,7 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mLoginViewModel.setWorkTimeType(position );
+                mLoginViewModel.setWorkTimeType(position + 1);
             }
 
             @Override

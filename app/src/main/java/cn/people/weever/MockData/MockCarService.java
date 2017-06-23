@@ -17,11 +17,11 @@ public class MockCarService extends MockService {
         List<Car> carList = new LinkedList<>() ;
         Car car = new Car() ;
         car.setDescription("heh");
-        car.setNum("A0001");
+        car.setNum("陕A00000");
         carList.add(car);
         car = new Car() ;
         car.setDescription("heh2");
-        car.setNum("A0002");
+        car.setNum("陕A11111");
         carList.add(car);
         car = new Car() ;
         car.setDescription("heh3");
