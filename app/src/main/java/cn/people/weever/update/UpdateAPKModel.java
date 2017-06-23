@@ -6,21 +6,13 @@ package cn.people.weever.update;
  */
 public class UpdateAPKModel {
 
-	private long tId  ;
-	
 	private String downloadUrl ;
 	
 	private String originalFilename ;
-	
-	private String versionNo ; //版本号
 
-	public long gettId() {
-		return tId;
-	}
+	private int versionCode ; //版本号100
+	private String versionName ; //版本号1.0.0
 
-	public void settId(long tId) {
-		this.tId = tId;
-	}
 
 	public String getDownloadUrl() {
 		return downloadUrl;
@@ -38,12 +30,19 @@ public class UpdateAPKModel {
 		this.originalFilename = originalFilename;
 	}
 
-	public String getVersionNo() {
-		return versionNo;
+	public int getVersionCode() {
+		return versionCode;
 	}
 
-	public void setVersionNo(String versionNo) {
-		this.versionNo = versionNo;
+	public void setVersionCode(int versionCode) {
+		this.versionCode = versionCode;
 	}
-	
+
+	public String getVersionName() {
+		return versionName;
+	}
+
+	public void setVersionName(String versionName) {
+		this.versionName = versionName;
+	}
 }

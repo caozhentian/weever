@@ -20,11 +20,12 @@ import cn.people.weever.event.NetRequestPreEvent;
 import cn.people.weever.net.APIError;
 import cn.people.weever.net.APIFail;
 import cn.people.weever.net.BaseModel;
+import cn.people.weever.net.IApiOperationCode;
 
 /**
  * Created by ztcao on 2016/12/20. Activity的基类
  */
-public abstract class BaseActivity extends AppCompatActivity{
+public abstract class BaseActivity extends AppCompatActivity implements IApiOperationCode{
 
 	protected  int mApiOperationCode ;
 	protected CustomProgressDialog mCustomProgressDialog;

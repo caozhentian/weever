@@ -90,6 +90,10 @@ public class UpdateManager
 		mUpdateAPKModel =  updateAPKModel ;
 	}
 
+	public void update(){
+		// 显示提示对话框
+		showNoticeDialog();
+	}
 	/**
 	 * 检测软件更新
 	 */
@@ -117,7 +121,7 @@ public class UpdateManager
 		
 		if (null != mUpdateAPKModel)
 		{
-			String serviceVersionCode = mUpdateAPKModel.getVersionNo() ;
+			String serviceVersionCode = mUpdateAPKModel.getVersionName() ;
 			// 版本判断
 			if (serviceVersionCode.compareTo(versionCode) > 0)
 			{

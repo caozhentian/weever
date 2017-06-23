@@ -54,4 +54,12 @@ public class Amount {
     public void setValue(int value) {
         mValue = value;
     }
+
+    @Override
+    public String toString() {
+        return "Amount{" +
+                "mType=" + mType +
+                ", mValue=" + mValue +
+                '}';
+    }
 }

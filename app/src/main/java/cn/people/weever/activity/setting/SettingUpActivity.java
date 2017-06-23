@@ -21,6 +21,7 @@ import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.model.VersionUpdating;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.service.DriverService;
+import cn.people.weever.service.UpdateService;
 
 /**
  *  设置
@@ -33,7 +34,8 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
     private  TextView  tv_title,tv_versio_update;
     private RelativeLayout  rl_version_upgrade,rl_about_we;
     private  TextView   tv_log_out;
-    private DriverService mService;
+    private UpdateService mUpdateService;
+    private DriverService mDriverService;
     private LinearLayout  ll_setting;
     private VersionUpdating versionUpdating;
 
@@ -52,7 +54,9 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
 
     @Override
     public void initData() {
-        mService = new DriverService() ;
+        mDriverService = new DriverService()       ;
+        mUpdateService = new UpdateService(this)  ;
+        mUpdateService.getUpdateApkInfo();
     }
 
     @Override
@@ -105,7 +109,7 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
 
             @Override
             public void ok() {
-                mService.loginOut();
+                mDriverService.loginOut();
                 //startActivity(LoginActivity.newIntent(SettingUpActivity.this));
             }
         });
