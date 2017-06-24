@@ -13,6 +13,6 @@ import retrofit2.http.GET;
 public  interface  CarApiService {
     //车辆编号
     public static final int TO_CAR                 =   100  ;
-    @GET("car/getCar/")
+    @GET("car/getCars")
     Call<BaseModel<List<Car>>> getCar();
 }

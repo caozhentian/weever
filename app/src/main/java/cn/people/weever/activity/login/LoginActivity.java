@@ -117,6 +117,8 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         String password = mEdtPassword.getText().toString() ;
         mLoginViewModel.setPassword(password);
         if(mSpnCarNum.getSelectedItem() == null){
+            showToast("重新获取车辆中....");
+            mCarService.query();
            return ;
         }
         String carNum = mSpnCarNum.getSelectedItem().toString() ;
