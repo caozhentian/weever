@@ -118,7 +118,6 @@ public class TraceService {
                 else{
                     Logger.e(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                 }
-
             }
 
             @Override
