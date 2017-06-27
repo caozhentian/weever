@@ -19,11 +19,11 @@ public class CarService extends ServiceBase<Car>{
 
     @Override
     public void query() {
-//        if(MockCarService.DEBUG_MOCK){
-//            MockCarService mockCarService = new MockCarService() ;
-//            mockCarService.getJsonData() ;
-//            return ;
-//        }
+        if(MockCarService.DEBUG_MOCK){
+            MockCarService mockCarService = new MockCarService() ;
+            mockCarService.getJsonData() ;
+            return ;
+        }
         mCarRespository.getCar() ;
     }
 }

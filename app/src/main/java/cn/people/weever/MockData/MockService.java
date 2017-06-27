@@ -5,7 +5,7 @@ import cn.people.weever.net.BaseModel;
 
 public abstract class MockService {
 
-	public static final boolean DEBUG_MOCK = true ;
+	public static final boolean DEBUG_MOCK = false ;
 
 	public  abstract MockResponse getJsonData();
 	

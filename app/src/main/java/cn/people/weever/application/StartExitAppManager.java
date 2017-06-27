@@ -48,6 +48,7 @@ public class StartExitAppManager {
     public static final void exitLogin(){
         WeeverApplication.getInstance().setCurUser(null);
         JPushService.setAlias(WeeverApplication.getInstance(), null);
+        ActivityExitManage.finishAll();
     }
 
     public static final void exitApp(Context context){

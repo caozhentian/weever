@@ -53,11 +53,11 @@ public class DriverService {
     }
 
     public void loginOut(){
-        if(MockLoginService.DEBUG_MOCK){
-            MockLoginService mockLoginService = new MockLoginService() ;
-            mockLoginService.getloginOutJsonData();
-            return ;
-        }
+//        if(MockLoginService.DEBUG_MOCK){
+//            MockLoginService mockLoginService = new MockLoginService() ;
+//            mockLoginService.getloginOutJsonData();
+//            return ;
+//        }
         mDriverRepository.loginOut();
     }
 

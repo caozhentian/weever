@@ -56,7 +56,7 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
     public void initData() {
         mDriverService = new DriverService()       ;
         mUpdateService = new UpdateService(this)  ;
-        mUpdateService.getUpdateApkInfo();
+//        mUpdateService.getUpdateApkInfo();
     }
 
     @Override

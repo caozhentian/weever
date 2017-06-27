@@ -6,6 +6,6 @@ package cn.people.weever.config;
 public class IpConfig {
 
 	//public final static String BASIC_URL = "http://show.tv.com:8016/";
-	public final static String BASIC_URL = "http://211.149.188.205:8089/api/";
+	public final static String BASIC_URL = "http://211.149.188.205:8085/api/";
 
 }

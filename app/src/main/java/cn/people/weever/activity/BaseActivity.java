@@ -78,7 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IApiOper
 			dealSuccess(baseModel) ;
 		}
 		else{
-			showToast(baseModel.getMessage());
+			//showToast(baseModel.getMessage());
 			return ;
 		}
 

@@ -37,7 +37,7 @@
             android:background="@drawable/shape_rec_normal"
             android:ems="10"
             android:hint="请输入用户名"
-            android:text="demo"
+            android:text="18789890909"
             android:inputType="textPersonName"
             android:maxLength="20"
             android:textSize="@dimen/txt12" />
@@ -56,7 +56,7 @@
             android:background="@drawable/shape_rec_normal"
             android:ems="10"
             android:hint="请输入密码"
-            android:text="demo"
+            android:text="123456"
             android:inputType="textPassword"
             android:maxLength="20"
             android:textSize="@dimen/txt12" />
