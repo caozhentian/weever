@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
-import cn.people.weever.activity.HomeActivity;
+import cn.people.weever.activity.LogoActivity;
 import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.common.util.SystemUtils;
 
@@ -58,13 +58,14 @@ public class MyReceiver extends BroadcastReceiver {
 				//DetailActivity前，要先启动MainActivity。
 				Logger.i("NotificationReceiver", "the app process is alive");
 				//打开自定义的Activity
-				Intent mainIntent = new Intent(context, HomeActivity.class);
+				Intent logoIntent = new Intent(context, LogoActivity.class);
+				//Intent mainIntent = new Intent(context, HomeActivity.class);
 				//将MainAtivity的launchMode设置成SingleTask, 或者在下面flag中加上Intent.FLAG_CLEAR_TOP,
 				//如果Task栈中有MainActivity的实例，就会把它移到栈顶，把在它之上的Activity都清理出栈，
 				//如果Task栈不存在MainActivity实例，则在栈顶创建
-				mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				logoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				Intent orderIntent = new Intent(context, MyOrdersActivity.class);
-				Intent[] intents = {mainIntent, orderIntent};
+				Intent[] intents = {logoIntent , orderIntent};
 				context.startActivities(intents);
 			}
 			else{// app 进程 需要重启

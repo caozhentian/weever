@@ -7,6 +7,7 @@ import com.orhanobut.logger.Logger;
 
 import cn.people.weever.R;
 import cn.people.weever.activity.login.LoginActivity;
+import cn.people.weever.application.StartExitAppManager;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.DriverApiService;
@@ -48,5 +49,10 @@ public class LogoActivity extends SubcribeCreateDestroyActivity {
             startActivity(HomeActivity.newIntent(this));
             finish() ;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        StartExitAppManager.exitApp(LogoActivity.this);
     }
 }

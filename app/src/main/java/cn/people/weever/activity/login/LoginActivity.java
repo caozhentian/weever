@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import cn.people.weever.R;
 import cn.people.weever.activity.HomeActivity;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
+import cn.people.weever.application.StartExitAppManager;
 import cn.people.weever.common.util.ToastUtil;
 import cn.people.weever.model.Car;
 import cn.people.weever.model.Driver;
@@ -162,4 +163,8 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        StartExitAppManager.exitApp(LoginActivity.this);
+    }
 }

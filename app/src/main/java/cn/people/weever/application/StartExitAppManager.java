@@ -51,7 +51,7 @@ public class StartExitAppManager {
         ActivityExitManage.finishAll();
     }
 
-    public static final void exitApp(Context context){
+    public static final void exitApp(final Context context){
         OKCancelDlg.createCancelOKDlg(context, "确认退出应用吗?", new ICancelOK() {
             @Override
             public void cancel() {
@@ -61,6 +61,7 @@ public class StartExitAppManager {
             @Override
             public void ok() {
                 ActivityExitManage.finishAll();
+                TraceService.getInstance(context).stopTrace();
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         });
