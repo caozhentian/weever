@@ -15,10 +15,10 @@ import cn.people.weever.service.DriverService;
 
 public class LogoActivity extends SubcribeCreateDestroyActivity {
 
-    private DriverService mDriverService ;
+   // private DriverService mDriverService ;
     @Override
     public void initData() {
-        mDriverService = new DriverService() ;
+        //mDriverService = new DriverService() ;
     }
 
     @Override
@@ -38,9 +38,9 @@ public class LogoActivity extends SubcribeCreateDestroyActivity {
             finish();
         }
         else{ //自动登录
-            //startActivity(HomeActivity.newIntent(this));
+            startActivity(HomeActivity.newIntent(this));
             Logger.d("自动登录") ;
-            mDriverService.autoLogin();
+            //mDriverService.autoLogin();
         }
     }
 

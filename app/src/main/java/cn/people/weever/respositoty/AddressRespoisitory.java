@@ -2,6 +2,7 @@ package cn.people.weever.respositoty;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class AddressRespoisitory {
             daoSession.insert(address) ;
             QueryBuilder<Address> queryBuilder = daoSession.queryBuilder(Address.class) ;
             if( queryBuilder.count() > MAX_STORE_VALUE){
-                final  List<Address>  addresses = queryBuilder.limit((int) (queryBuilder.count() - MAX_STORE_VALUE)).list();
+                final  List<Address>  addresses = queryBuilder.limit(1).list();
                 daoSession.runInTx(new Runnable() {
                     @Override
                     public void run() {
@@ -67,6 +68,7 @@ public class AddressRespoisitory {
         DaoSession daoSession = DaoManager.getInstance().getDaoSession() ;
         QueryBuilder<Address> queryBuilder = daoSession.queryBuilder(Address.class).where(AddressDao.Properties.IsSrc.eq(isSrc) ) ;
         List<Address> addressList = queryBuilder.list();
+        Collections.reverse(addressList);
         return addressList ;
     }
 

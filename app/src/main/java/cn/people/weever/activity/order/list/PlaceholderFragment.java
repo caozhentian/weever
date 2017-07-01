@@ -139,7 +139,7 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
                 mBaseOrderList.clear();
             }
             if(baseOrderList == null || baseOrderList.size() == 0){
-                return ;
+                //return ;
             }
             mBaseOrderList.addAll(baseOrderList) ;
             if(mOrderAdapter != null) {

@@ -45,6 +45,7 @@ import cn.people.weever.map.TLocationListener;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.RouteOperateEvent;
+import cn.people.weever.service.DriverService;
 
 public class HomeActivity extends SubcribeCreateDestroyActivity implements NavigationView.OnNavigationItemSelectedListener
         , NavFooterFragment.OnFragmentInteractionNavFooterListener{
@@ -146,6 +147,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
 
     @Override
     public void initData() {
+        DriverService driverService = new DriverService() ;
+        driverService.autoLogin();
         initNavi();
     }
 

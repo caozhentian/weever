@@ -60,7 +60,7 @@ public class SubscribeResumePauseBaseFragment extends BaseFragment {
             return ;
         }
         if(baseModel.isSuccess()){
-            showToast(baseModel.getMessage());
+            //showToast(baseModel.getMessage());
             dealSuccess(baseModel) ;
         }
         else{
