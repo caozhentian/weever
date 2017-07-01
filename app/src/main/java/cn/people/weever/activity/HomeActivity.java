@@ -71,6 +71,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
     private NavFooterFragment mNavFooterFragment ;
 
     private BaseOrder mBaseOrder ;
+    private boolean isSelectSrcAddress;
 
     public static final Intent newIntent(Context packageContext, BaseOrder baseOrder){
         Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
@@ -262,7 +263,9 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
             //使用街道
             if(poiList != null && poiList.size() > 1) {
                 Poi poi = poiList.get(0);
-                mNavFooterFragment.setLocationSrc(poi.getName());
+                if(!isSelectSrcAddress ) {
+                    mNavFooterFragment.setLocationSrc(poi.getName());
+                }
             }
 
             MapStatus.Builder builder = new MapStatus.Builder();
@@ -284,6 +287,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void process(AddressSelectVM o){
         if(o.isSrc()){
+            isSelectSrcAddress = true ;
             mSrcAddress = (o.getmPoiInfo().name)   ;
             srcLating = o.getmPoiInfo().location   ;
         }

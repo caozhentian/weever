@@ -17,7 +17,7 @@ import cn.people.weever.model.DaoSession;
 
 public class AddressRespoisitory {
 
-    public static final int MAX_STORE_VALUE = 5 ;
+    public static final int MAX_STORE_VALUE = 15 ;
 
     private DaoSession daoSession  ;
 
