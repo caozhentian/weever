@@ -59,6 +59,7 @@ import cn.people.weever.service.OrderService;
 public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
+    public static final String OPERATE_STATUS = "OPERATE_STATUS";
     @BindView(R.id.edtSrc)
     TextView mEdtSrc;
     @BindView(R.id.edtDest)
@@ -106,6 +107,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
      */
     private OnTraceListener traceListener = null;
 
+    private boolean[] mBooleanOperate = new boolean[4] ;
 
     public NavFooterFragment() {
         // Required empty public constructor
@@ -122,6 +124,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            mBooleanOperate = savedInstanceState.getBooleanArray( OPERATE_STATUS );
+        }
     }
 
     @Override
@@ -254,6 +259,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 break;
         }
     }
+
     private void start(){
         if(mBaseOrder == null){
             return ;
@@ -268,6 +274,10 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             showToast("目的地不能为空");
             return ;
         }
+        if(mBooleanOperate[0] || mBooleanOperate[1] || mBooleanOperate[2] || mBooleanOperate[3]){
+            showToast("不能执行计费操作");
+            return ;
+        }
         OKCancelDlg.createCancelOKDlg(getContext(), "确定开始计费吗", new ICancelOK() {
             @Override
             public void cancel() {
@@ -276,6 +286,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
             @Override
             public void ok() {
+
                 TraceService.getInstance(WeeverApplication.getInstance()).startGather(traceListener);
                 operate(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE) ;
             }
@@ -285,6 +296,14 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
     private void waitting(){
         if(mBaseOrder == null){
+            return ;
+        }
+        if( !mBooleanOperate[0] ){
+            showToast("请先点击计费按钮");
+            return ;
+        }
+        if( mBooleanOperate[3]){
+            showToast("不能执行等待操作");
             return ;
         }
         TripNode tripNode  = new TripNode() ;
@@ -298,6 +317,18 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         if(mBaseOrder == null){
             return ;
         }
+        if( !mBooleanOperate[0] ){
+            showToast("请先点击计费按钮");
+            return ;
+        }
+        if(  !mBooleanOperate[1] ){
+            showToast("请先点击等待按钮");
+            return ;
+        }
+        if( mBooleanOperate[3]){
+            showToast("不能执行再出发操作");
+            return ;
+        }
         TripNode tripNode  = new TripNode() ;
         tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
         mRouteOperateEvent.setTripNode(tripNode);
@@ -305,9 +336,17 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         mOrderService.routeOperateOrder(mRouteOperateEvent);
     }
 
-    private void compute(){
+    public void compute(){
         if(mBaseOrder == null){
 
+            return ;
+        }
+        if( !mBooleanOperate[0] ){
+            showToast("请先点击计费按钮");
+            return ;
+        }
+        if(  mBooleanOperate[1] && !mBooleanOperate[2]){
+            showToast("请先点击再出发按钮");
             return ;
         }
         OKCancelDlg.createCancelOKDlg(getContext(), "确定结算吗", new ICancelOK() {
@@ -391,16 +430,33 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
     @Override
     protected  void dealSuccess(@Nullable BaseModel baseModel){
+
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST){
             showToast("操作成功");
             RouteOperateEvent routeOperateEvent = (RouteOperateEvent) baseModel.getData();
-            if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE){
+             if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE){
+                 mBooleanOperate[0] = true ;
+                 //mBtnStart.setEnabled(false);
+            }
+            else if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE){
+                 mBooleanOperate[1] = true ;
+                 //mBtnWait.setEnabled(false);
+            }
+            else if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE){
+                 mBooleanOperate[1] = false ;
+                 mBooleanOperate[2] = false ;
+                 //mBtnRestart.setEnabled(true);
+                 //mBtnWait.setEnabled(true);
+            }
+            else if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE){
                 startActivity(OrderClearingBaseActivity.newIntent(getContext() , mBaseOrder));
                 mEdtDest.setText("");
                 mEdtSrc.setText("");
                 mRadioBtnDayUse.setChecked(false)      ;
                 mRadioBtnTransfer.setChecked(false)    ;
                 mRadioBtnHalfDayUse.setChecked(false)  ;
+                mBooleanOperate[3] = true ;
+                // mBtnCompute.setEnabled(false);
                 mBaseOrder = null ;
                 getActivity().finish();
             }
@@ -418,4 +474,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBooleanArray(OPERATE_STATUS, mBooleanOperate);
+    }
 }

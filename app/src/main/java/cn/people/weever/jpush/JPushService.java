@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import cn.people.weever.BuildConfig;
+import cn.people.weever.application.WeeverApplication;
 
 /**
  * Created by Administrator on 2017/5/4.
@@ -102,7 +103,7 @@ public class JPushService {
                 case MSG_SET_ALIAS:
                     //Log.d(TAG, "Set alias in handler.");
                     // 调用 JPush 接口来设置别名。
-                    Context applicationContext = null ;
+                    Context applicationContext = WeeverApplication.getInstance();
                     JPushInterface.setAliasAndTags(applicationContext,
                             (String) msg.obj,
                             null,

@@ -89,8 +89,8 @@ public class TraceService {
         if(TextUtils.isEmpty(entityName)){
             entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
         }
-//        return entityName; TODO TESTCODE
-        return  "myTrace" ;
+       return entityName;
+       // return  "myTrace" ;
     }
 
     public  void setEntityName(String entityName) {

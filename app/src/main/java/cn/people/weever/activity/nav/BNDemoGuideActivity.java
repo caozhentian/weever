@@ -1,12 +1,14 @@
 package cn.people.weever.activity.nav;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,12 +22,14 @@ import com.baidu.navisdk.adapter.BNaviBaseCallbackModel;
 import com.baidu.navisdk.adapter.BaiduNaviCommonModule;
 import com.baidu.navisdk.adapter.NaviModuleFactory;
 import com.baidu.navisdk.adapter.NaviModuleImpl;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.fragment.NavFooterFragment;
 import cn.people.weever.model.BaseOrder;
 
@@ -44,6 +48,8 @@ public class BNDemoGuideActivity extends BaseActivity {
     private BNRoutePlanNode mBNRoutePlanNode = null;
     private BaiduNaviCommonModule mBaiduNaviCommonModule = null;
     private BaseOrder mBaseOrder ;
+
+    private NavFooterFragment mNavFooterFragment ;
 
     /*
      * 对于导航模块有两种方式来实现发起导航。 1：使用通用接口来实现 2：使用传统接口来实现
@@ -126,7 +132,8 @@ public class BNDemoGuideActivity extends BaseActivity {
             if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
                 FragmentTransaction fragmentTransaction = fragmentManager
                         .beginTransaction();
-                fragmentTransaction.add(R.id.fl_nav_footer , NavFooterFragment.newInstance(mBaseOrder)) ;
+                mNavFooterFragment = NavFooterFragment.newInstance(mBaseOrder) ;
+                fragmentTransaction.add(R.id.fl_nav_footer , mNavFooterFragment) ;
                 fragmentTransaction.commit();
             }
         }
@@ -197,6 +204,7 @@ public class BNDemoGuideActivity extends BaseActivity {
         if(useCommonInterface) {
             if(mBaiduNaviCommonModule != null) {
                 mBaiduNaviCommonModule.onBackPressed(true);
+                finish() ;
             }
         } else {
             BNRouteGuideManager.getInstance().onBackPressed(false);
@@ -284,12 +292,44 @@ public class BNDemoGuideActivity extends BaseActivity {
         }
     }
 
+    private void showSingleChoiceDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("选择操作");
+        //builder.setIcon(R.mipmap.ic_launcher);
+        String[] single_list = {"直接返回" ,"结算" ,"停留在当前界面" } ;
+        builder.setSingleChoiceItems(single_list, 0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(which == 0){
+                    finish();
+                }
+                else if(which == 1){
+                      mNavFooterFragment.compute();
+                }
+                else{
+
+                }
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
     private OnNavigationListener mOnNavigationListener = new OnNavigationListener() {
 
         @Override
         public void onNaviGuideEnd() {
             //退出导航
-            finish();
+            Logger.i(TAG, "navi 导航结束");
+            if(mBaseOrder != null){
+
+                showSingleChoiceDialog() ;
+            }
+            else {
+                finish();
+            }
         }
 
         @Override
@@ -297,10 +337,10 @@ public class BNDemoGuideActivity extends BaseActivity {
             
             if (actionType == 0) {
                 //导航到达目的地 自动退出
-                Log.i(TAG, "notifyOtherAction actionType = " + actionType + ",导航到达目的地！");
+                Logger.i(TAG, "notifyOtherAction actionType = " + actionType + ",导航到达目的地！");
             }
 
-            Log.i(TAG, "actionType:" + actionType + "arg1:" + arg1 + "arg2:" + arg2 + "obj:" + obj.toString());
+            Logger.i(TAG, "actionType:" + actionType + "arg1:" + arg1 + "arg2:" + arg2 + "obj:" + obj.toString());
         }
 
     };
