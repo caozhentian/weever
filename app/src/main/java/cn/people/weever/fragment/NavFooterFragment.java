@@ -306,11 +306,12 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             showToast("不能执行等待操作");
             return ;
         }
-        TripNode tripNode  = new TripNode() ;
-        tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
-        mRouteOperateEvent.setTripNode(tripNode);
-        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE);
-        mOrderService.routeOperateOrder(mRouteOperateEvent);
+//        TripNode tripNode  = new TripNode() ;
+//        tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
+//        mRouteOperateEvent.setTripNode(tripNode);
+//        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE);
+//        mOrderService.routeOperateOrder(mRouteOperateEvent);
+        operate(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE) ;
     }
 
     private  void restart(){
@@ -329,11 +330,12 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             showToast("不能执行再出发操作");
             return ;
         }
-        TripNode tripNode  = new TripNode() ;
-        tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
-        mRouteOperateEvent.setTripNode(tripNode);
-        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE);
-        mOrderService.routeOperateOrder(mRouteOperateEvent);
+//        TripNode tripNode  = new TripNode() ;
+//        tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
+//        mRouteOperateEvent.setTripNode(tripNode);
+//        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE);
+//        mOrderService.routeOperateOrder(mRouteOperateEvent);
+        operate(RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE) ;
     }
 
     public void compute(){

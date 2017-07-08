@@ -182,6 +182,7 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
             Amount amount = new Amount(sType , sCost) ;
             amountList.add(amount) ;
         }
+        orderSubmitInfo.setAmountList(amountList);
         mOrderService.submit(orderSubmitInfo);
     }
 

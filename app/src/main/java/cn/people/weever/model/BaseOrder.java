@@ -42,7 +42,7 @@ public class BaseOrder extends WeeverBean {
     protected String mSubscribePerson              ;
 
     //公司
-    @SerializedName("company2")
+    @SerializedName("company")
     protected Company mCompany  ;
 	
     //预约上车信息
