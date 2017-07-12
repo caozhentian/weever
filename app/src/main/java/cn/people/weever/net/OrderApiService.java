@@ -81,7 +81,7 @@ public interface OrderApiService {
     //接单
     @FormUrlEncoded
     @POST("order/take")
-    Call<BaseModel<Object>> takeOrder( @Field("order_id") String id ) ;
+    Call<BaseModel<Object>> takeOrder( @Field("userName") String userName , @Field("order_id") String id ) ;
 
     //接单
     @FormUrlEncoded
