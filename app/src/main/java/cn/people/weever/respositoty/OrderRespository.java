@@ -2,6 +2,7 @@ package cn.people.weever.respositoty;
 
 import java.util.List;
 
+import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.DailyRentaOrder;
 import cn.people.weever.model.FixTimeOrder;
@@ -84,12 +85,13 @@ public class OrderRespository {
     }
 
     public void takeOrder(BaseOrder baseOrder){
-        Call<BaseModel<Object>> call = mOrderApiService.takeOrder(baseOrder.getOrderId())        ;
+        String userName = WeeverApplication.getCurUser().getUserName() ;
+        Call<BaseModel<Object>> call = mOrderApiService.takeOrder(userName , baseOrder.getOrderId())        ;
         call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_TAKE_NET_REQUST))  ;
     }
 
     public void cancelOrder(BaseOrder baseOrder){
-        Call<BaseModel<Object>> call = mOrderApiService.takeOrder(baseOrder.getOrderId())        ;
+        Call<BaseModel<Object>> call = mOrderApiService.cancelOrder(baseOrder.getOrderId())        ;
         call.enqueue(new BaseCallback<Object>(OrderApiService.TO_ORDER_CANCEL_NET_REQUST))     ;
     }
 
