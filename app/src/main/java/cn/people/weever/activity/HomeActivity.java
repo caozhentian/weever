@@ -12,6 +12,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.Poi;
@@ -37,6 +39,7 @@ import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.setting.SettingUpActivity;
 import cn.people.weever.application.StartExitAppManager;
+import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.fragment.NavFooterFragment;
 import cn.people.weever.fragment.NavHeadFragment;
@@ -73,6 +76,11 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
     private BaseOrder mBaseOrder ;
     private boolean isSelectSrcAddress;
 
+    private NavigationView navigationView ;
+    private TextView txt_name ;
+    private TextView txt_telphone ;
+
+
     public static final Intent newIntent(Context packageContext, BaseOrder baseOrder){
         Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
         intent.putExtra(ARG_BASE_ORDER , baseOrder) ;
@@ -97,8 +105,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         toggle.syncState();
         initView();
         initData();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
 
         // 地图初始化
@@ -155,7 +162,14 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
 
     @Override
     public void initView() {
-      mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_home);
+        txt_name = (TextView) headerLayout.findViewById(R.id.txt_name);
+        txt_name.setText(WeeverApplication.getCurUser().getName());
+        txt_telphone = (TextView) headerLayout.findViewById(R.id.txt_telphone);
+        txt_telphone.setText(WeeverApplication.getCurUser().getUserName());
+        mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
       initFragment() ;
     }
 

@@ -23,18 +23,18 @@
         app:civ_border_color="@color/white"/>
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/txt_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="张三"
+        android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txt_telphone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="1324567XXXX" />
+        android:visibility="visible"
+        android:text="" />
 
 </LinearLayout>

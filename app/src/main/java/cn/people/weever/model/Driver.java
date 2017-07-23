@@ -18,6 +18,9 @@ public class Driver extends WeeverBean {
     //@Property(nameInDb = "ID")
     private String mId ;
 
+    @SerializedName("name") //JSON序列化的字段名
+    private String mName  ;
+
     //用户名
     //@Property(nameInDb = "USERNAME")
     @SerializedName("userName") //JSON序列化的字段名
@@ -120,5 +123,13 @@ public class Driver extends WeeverBean {
                 ", mWorkTimeType=" + mWorkTimeType +
                 ", mToken='" + mToken + '\'' +
                 '}';
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
     }
 }

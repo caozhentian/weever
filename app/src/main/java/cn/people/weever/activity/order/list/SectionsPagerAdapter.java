@@ -43,7 +43,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     }
 
     private int getOrderStaus(int position){
-        if(position <2 ){
+        if(position <=2 ){
             return BaseOrder.ORDER_STAUS_APPOINTMENT  + position;
         }
         return BaseOrder.ORDER_STAUS_FINISH ;

@@ -3,6 +3,7 @@ package cn.people.weever.respositoty;
 import java.util.List;
 
 import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.common.util.ToastUtil;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.DailyRentaOrder;
 import cn.people.weever.model.FixTimeOrder;
@@ -80,6 +81,9 @@ public class OrderRespository {
         else if(baseOrder.getType() == BaseOrder.ORDER_TYPE_AIRPORT_FIXED_TIME){
             Call<BaseModel<FixTimeOrder>> call = mOrderApiService.getFixTimeOrderDetails(baseOrder.getOrderId())        ;
             call.enqueue(new BaseCallback<FixTimeOrder>(OrderApiService.TO_ORDER_TYPE_FixTime_DETAILS_NET_REQUST))  ;
+        }
+        else{
+            ToastUtil.showToast("无合适的订单类型");
         }
 
     }
