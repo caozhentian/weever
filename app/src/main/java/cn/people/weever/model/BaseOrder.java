@@ -31,6 +31,9 @@ public class BaseOrder extends WeeverBean {
     //订单ID
     @SerializedName("orderId") //JSON序列化的字段名
 	protected String mOrderId                   ;
+
+    @SerializedName("orderSN") //JSON序列化的字段名
+    protected String mOrderSN ;
     //订单状态 具体取值见订单状态的定义
     @SerializedName("status")
     protected int mStatus;
@@ -107,6 +110,14 @@ public class BaseOrder extends WeeverBean {
 
     public void setOrderId(String orderId) {
         mOrderId = orderId;
+    }
+
+    public String getOrderSN() {
+        return mOrderSN;
+    }
+
+    public void setOrderSN(String orderSN) {
+        mOrderSN = orderSN;
     }
 
     public int getStatus() {

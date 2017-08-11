@@ -35,12 +35,15 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import cn.people.weever.R;
+import cn.people.weever.activity.login.ClockInActivity;
 import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.activity.poi.AddressSelectVM;
 import cn.people.weever.activity.setting.SettingUpActivity;
 import cn.people.weever.application.StartExitAppManager;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.NavUtils;
+import cn.people.weever.dialog.ICancelOK;
+import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.fragment.NavFooterFragment;
 import cn.people.weever.fragment.NavHeadFragment;
 import cn.people.weever.map.LocationService;
@@ -214,9 +217,31 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         else if(id == R.id.nav_home){
 
         }
+        else if(id == R.id.nav_clock_in){
+           startActivity(ClockInActivity.newIntent(this));
+        }
+        else if(id == R.id.nav_punch_out){
+            punchOut() ;
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private void punchOut(){
+        OKCancelDlg.createCancelOKDlg(this, "提示", new ICancelOK() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void ok() {
+              DriverService driverService =  new DriverService() ;
+              driverService.punchOut();
+            }
+        });
     }
 
     @Override

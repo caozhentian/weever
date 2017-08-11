@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +49,13 @@ public class AboutWeActivity extends BaseActivity {
             }
         });
         tv_title.setText("关于我们");
+        wv_about_we.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
         wv_about_we.loadUrl("http://www.163.com");
     }
 }

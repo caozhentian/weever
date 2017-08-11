@@ -123,7 +123,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     protected void setViewByBaseOrder() {
         mTvTitle.setText(BaseOrder.getTypeStr(mBaseOrder.getType()));
-        mTvNum.setText(mBaseOrder.getOrderId()) ;
+        mTvNum.setText(mBaseOrder.getOrderSN()) ;
         mTvName.setText(mBaseOrder.getSubscribePerson());
         mTvPlantStartDate.setText(mBaseOrder.getPlanboardingTripNode().getDateStr());
         mTvPlantStartAddress.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());

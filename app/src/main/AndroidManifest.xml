@@ -98,7 +98,10 @@
             android:name=".activity.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".activity.login.ClockInActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activity.poi.PoiSearchActivity"
             android:theme="@style/AppTheme.NoActionBar"/>

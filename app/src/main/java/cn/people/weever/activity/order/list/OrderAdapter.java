@@ -38,7 +38,7 @@ public class OrderAdapter extends BaseListAdapter<BaseOrder> {
             holderView = (HolderView) v.getTag();
         }
         BaseOrder baseOrder = mList.get(position) ;
-        holderView.mTvNum.setText(baseOrder.getOrderId()) ;
+        holderView.mTvNum.setText(baseOrder.getOrderSN()) ;
         holderView.mTvType.setText(BaseOrder.getTypeStr(baseOrder.getType()));
         holderView.mTvPassenger.setText(baseOrder.getSubscribePerson());
         holderView.mTvStartEndTime.setText(baseOrder.getStartEndTimeStr());

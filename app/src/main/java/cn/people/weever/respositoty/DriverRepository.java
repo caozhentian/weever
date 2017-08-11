@@ -1,14 +1,11 @@
 package cn.people.weever.respositoty;
 
-import cn.people.weever.MockData.MockLoginService;
-import cn.people.weever.MockData.MockService;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.model.Driver;
 import cn.people.weever.net.BaseCallback;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.DriverApiService;
 import cn.people.weever.net.RequestBodyCreator;
-import cn.people.weever.service.TokenService;
 import retrofit2.Call;
 
 /**
@@ -40,6 +37,21 @@ public class DriverRepository extends RespoisitoryBase {
         }
         Call<BaseModel<Object>> call   =  mDriverApiService.loginOut(driver.getUserName()) ;
         call.enqueue(new BaseCallback<Object>(DriverApiService.TO_USER_LOGIN_OUT)) ;
+    }
+
+    public void clockIn(int workTimeType ,String cardNum){
+        Call<BaseModel<Object>> call   =  mDriverApiService.clockIn(workTimeType , cardNum) ;
+        call.enqueue(new BaseCallback<Object>(DriverApiService.TO_USER_CLOCK_IN)) ;
+    }
+
+    public void  punchOut(){
+
+        Driver driver = WeeverApplication.getCurUser() ;
+        if(driver == null){
+            return ;
+        }
+        Call<BaseModel<Object>> call   =  mDriverApiService.punchOut(driver.getUserName()) ;
+        call.enqueue(new BaseCallback<Object>(DriverApiService.TO_USER_PUNCH_OUT)) ;
     }
 
 }

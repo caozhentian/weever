@@ -74,4 +74,13 @@ public class DriverService {
         return WeeverApplication.getCurUser() ;
     }
 
+
+    public void clockIn(int workTimeType ,String cardNum){
+        mDriverRepository.clockIn(workTimeType ,cardNum );
+    }
+
+    public void  punchOut(){
+        mDriverRepository.punchOut();
+    }
+
 }
