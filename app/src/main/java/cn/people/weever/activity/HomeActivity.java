@@ -230,7 +230,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
 
 
     private void punchOut(){
-        OKCancelDlg.createCancelOKDlg(this, "提示", new ICancelOK() {
+        OKCancelDlg.createCancelOKDlg(this, getString(R.string.work_punch_out)+"?", new ICancelOK() {
             @Override
             public void cancel() {
 

@@ -65,11 +65,13 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dim36"
             android:gravity="center"
+            android:visibility="gone"
             android:text="班次：" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:background="@color/white">
 
             <Spinner
@@ -83,11 +85,13 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dim36"
             android:gravity="center"
+            android:visibility="gone"
             android:text="车辆编号：" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:background="@color/white">
 
             <Spinner

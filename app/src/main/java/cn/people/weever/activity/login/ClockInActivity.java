@@ -17,6 +17,7 @@ import com.orhanobut.logger.Logger;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.people.weever.R;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.model.Car;
@@ -62,6 +63,7 @@ public class ClockInActivity extends SubcribeCreateDestroyActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_clock_in);
+        ButterKnife.bind(this) ;
         initView();
         initData();
     }
@@ -85,7 +87,7 @@ public class ClockInActivity extends SubcribeCreateDestroyActivity {
                 ClockInActivity.this.finish();
             }
         });
-        tv_title.setText("关于");
+        tv_title.setText(getString(R.string.work_clock_in));
         mSpnWorkTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
@@ -142,6 +144,15 @@ public class ClockInActivity extends SubcribeCreateDestroyActivity {
     public void processClockInEvent(@Nullable BaseModel<List<Car>> baseModel){
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_CLOCK_IN){
            showToast(baseModel.getMessage());
+        }
+    }
+
+    protected<T> void dealSuccess(BaseModel baseModel){
+        if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_CLOCK_IN){
+            processClockInEvent(baseModel) ;
+        }
+        else if(baseModel.getApiOperationCode() == CarApiService.TO_CAR){
+            processCarNumEvent(baseModel);
         }
     }
 }
