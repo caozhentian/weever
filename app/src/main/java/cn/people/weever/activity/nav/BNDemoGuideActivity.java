@@ -204,7 +204,7 @@ public class BNDemoGuideActivity extends BaseActivity {
         if(useCommonInterface) {
             if(mBaiduNaviCommonModule != null) {
                 mBaiduNaviCommonModule.onBackPressed(true);
-                finish() ;
+                //finish() ;
             }
         } else {
             BNRouteGuideManager.getInstance().onBackPressed(false);

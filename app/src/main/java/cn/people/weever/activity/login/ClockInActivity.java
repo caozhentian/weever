@@ -144,6 +144,7 @@ public class ClockInActivity extends SubcribeCreateDestroyActivity {
     public void processClockInEvent(@Nullable BaseModel<List<Car>> baseModel){
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_CLOCK_IN){
            showToast(baseModel.getMessage());
+           finish();
         }
     }
 
