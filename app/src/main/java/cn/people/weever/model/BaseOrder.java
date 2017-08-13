@@ -11,12 +11,13 @@ import cn.people.weever.common.util.DatetimeUtil;
 public class BaseOrder extends WeeverBean {
 
     //订单状态 常量定义
-    public static final int  ORDER_STAUS_ALL           = 0x00 ;  //全部状态
-    public static final int  ORDER_STAUS_APPOINTMENT  = 0x01 ;  //预约中
-    public static final int  ORDER_STAUS_ORDER         = 0x02;   //待执行订单
-    public static final int  ORDER_STAUS_PAY            = 0x03 ;  //待付款
+    public static final int  ORDER_STAUS_ALL            = 0x00 ;  //全部状态
+    public static final int  ORDER_STAUS_APPOINTMENT   = 0x01 ;  //预约中
+    public static final int  ORDER_STAUS_ORDER          = 0x02;   //待执行订单
+    public static final int  ORDER_STAUS_ORDERING       = 0x03;   //执行中订单
+    public static final int  ORDER_STAUS_PAY             = 0x04 ;  //待付款
     public static final int  ORDER_STAUS_FINISH         = 0x05 ; //已完成
-    public static final int  ORDER_STAUS_CANCEL        = 0x04 ;  //取消
+    public static final int  ORDER_STAUS_CANCEL         = 0x06 ;  //取消
 
     //订单类型 常量定义
     public static final int  ORDER_TYPE_DAY           = 0x01 ;             //日租

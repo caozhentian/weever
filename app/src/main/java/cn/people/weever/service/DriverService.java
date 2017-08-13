@@ -70,7 +70,7 @@ public class DriverService {
             return ;
         }
         WeeverApplication.setCurUser(driver)                  ;
-        TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(driver.getCardNum())  ;
+       // TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(driver.getCardNum())  ;
         JPushService.setAlias(WeeverApplication.getInstance() , driver.getUserName());
     }
 

@@ -43,9 +43,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     }
 
     private int getOrderStaus(int position){
-        if(position <=2 ){
+        if(position <=1 ){
             return BaseOrder.ORDER_STAUS_APPOINTMENT  + position;
         }
-        return BaseOrder.ORDER_STAUS_FINISH ;
+        else if(position == 2){
+            return BaseOrder.ORDER_STAUS_PAY ;
+        }
+        else if(position == 3){
+            return BaseOrder.ORDER_STAUS_FINISH ;
+        }
+        else{
+            return BaseOrder.ORDER_STAUS_FINISH ;
+        }
+
     }
 }

@@ -190,8 +190,14 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
         if(mBaseOrder == null){
             return ;
         }
-//        long startTime = mBaseOrder.getActualBoardingTripNode().getTime();
-//        long endTime = mBaseOrder.getActualDropOffTripNode().getTime();
+       long startTime = 0 ;
+       if(mBaseOrder.getActualBoardingTripNode() != null){
+           startTime = mBaseOrder.getActualBoardingTripNode().getTime();
+       }
+        long endTime = 0 ;
+       if(mBaseOrder.getActualDropOffTripNode() != null) {
+            endTime = mBaseOrder.getActualDropOffTripNode().getTime();
+       }
         startActivity(TrackQueryActivity.newIntent(this, 0, 0));
     }
 

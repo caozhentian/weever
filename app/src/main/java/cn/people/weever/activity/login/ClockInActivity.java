@@ -20,6 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.people.weever.R;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
+import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.map.TraceService;
 import cn.people.weever.model.Car;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.CarApiService;
@@ -143,6 +145,7 @@ public class ClockInActivity extends SubcribeCreateDestroyActivity {
 
     public void processClockInEvent(@Nullable BaseModel<List<Car>> baseModel){
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_CLOCK_IN){
+            TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(mCarNum)  ;
            showToast(baseModel.getMessage());
            finish();
         }

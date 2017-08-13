@@ -48,6 +48,7 @@ import cn.people.weever.fragment.NavFooterFragment;
 import cn.people.weever.fragment.NavHeadFragment;
 import cn.people.weever.map.LocationService;
 import cn.people.weever.map.TLocationListener;
+import cn.people.weever.map.TraceService;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.RouteOperateEvent;
@@ -352,6 +353,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
     protected<T> void dealSuccess(BaseModel baseModel){
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_PUNCH_OUT){
             showToast(baseModel.getMessage());
+            //停止Trace 跟踪
+            TraceService.getInstance(this).stopTrace();
         }
 
     }

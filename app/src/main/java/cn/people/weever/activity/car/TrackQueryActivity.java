@@ -220,8 +220,8 @@ public class TrackQueryActivity extends BaseActivity
 
     @Override
     public void initData() {
-        //startTime  = getIntent().getLongExtra(S_START_TIME , 0L) ;
-        //endTime    = getIntent().getLongExtra(S_END_TIME , 0L)    ;
+        startTime  = getIntent().getLongExtra(S_START_TIME , 0L) ;
+        endTime    = getIntent().getLongExtra(S_END_TIME , 0L)    ;
         queryHistoryTrack();
     }
 
