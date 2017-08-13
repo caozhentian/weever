@@ -37,7 +37,7 @@
             android:background="@drawable/shape_rec_normal"
             android:ems="10"
             android:hint="请输入用户名"
-            android:text="18789890909"
+            android:text="13186075290"
             android:inputType="textPersonName"
             android:maxLength="20"
             android:textSize="@dimen/txt12" />

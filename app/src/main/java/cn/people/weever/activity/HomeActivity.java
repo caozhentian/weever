@@ -51,6 +51,9 @@ import cn.people.weever.map.TLocationListener;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.model.RouteOperateEvent;
+import cn.people.weever.net.BaseModel;
+import cn.people.weever.net.CarApiService;
+import cn.people.weever.net.DriverApiService;
 import cn.people.weever.service.DriverService;
 
 public class HomeActivity extends SubcribeCreateDestroyActivity implements NavigationView.OnNavigationItemSelectedListener
@@ -343,6 +346,14 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
 
     private void initNavi() {
         NavUtils.initNavi(this) ;
+    }
+
+    @Override
+    protected<T> void dealSuccess(BaseModel baseModel){
+        if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_PUNCH_OUT){
+            showToast(baseModel.getMessage());
+        }
+
     }
 
 }

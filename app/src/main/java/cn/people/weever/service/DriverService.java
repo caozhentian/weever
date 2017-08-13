@@ -15,6 +15,8 @@ import cn.people.weever.respositoty.DriverRepository;
 
 public class DriverService {
 
+    public static  boolean IS_NEED_AUTO_LOGIN = true ;
+
     private DriverRepository mDriverRepository ;
 
     public DriverService() {
@@ -49,7 +51,9 @@ public class DriverService {
             mockLoginService.getAutologinJsonData() ;
             return ;
         }
-        mDriverRepository.autoLogin();
+        if(IS_NEED_AUTO_LOGIN) {
+            mDriverRepository.autoLogin();
+        }
     }
 
     public void loginOut(){

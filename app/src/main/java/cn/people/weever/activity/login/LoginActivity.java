@@ -63,7 +63,7 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         mDriverService =  new DriverService() ;
         mCarService     = new CarService()     ;
         //查询车辆编号
-        mCarService.query();
+        //mCarService.query();
     }
 
     @Override
@@ -117,13 +117,13 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
         mLoginViewModel.setUserName(userName);
         String password = mEdtPassword.getText().toString() ;
         mLoginViewModel.setPassword(password);
-        if(mSpnCarNum.getSelectedItem() == null){
-            showToast("重新获取车辆中....");
-            mCarService.query();
-           return ;
-        }
-        String carNum = mSpnCarNum.getSelectedItem().toString() ;
-        mLoginViewModel.setCardNum(carNum);
+//        if(mSpnCarNum.getSelectedItem() == null){
+//            showToast("重新获取车辆中....");
+//            mCarService.query();
+//           return ;
+//        }
+//        String carNum = mSpnCarNum.getSelectedItem().toString() ;
+//        mLoginViewModel.setCardNum(carNum);
         try {
             mDriverService.login(mLoginViewModel);
         }catch(IllegalArgumentException e){
@@ -145,6 +145,7 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
             Driver driver = baseModel.getData() ;
             Logger.d(driver)  ;
             mDriverService.save(driver);
+            DriverService.IS_NEED_AUTO_LOGIN = false ;
             startActivity(HomeActivity.newIntent(this));
             finish() ;
         }

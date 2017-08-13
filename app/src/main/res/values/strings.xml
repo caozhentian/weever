@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">租车</string>
+    <string name="app_name">大景专车</string>
     <string name="startlocation">开始定位</string>
     <string name="stoplocation">停止定位</string>
     <string name="title_activity_login2">登录</string>
