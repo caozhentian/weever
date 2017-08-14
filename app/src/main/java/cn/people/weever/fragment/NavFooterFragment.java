@@ -379,10 +379,12 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                     TripNode tripNode  = mRouteOperateEvent.getTripNode() ;
                     Address address = new Address() ;
                     List<Poi> poiList = location.getPoiList() ;
-                    address.setPlaceName(poiList.get(0).getName()) ;
-                    address.setLatitude(location.getLatitude())    ;
-                    address.setLongitude(location.getLongitude())  ;
-                    tripNode.setAddress(address);
+                    if(poiList != null & poiList.size() > 0) {
+                        address.setPlaceName(poiList.get(0).getName());
+                        address.setLatitude(location.getLatitude());
+                        address.setLongitude(location.getLongitude());
+                        tripNode.setAddress(address);
+                    }
                     mOrderService.routeOperateOrder(mRouteOperateEvent);
                     LocationService.getLocationService(getContext()).stop();
                     LocationService.getLocationService(getContext()).unregisterListener(this);

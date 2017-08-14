@@ -149,8 +149,8 @@ public class ClockInActivity extends SubcribeCreateDestroyActivity {
             PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",mCarNum);
             TraceService.getInstance(this).startTrace(null);
             TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(mCarNum)  ;
-           showToast(baseModel.getMessage());
-           finish();
+            showToast(baseModel.getMessage());
+            finish();
         }
     }
 

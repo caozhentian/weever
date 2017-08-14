@@ -42,6 +42,7 @@ import cn.people.weever.activity.setting.SettingUpActivity;
 import cn.people.weever.application.StartExitAppManager;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.NavUtils;
+import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.fragment.NavFooterFragment;
@@ -86,6 +87,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
     private NavigationView navigationView ;
     private TextView txt_name ;
     private TextView txt_telphone ;
+    private TextView txt_car_num;
 
 
     public static final Intent newIntent(Context packageContext, BaseOrder baseOrder){
@@ -176,6 +178,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         txt_name.setText(WeeverApplication.getCurUser().getName());
         txt_telphone = (TextView) headerLayout.findViewById(R.id.txt_telphone);
         txt_telphone.setText(WeeverApplication.getCurUser().getUserName());
+        txt_car_num    = (TextView) headerLayout.findViewById(R.id.txt_car_num);
+        txt_car_num.setText(PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY"));
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
       initFragment() ;
     }
@@ -263,6 +267,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         mLocationService.registerListener(myListener);
         mLocationService.start();
         super.onResume();
+        txt_car_num.setText(PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY"));
     }
 
     @Override
@@ -355,6 +360,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
             showToast(baseModel.getMessage());
             //停止Trace 跟踪
             TraceService.getInstance(this).stopTrace();
+            PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",null);
+            txt_car_num.setText(null);
         }
 
     }
