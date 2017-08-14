@@ -55,6 +55,7 @@ public class TraceService {
         int packInterval = 10;
         // 设置定位和打包周期
         mClient.setInterval(gatherInterval, packInterval);
+        entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
         mTrace = new Trace(serviceId, entityName);
     }
 

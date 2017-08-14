@@ -129,14 +129,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         mTvPlantStartAddress.setText(mBaseOrder.getPlanboardingTripNode().getAddress().getPlaceName());
         mTvPlantEndDate.setText(mBaseOrder.getPlanDropOffTripNode().getDateStr());
         mTvPlantEndAddress.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
-        if (mBaseOrder.getActualBoardingTripNode() != null) {
-            //mTvActualStartDate.setText(mBaseOrder.getActualBoardingTripNode().getDateStr());
-            //mTvActualStartAddress.setText(mBaseOrder.getActualBoardingTripNode().getAddress().getPlaceName());
-        }
-        if(mBaseOrder.getActualDropOffTripNode() != null){
-            //mTvActualEndDate.setText(mBaseOrder.getActualDropOffTripNode().getDateStr());
-            //mTvActualEndAddress.setText(mBaseOrder.getActualDropOffTripNode().getAddress().getPlaceName());
-        }
+
         mTvExpireDistanceCose.setText(mBaseOrder.getActualMileageCost() + "");
         mTvActualAllCost.setText(mBaseOrder.getPostDiscount() + "");
         mTvExpireTimeCose.setText(mBaseOrder.getActualWaitTimeCost() + "");
@@ -146,6 +139,14 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
             mLlStart.setVisibility(View.VISIBLE);
         } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY) {
             mLlSettlent.setVisibility(View.VISIBLE);
+            if (mBaseOrder.getActualBoardingTripNode() != null) {
+                mTvActualStartDate.setText(mBaseOrder.getActualBoardingTripNode().getDateStr());
+                mTvActualStartAddress.setText(mBaseOrder.getActualBoardingTripNode().getAddress().getPlaceName());
+            }
+            if(mBaseOrder.getActualDropOffTripNode() != null){
+                mTvActualEndDate.setText(mBaseOrder.getActualDropOffTripNode().getDateStr());
+                mTvActualEndAddress.setText(mBaseOrder.getActualDropOffTripNode().getAddress().getPlaceName());
+            }
         }
         setOtherDetailInfo() ;
     }
