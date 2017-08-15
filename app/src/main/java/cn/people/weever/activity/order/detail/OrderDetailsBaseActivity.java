@@ -130,15 +130,21 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         mTvPlantEndDate.setText(mBaseOrder.getPlanDropOffTripNode().getDateStr());
         mTvPlantEndAddress.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
 
-        mTvExpireDistanceCose.setText(mBaseOrder.getActualMileageCost() + "");
+        mTvExpireDistanceCose.setText(mBaseOrder.getActualWaitTime() + "");
         mTvActualAllCost.setText(mBaseOrder.getPostDiscount() + "");
-        mTvExpireTimeCose.setText(mBaseOrder.getActualWaitTimeCost() + "");
+        mTvExpireTimeCose.setText(mBaseOrder.getActualRideTime() + "");
         if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
             mLlTake.setVisibility(View.VISIBLE);
         } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDER) {
             mLlStart.setVisibility(View.VISIBLE);
         } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY) {
             mLlSettlent.setVisibility(View.VISIBLE);
+        }
+        else if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_FINISH){
+
+        }
+        if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY ||
+                mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_FINISH){
             if (mBaseOrder.getActualBoardingTripNode() != null) {
                 mTvActualStartDate.setText(mBaseOrder.getActualBoardingTripNode().getDateStr());
                 mTvActualStartAddress.setText(mBaseOrder.getActualBoardingTripNode().getAddress().getPlaceName());

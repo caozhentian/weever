@@ -48,12 +48,19 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
     @BindView(R.id.tv_percent_discount)
     TextView mTvPercentDiscount;
 
+
     @BindView(R.id.tv_start_up_cost)
     TextView mTvStartUpCost;//TODO
+    @BindView(R.id.tv_distance)
+    TextView tv_distance;
     @BindView(R.id.tv_distance_cost)
     TextView mTvDistanceCost;
+    @BindView(R.id.tv_ride_time)
+    TextView tv_ride_time;
     @BindView(R.id.tv_ride_time_cost)
     TextView mTvRideTimeCost;
+    @BindView(R.id.tv_wait_time)
+    TextView tv_wait_time;
     @BindView(R.id.tv_wait_time_cost)
     TextView mTvWaitTimeCost;
 
@@ -122,8 +129,12 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
         mTvPostDiscount.setText(mBaseOrder.getPostDiscount() + "");
         mTvPercentDiscount.setText(mBaseOrder.getPercentDiscount() );
         mTvStartUpCost.setText(mBaseOrder.getStartingFare());
+
+        tv_distance.setText("(" + mBaseOrder.getActualMileage()+ "公里)");
         mTvDistanceCost.setText(mBaseOrder.getActualMileageCost()+ "");
         mTvRideTimeCost.setText(mBaseOrder.getActualRideTimeCost()+ "");
+        tv_ride_time.setText("("+ mBaseOrder.getActualRideTime()+ "Minute)");
+        tv_wait_time.setText("("+ mBaseOrder.getActualWaitTime()+ "Minute)");
         mTvWaitTimeCost.setText(mBaseOrder.getActualWaitTimeCost()+ "");
     }
 
