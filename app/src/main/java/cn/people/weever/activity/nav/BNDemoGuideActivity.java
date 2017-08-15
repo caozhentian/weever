@@ -9,9 +9,10 @@ import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.baidu.navisdk.adapter.BNRouteGuideManager;
 import com.baidu.navisdk.adapter.BNRouteGuideManager.CustomizedLayerItem;
@@ -29,7 +30,6 @@ import java.util.List;
 
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
-import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.fragment.NavFooterFragment;
 import cn.people.weever.model.BaseOrder;
 
@@ -82,6 +82,15 @@ public class BNDemoGuideActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
+        ImageView iv_back = (ImageView)findViewById(R.id.img_back);
+        TextView tv_title = (TextView) findViewById(R.id.tv_title);
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        tv_title.setText("导航");
         createHandler();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
         }
