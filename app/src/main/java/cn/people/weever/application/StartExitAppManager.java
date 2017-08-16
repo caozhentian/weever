@@ -1,9 +1,11 @@
 package cn.people.weever.application;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.people.weever.BuildConfig;
+import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.config.FileConfig;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
@@ -28,9 +30,14 @@ public class StartExitAppManager {
     }
 
     public static void initBaiduService(Context context){
+        String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
+        if(!TextUtils.isEmpty(entityName)){
+            TraceService.getInstance(context).startTrace(null);
+        }
         MapService.initMap(context);
         LocationService.getLocationService(context);
-        //TraceService.getInstance(context).startTrace(null);
+
+
     }
 
     public static void initJPushService(Context context){

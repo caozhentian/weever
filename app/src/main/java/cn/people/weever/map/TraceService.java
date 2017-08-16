@@ -2,6 +2,7 @@ package cn.people.weever.map;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.baidu.trace.LBSTraceClient;
 import com.baidu.trace.Trace;
@@ -25,6 +26,7 @@ import cn.people.weever.service.RegisterPowerService;
 
 public class TraceService {
 
+    public static  boolean IS_START_TRACE = false ;
     private AtomicInteger mSequenceGenerator = new AtomicInteger();
     private static  TraceService sTraceService ;
     /**
@@ -101,6 +103,9 @@ public class TraceService {
     }
 
     public void startTrace(OnTraceListener traceListener){
+        if(IS_START_TRACE){
+            return ;
+        }
         if(traceListener == null){
             startTrace() ;
             return ;
@@ -115,9 +120,12 @@ public class TraceService {
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.START_TRACE_NETWORK_CONNECT_FAILED <= errorNo) {
                     RegisterPowerService.registerPowerReceiver();
                     Logger.d(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                    Log.e("ABC",String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                    IS_START_TRACE = true ;
                 }
                 else{
-                    Logger.e(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                    //Logger.e(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                    Log.e("ABC2",String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                 }
             }
 
@@ -156,6 +164,7 @@ public class TraceService {
         });
     }
     public void stopTrace() {
+        IS_START_TRACE = false ;
         mClient.stopTrace(mTrace, null);
     }
 
