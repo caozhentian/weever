@@ -31,6 +31,7 @@ import com.baidu.trace.model.StatusCodes;
 import com.baidu.trace.model.TransportMode;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,6 +56,7 @@ public class TrackQueryActivity extends BaseActivity
     private  static final String S_START_TIME =  "start_time" ;
 
     private  static final String S_END_TIME   =  "end_time" ;
+    public static final String CAR_NUM = "CarNum";
 
 
     @BindView(R.id.tv_title)
@@ -212,10 +214,14 @@ public class TrackQueryActivity extends BaseActivity
      */
     private long lastQueryTime = 0;
 
-    public static final Intent newIntent(Context packageContext , long startTime , long endTime) {
+    private String entityName ;
+    public static final Intent newIntent(Context packageContext , long startTime , long endTime, String carNum) {
         Intent intent = new Intent(packageContext, TrackQueryActivity.class);
         intent.putExtra(S_START_TIME , startTime) ;
+        Date  date = new Date(startTime) ;
         intent.putExtra(S_END_TIME , endTime);
+        Date  date2 = new Date(endTime) ;
+        intent.putExtra(CAR_NUM, carNum);
         return intent;
     }
 
@@ -223,6 +229,7 @@ public class TrackQueryActivity extends BaseActivity
     public void initData() {
         startTime  = getIntent().getLongExtra(S_START_TIME , 0L) ;
         endTime    = getIntent().getLongExtra(S_END_TIME , 0L)    ;
+        entityName = getIntent().getStringExtra(CAR_NUM) ;
         queryHistoryTrack();
     }
 

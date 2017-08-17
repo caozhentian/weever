@@ -255,12 +255,16 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     protected void dealSuccess(BaseModel baseModel){
         showToast("操作成功");
+        if(baseModel.getData() instanceof  BaseOrder) {
+            mBaseOrder = (BaseOrder) baseModel.getData();
+        }
         setViewByBaseOrder();
 //        EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TAKE_NET_REQUST
                 || baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_CANCEL_NET_REQUST){
             finish();
         }
+
 
     }
 

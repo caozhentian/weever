@@ -2,6 +2,8 @@ package cn.people.weever.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.greenrobot.greendao.annotation.Property;
+
 import cn.people.weever.common.util.DatetimeUtil;
 
 /**订单 的基类
@@ -33,6 +35,9 @@ public class BaseOrder extends WeeverBean {
     @SerializedName("orderId") //JSON序列化的字段名
 	protected String mOrderId                   ;
 
+    //车辆编号
+    @SerializedName("cardNum") //JSON序列化的字段名
+    private String mCardNum ;
     @SerializedName("orderSN") //JSON序列化的字段名
     protected String mOrderSN ;
     //订单状态 具体取值见订单状态的定义
@@ -104,6 +109,14 @@ public class BaseOrder extends WeeverBean {
 	*/
     @SerializedName("actualMileageCost")
     protected int mActualMileageCost            ;
+
+    public String getCardNum() {
+        return mCardNum;
+    }
+
+    public void setCardNum(String cardNum) {
+        mCardNum = cardNum;
+    }
 
     public String getOrderId() {
         return mOrderId;
@@ -313,5 +326,6 @@ public class BaseOrder extends WeeverBean {
                 return "已完成" ;
         }
     }
+
 
 }

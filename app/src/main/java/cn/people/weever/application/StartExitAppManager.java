@@ -30,10 +30,7 @@ public class StartExitAppManager {
     }
 
     public static void initBaiduService(Context context){
-        String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
-        if(!TextUtils.isEmpty(entityName)){
-            TraceService.getInstance(context).startTrace(null);
-        }
+
         MapService.initMap(context);
         LocationService.getLocationService(context);
 

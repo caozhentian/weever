@@ -18,6 +18,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.PreferencesUtil;
+import cn.people.weever.common.util.ToastUtil;
+import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.service.RegisterPowerService;
 
 /**
@@ -122,10 +124,12 @@ public class TraceService {
                     Logger.d(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                     Log.e("ABC",String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                     IS_START_TRACE = true ;
+                    ToastUtil.showToast("开启轨迹服务成功");
                 }
                 else{
                     //Logger.e(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                     Log.e("ABC2",String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                    ToastUtil.showToast("无法开启轨迹服务");
                 }
             }
 
@@ -134,6 +138,7 @@ public class TraceService {
                 Logger.d(String.format("onStopTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.CACHE_TRACK_NOT_UPLOAD == errorNo) {
                     RegisterPowerService.unregisterPowerReceiver();
+                    ToastUtil.showToast("停止轨迹服务");
                 }
             }
 
@@ -141,9 +146,10 @@ public class TraceService {
             public void onStartGatherCallback(int errorNo, String message) {
                 Logger.d(String.format("onStartGatherCallback, errorNo:%d, message:%s ", errorNo, message));
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STARTED == errorNo) {
-
+                    ToastUtil.showToast("开启采集轨迹");
                 }
                 else{
+                    ToastUtil.showToast("无法开启采集轨迹");
                 }
             }
 
@@ -151,7 +157,7 @@ public class TraceService {
             public void onStopGatherCallback(int errorNo, String message) {
                 Logger.d(String.format("onStopGatherCallback, errorNo:%d, message:%s ", errorNo, message));
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STOPPED == errorNo) {
-
+                    ToastUtil.showToast("停止采集轨迹");
                 }
                 else{
 
@@ -164,6 +170,9 @@ public class TraceService {
         });
     }
     public void stopTrace() {
+        if(!IS_START_TRACE){
+            return ;
+        }
         IS_START_TRACE = false ;
         mClient.stopTrace(mTrace, null);
     }

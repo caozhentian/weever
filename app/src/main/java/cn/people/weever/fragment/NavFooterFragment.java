@@ -35,6 +35,7 @@ import cn.people.weever.activity.poi.PoiSearchActivity;
 import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.DatetimeUtil;
+import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.map.LocationService;
@@ -147,6 +148,11 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     private void initVar(){
         if (getArguments() != null) {
             mBaseOrder = (BaseOrder) getArguments().getSerializable(ARG_PARAM1);
+            //启动trace
+            String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
+            if(!TextUtils.isEmpty(entityName)){
+                TraceService.getInstance(WeeverApplication.getInstance()).startTrace(null);
+            }
         }
         setOrder(mBaseOrder) ;
         mOrderService = new OrderService() ;
@@ -379,11 +385,14 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                     TripNode tripNode  = mRouteOperateEvent.getTripNode() ;
                     Address address = new Address() ;
                     List<Poi> poiList = location.getPoiList() ;
-                    if(poiList != null & poiList.size() > 0) {
+                    if(poiList != null && poiList.size() > 0) {
                         address.setPlaceName(poiList.get(0).getName());
                         address.setLatitude(location.getLatitude());
                         address.setLongitude(location.getLongitude());
                         tripNode.setAddress(address);
+                    }
+                    else{
+                        mRouteOperateEvent.setTripNode(tripNode);
                     }
                     mOrderService.routeOperateOrder(mRouteOperateEvent);
                     LocationService.getLocationService(getContext()).stop();
