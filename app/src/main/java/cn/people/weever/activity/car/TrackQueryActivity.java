@@ -218,9 +218,9 @@ public class TrackQueryActivity extends BaseActivity
     public static final Intent newIntent(Context packageContext , long startTime , long endTime, String carNum) {
         Intent intent = new Intent(packageContext, TrackQueryActivity.class);
         intent.putExtra(S_START_TIME , startTime) ;
-        Date  date = new Date(startTime) ;
-        intent.putExtra(S_END_TIME , endTime);
-        Date  date2 = new Date(endTime) ;
+        Date  date = new Date(startTime*1000) ;
+        intent.putExtra(S_END_TIME , endTime );
+        Date  date2 = new Date(endTime*1000) ;
         intent.putExtra(CAR_NUM, carNum);
         return intent;
     }
@@ -315,7 +315,7 @@ public class TrackQueryActivity extends BaseActivity
 // 设置里程填充方式为驾车
         historyTrackRequest.setSupplementMode(SupplementMode.driving);
         TraceService.getInstance(this).initRequest(historyTrackRequest);
-        String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
+        //String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
         historyTrackRequest.setEntityName(entityName);
         historyTrackRequest.setStartTime(startTime);
         historyTrackRequest.setEndTime(endTime);
