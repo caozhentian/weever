@@ -43,6 +43,7 @@ import cn.people.weever.common.constant.TraceConstants;
 import cn.people.weever.common.util.BitmapUtil;
 import cn.people.weever.common.util.CommonUtil;
 import cn.people.weever.common.util.MapUtil;
+import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.map.TraceService;
 
 /**
@@ -307,7 +308,8 @@ public class TrackQueryActivity extends BaseActivity
 // 设置里程填充方式为驾车
         historyTrackRequest.setSupplementMode(SupplementMode.driving);
         TraceService.getInstance(this).initRequest(historyTrackRequest);
-        historyTrackRequest.setEntityName(TraceService.getInstance(this).getEntityName());
+        String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
+        historyTrackRequest.setEntityName(entityName);
         historyTrackRequest.setStartTime(startTime);
         historyTrackRequest.setEndTime(endTime);
         historyTrackRequest.setPageIndex(pageIndex);

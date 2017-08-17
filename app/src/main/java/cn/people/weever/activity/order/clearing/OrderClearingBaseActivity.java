@@ -209,7 +209,7 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
        if(mBaseOrder.getActualDropOffTripNode() != null) {
             endTime = mBaseOrder.getActualDropOffTripNode().getTime();
        }
-        startActivity(TrackQueryActivity.newIntent(this, 0, 0));
+        startActivity(TrackQueryActivity.newIntent(this, startTime, endTime));
     }
 
 
