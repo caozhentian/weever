@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +23,10 @@ import cn.people.weever.R;
 import cn.people.weever.activity.HomeActivity;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.application.StartExitAppManager;
+import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.common.util.ToastUtil;
+import cn.people.weever.map.TraceService;
 import cn.people.weever.model.Car;
 import cn.people.weever.model.Driver;
 import cn.people.weever.net.BaseModel;
@@ -147,6 +151,13 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
             mDriverService.save(driver);
             DriverService.IS_NEED_AUTO_LOGIN = false ;
             startActivity(HomeActivity.newIntent(this));
+            if(!TextUtils.isEmpty(driver.getCardNum())){
+                PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",driver.getCardNum());
+                //先停止
+                TraceService.getInstance(this).stopTrace();
+                TraceService.getInstance(this).startTrace(null);
+                TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(driver.getCardNum())  ;
+            }
             finish() ;
         }
     }

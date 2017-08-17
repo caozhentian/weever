@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,9 +53,9 @@ import cn.people.weever.map.TLocationListener;
 import cn.people.weever.map.TraceService;
 import cn.people.weever.mapapi.overlayutil.CityConstant;
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.Driver;
 import cn.people.weever.model.RouteOperateEvent;
 import cn.people.weever.net.BaseModel;
-import cn.people.weever.net.CarApiService;
 import cn.people.weever.net.DriverApiService;
 import cn.people.weever.service.DriverService;
 
@@ -362,6 +363,16 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
             TraceService.getInstance(this).stopTrace();
             PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",null);
             txt_car_num.setText(null);
+        }
+        else if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_AUTO_LOGIN){
+            Driver driver = (Driver) baseModel.getData();
+            if(!TextUtils.isEmpty(driver.getCardNum())){
+                PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",driver.getCardNum());
+                //先停止
+                TraceService.getInstance(this).stopTrace();
+                TraceService.getInstance(this).startTrace(null);
+                TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(driver.getCardNum())  ;
+            }
         }
 
     }
