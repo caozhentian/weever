@@ -44,7 +44,6 @@ import cn.people.weever.common.constant.TraceConstants;
 import cn.people.weever.common.util.BitmapUtil;
 import cn.people.weever.common.util.CommonUtil;
 import cn.people.weever.common.util.MapUtil;
-import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.map.TraceService;
 
 /**
@@ -504,8 +503,10 @@ public class TrackQueryActivity extends BaseActivity
                 int total = response.getTotal();
                 if (StatusCodes.SUCCESS != response.getStatus()) {
                     showToast(response.getMessage());
+                    return ;
                 } else if (0 == total) {
                     showToast("无数据");
+                    return ;
                 } else {
                     List<TrackPoint> points = response.getTrackPoints();
                     if (null != points) {

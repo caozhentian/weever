@@ -65,6 +65,8 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     TextView mTvActualEndAddress;
     @BindView(R.id.tv_actual_all_cost)
     TextView mTvActualAllCost;
+    @BindView(R.id.tv_distance_cost)
+    TextView tv_distance_cost;
     @BindView(R.id.tv_rental_cose)
     TextView mTvRentalCose;
     @BindView(R.id.tv_expire_time_cose)
@@ -130,6 +132,8 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         mTvPlantEndDate.setText(mBaseOrder.getPlanDropOffTripNode().getDateStr());
         mTvPlantEndAddress.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
 
+        tv_distance_cost.setText(mBaseOrder.getActualMileage() + "");
+        mTvRentalCose.setText(mBaseOrder.getActualMileageCost() + "");
         mTvExpireDistanceCose.setText(mBaseOrder.getActualWaitTime() + "");
         mTvActualAllCost.setText(mBaseOrder.getPostDiscount() + "");
         mTvExpireTimeCose.setText(mBaseOrder.getActualRideTime() + "");
