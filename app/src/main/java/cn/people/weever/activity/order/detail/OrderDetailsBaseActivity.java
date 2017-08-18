@@ -22,6 +22,7 @@ import cn.people.weever.activity.order.clearing.DayHalfOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.DayOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.FixedTimeOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.PickupOrderClearingActivity;
+import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
@@ -132,11 +133,11 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         mTvPlantEndDate.setText(mBaseOrder.getPlanDropOffTripNode().getDateStr());
         mTvPlantEndAddress.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
 
-        tv_distance_cost.setText(mBaseOrder.getActualMileage() + "");
-        mTvRentalCose.setText(mBaseOrder.getActualMileageCost() + "");
-        mTvExpireDistanceCose.setText(mBaseOrder.getActualWaitTime() + "");
-        mTvActualAllCost.setText(mBaseOrder.getPostDiscount() + "");
-        mTvExpireTimeCose.setText(mBaseOrder.getActualRideTime() + "");
+        tv_distance_cost.setText(mBaseOrder.getActualMileage() + "公里");
+        mTvRentalCose.setText(mBaseOrder.getActualMileageCost() + "RMB");
+        mTvExpireDistanceCose.setText(DatetimeUtil.MinToHours(Integer.parseInt(mBaseOrder.getActualWaitTime())) + "");
+        mTvActualAllCost.setText(mBaseOrder.getPostDiscount() + "RMB");
+        mTvExpireTimeCose.setText(DatetimeUtil.MinToHours(Integer.parseInt(mBaseOrder.getActualRideTime())) + "");
         if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
             mLlTake.setVisibility(View.VISIBLE);
         } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDER) {

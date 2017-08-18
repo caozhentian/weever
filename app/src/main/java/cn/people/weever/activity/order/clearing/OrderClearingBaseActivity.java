@@ -125,14 +125,14 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
             mTvDesc.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
         }
         mTvMember.setText(mBaseOrder.getCompany().getCompanyNum());
-        mTvPreDiscount.setText(mBaseOrder.getPreDiscount() + "");
-        mTvPostDiscount.setText(mBaseOrder.getPostDiscount() + "");
+        mTvPreDiscount.setText(mBaseOrder.getPreDiscount() + "RMB");
+        mTvPostDiscount.setText(mBaseOrder.getPostDiscount() + "RMB");
         mTvPercentDiscount.setText(mBaseOrder.getPercentDiscount() );
-        mTvStartUpCost.setText(mBaseOrder.getStartingFare());
+        mTvStartUpCost.setText(mBaseOrder.getStartingFare()+"RMB");
 
         tv_distance.setText("(" + mBaseOrder.getActualMileage()+ "公里)");
-        mTvDistanceCost.setText(mBaseOrder.getActualMileageCost()+ "");
-        mTvRideTimeCost.setText(mBaseOrder.getActualRideTimeCost()+ "");
+        mTvDistanceCost.setText(mBaseOrder.getActualMileageCost()+ "RMB");
+        mTvRideTimeCost.setText(mBaseOrder.getActualRideTimeCost()+ "RMB");
         tv_ride_time.setText("("+ mBaseOrder.getActualRideTime()+ "Minute)");
         tv_wait_time.setText("("+ mBaseOrder.getActualWaitTime()+ "Minute)");
         mTvWaitTimeCost.setText(mBaseOrder.getActualWaitTimeCost()+ "");
