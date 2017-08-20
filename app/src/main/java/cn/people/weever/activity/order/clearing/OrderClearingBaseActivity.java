@@ -141,7 +141,7 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
         tv_ride_time.setVisibility(View.INVISIBLE);
         tv_wait_time.setText("("+ mBaseOrder.getActualWaitTime()+ "Minute)");
         tv_wait_time.setVisibility(View.INVISIBLE);
-        mTvWaitTimeCost.setText(""+ mBaseOrder.getActualWaitTime()+ "Minute");
+        mTvWaitTimeCost.setText(""+ mBaseOrder.getActualWaitTime()+ "");
     }
 
     @Override
