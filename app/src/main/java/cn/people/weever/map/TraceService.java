@@ -129,13 +129,13 @@ public class TraceService {
                 else{
                     //Logger.e(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                     Log.e("ABC2",String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
-                    ToastUtil.showToast("无法开启轨迹服务");
+                    ToastUtil.showToast("无法开启轨迹服务" + String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                 }
             }
 
             @Override
             public void onStopTraceCallback(int errorNo, String message) {
-                Logger.d(String.format("onStopTraceCallback, errorNo:%d, message:%s ", errorNo, message));
+                Logger.d(String.format("onStopTraceCallback "+ errorNo, message));
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.CACHE_TRACK_NOT_UPLOAD == errorNo) {
                     RegisterPowerService.unregisterPowerReceiver();
                     ToastUtil.showToast("停止轨迹服务");
@@ -149,7 +149,7 @@ public class TraceService {
                     ToastUtil.showToast("开启采集轨迹");
                 }
                 else{
-                    ToastUtil.showToast("无法开启采集轨迹");
+                    ToastUtil.showToast("无法开启采集轨迹" + errorNo + message);
                 }
             }
 
@@ -173,8 +173,10 @@ public class TraceService {
         if(!IS_START_TRACE){
             return ;
         }
+        sTraceService = null ;
         IS_START_TRACE = false ;
         mClient.stopTrace(mTrace, null);
+        mClient = null ;
     }
 
     public void startGather(OnTraceListener traceListener){
