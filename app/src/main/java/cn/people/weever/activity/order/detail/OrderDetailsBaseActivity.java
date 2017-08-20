@@ -133,11 +133,11 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         mTvPlantEndDate.setText(mBaseOrder.getPlanDropOffTripNode().getDateStr());
         mTvPlantEndAddress.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
 
-        tv_distance_cost.setText(mBaseOrder.getActualMileage() + "公里");
-        mTvRentalCose.setText(mBaseOrder.getActualMileageCost() + "RMB");
-        mTvExpireDistanceCose.setText(DatetimeUtil.MinToHours(Integer.parseInt(mBaseOrder.getActualWaitTime())) + "");
-        mTvActualAllCost.setText(mBaseOrder.getPostDiscount() + "RMB");
-        mTvExpireTimeCose.setText(DatetimeUtil.MinToHours(Integer.parseInt(mBaseOrder.getActualRideTime())) + "");
+        tv_distance_cost.setText(mBaseOrder.getActualMileage() + " 公里");
+        mTvRentalCose.setText(mBaseOrder.getStartingFare() + " RMB");
+        mTvExpireDistanceCose.setText(mBaseOrder.getActualWaitTime() + "");
+        mTvActualAllCost.setText(mBaseOrder.getPostDiscount() + " RMB");
+        mTvExpireTimeCose.setText(mBaseOrder.getActualRideTime() + " 分钟");
         if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
             mLlTake.setVisibility(View.VISIBLE);
         } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDER) {

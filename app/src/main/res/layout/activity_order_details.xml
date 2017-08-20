@@ -272,7 +272,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="left|center"
-                                android:text="租车费用:"/>
+                                android:text="起步费用:"/>
 
                             <TextView
                                 android:id="@+id/tv_rental_cose"

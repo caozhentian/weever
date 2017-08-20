@@ -41,6 +41,8 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
 
     @BindView(R.id.tv_member)
     TextView mTvMember;
+    @BindView(R.id.tv_member_name)
+    TextView tv_member_name;
     @BindView(R.id.tv_pre_discount)
     TextView mTvPreDiscount;
     @BindView(R.id.tv_post_discount)
@@ -125,17 +127,21 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
             mTvDesc.setText(mBaseOrder.getPlanDropOffTripNode().getAddress().getPlaceName());
         }
         mTvMember.setText(mBaseOrder.getCompany().getCompanyNum());
-        mTvPreDiscount.setText(mBaseOrder.getPreDiscount() + "RMB");
-        mTvPostDiscount.setText(mBaseOrder.getPostDiscount() + "RMB");
+        tv_member_name.setText(mBaseOrder.getCompany().getCompanyName());
+        mTvPreDiscount.setText(mBaseOrder.getPreDiscount() + "  RMB");
+        mTvPostDiscount.setText(mBaseOrder.getPostDiscount() + "  RMB");
         mTvPercentDiscount.setText(mBaseOrder.getPercentDiscount() );
-        mTvStartUpCost.setText(mBaseOrder.getStartingFare()+"RMB");
+        mTvStartUpCost.setText(mBaseOrder.getStartingFare()+" RMB");
 
         tv_distance.setText("(" + mBaseOrder.getActualMileage()+ "公里)");
-        mTvDistanceCost.setText(mBaseOrder.getActualMileageCost()+ "RMB");
-        mTvRideTimeCost.setText(mBaseOrder.getActualRideTimeCost()+ "RMB");
+        mTvDistanceCost.setText("" + mBaseOrder.getActualMileage()+ " 公里");
+        tv_distance.setVisibility(View.INVISIBLE);
+        mTvRideTimeCost.setText(""+ mBaseOrder.getActualRideTime()+ " Minute");
         tv_ride_time.setText("("+ mBaseOrder.getActualRideTime()+ "Minute)");
+        tv_ride_time.setVisibility(View.INVISIBLE);
         tv_wait_time.setText("("+ mBaseOrder.getActualWaitTime()+ "Minute)");
-        mTvWaitTimeCost.setText(mBaseOrder.getActualWaitTimeCost()+ "");
+        tv_wait_time.setVisibility(View.INVISIBLE);
+        mTvWaitTimeCost.setText(""+ mBaseOrder.getActualWaitTime()+ "Minute");
     }
 
     @Override
