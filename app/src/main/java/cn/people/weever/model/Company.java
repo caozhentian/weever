@@ -20,7 +20,7 @@ public class Company implements Serializable{
 
     //会员类型 普通会员 三星等
     @SerializedName("type")
-    protected int mType   ;
+    protected String mType   ;
 
     //90%
     @SerializedName("percent")
@@ -40,5 +40,21 @@ public class Company implements Serializable{
 
     public void setCompanyName(String companyName) {
         mCompanyName = companyName;
+    }
+
+    public String getType() {
+        return mType;
+    }
+
+    public void setType(String type) {
+        mType = type;
+    }
+
+    public String getPercent() {
+        return mPercent;
+    }
+
+    public void setPercent(String percent) {
+        mPercent = percent;
     }
 }

@@ -82,4 +82,8 @@ public class OrderService {
     public void getRealTimeOrderInfo(BaseOrder baseOrder){
         mOrderRespository.getRealTimeOrderInfo(baseOrder);
     }
+
+    public void getMembers(){
+        mOrderRespository.getMembers();
+    }
 }

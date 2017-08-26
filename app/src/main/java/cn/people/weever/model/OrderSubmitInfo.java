@@ -35,4 +35,12 @@ public class OrderSubmitInfo {
     public void setAmountList(List<Amount> amountList) {
         mAmountList = amountList;
     }
+
+    public Company getCompany() {
+        return mCompany;
+    }
+
+    public void setCompany(Company company) {
+        mCompany = company;
+    }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.ToastUtil;
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.Company;
 import cn.people.weever.model.DailyRentaOrder;
 import cn.people.weever.model.FixTimeOrder;
 import cn.people.weever.model.HalfDayRentalOrder;
@@ -102,6 +103,11 @@ public class OrderRespository {
     public void getRealTimeOrderInfo(BaseOrder baseOrder){
         Call<BaseModel<RealTimeOrderInfo>> call = mOrderApiService.getRealTimeOrderInfo(baseOrder.getOrderId())        ;
         call.enqueue(new BaseCallback<RealTimeOrderInfo>(OrderApiService.TO_ORDER_REAL_TIME_INFO_NET_REQUST))     ;
+    }
+
+    public void getMembers(){
+        Call<BaseModel<List<Company>>> call = mOrderApiService.getMembers()      ;
+        call.enqueue(new BaseCallback<List<Company>>(OrderApiService.TO_ORDER_TYPE_MEMBERS_NET_REQUST));
     }
 
 }

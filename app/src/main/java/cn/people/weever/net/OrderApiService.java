@@ -3,6 +3,7 @@ package cn.people.weever.net;
 import java.util.List;
 
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.Company;
 import cn.people.weever.model.DailyRentaOrder;
 import cn.people.weever.model.FixTimeOrder;
 import cn.people.weever.model.HalfDayRentalOrder;
@@ -14,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**订单相关的api
@@ -42,6 +44,8 @@ public interface OrderApiService {
     public static final int TO_ORDER_TYPE_DAYHALF_DETAILS_NET_REQUST        =   421                      ;
     public static final int TO_ORDER_TYPE_TRANSFER_DETAILS_NET_REQUST        =  422                      ;
     public static final int TO_ORDER_TYPE_FixTime_DETAILS_NET_REQUST        =   423                      ;
+
+    public static final int TO_ORDER_TYPE_MEMBERS_NET_REQUST        =   490                      ;
 
     public static final String ARG_NAME_NOTIFICATION_ORDER = "ARG_NAME_NOTIFICATION_ORDER" ;
     public static final String ARG_VALUE_NOTIFICATION_ORDER = "ARG_NOTIFICATION_ORDER" ;
@@ -104,4 +108,8 @@ public interface OrderApiService {
     @FormUrlEncoded
     @POST("order/getRealTimeOrderInfo")
     Call<BaseModel<RealTimeOrderInfo>>  getRealTimeOrderInfo(@Field("order_id") String id) ;
+
+    @GET("member/getMembers")
+    Call<BaseModel<List<Company>>>  getMembers() ;
+
 }

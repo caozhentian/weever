@@ -23,6 +23,7 @@ import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.activity.car.TrackQueryActivity;
 import cn.people.weever.model.Amount;
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.Company;
 import cn.people.weever.model.OrderSubmitInfo;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
@@ -66,6 +67,8 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
     @BindView(R.id.tv_wait_time_cost)
     TextView mTvWaitTimeCost;
 
+    @BindView(R.id.spn_member)
+    Spinner mSpnMember;
     @BindView(R.id.spn_settlement_first)
     Spinner mSpnSettlementFirst;
     @BindView(R.id.edt_settlement_first_cost)
@@ -83,6 +86,8 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
     protected BaseOrder mBaseOrder ;
 
     protected OrderService mOrderService ;
+
+    private List<Company> mCompanies ;
 
     public static final Intent newIntent(Context context, BaseOrder baseOrder) {
         Intent intent = new Intent(context, OrderClearingBaseActivity.class);
@@ -113,6 +118,7 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
             setViewByBaseOrder();
             queryOrderDetails(mBaseOrder);
         }
+        mOrderService.getMembers();
     }
 
     @Override
@@ -242,6 +248,9 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_SUBMIT_NET_REQUST){
             dealSubmitSuccess(baseModel)                         ;
         }
+        else if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TYPE_MEMBERS_NET_REQUST){
+            processCompanyEvent(baseModel) ;
+        }
         else {
             processOrderEvent(baseModel) ;
         }
@@ -256,6 +265,10 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
 
     public void processOrderEvent(@Nullable BaseModel baseModel){
 
+    }
+
+    public void processCompanyEvent(@Nullable BaseModel baseModel){
+        mCompanies = (List<Company>) baseModel.getData();
     }
 
 }
