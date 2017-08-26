@@ -309,4 +309,19 @@ public class DatetimeUtil {
 
         return c1.compareTo(c2);
     }
+
+
+    public static final String MinToHours(int min){
+        if(min < 60 ){
+            return min + "分";
+        }
+        else if(min % 60 == 0){
+            return min/60 + "小时";
+        }
+        else{
+            return min/ 60 + "小时" + min % 60 + "分";
+        }
+
+    }
+
 }
