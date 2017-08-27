@@ -6,7 +6,7 @@ import org.greenrobot.greendao.annotation.Property;
 
 import cn.people.weever.common.util.DatetimeUtil;
 
-/**订单 的基类
+/**ic_menu_gallery2 的基类
  * Created by weever on 2017/4/6.
  */
 

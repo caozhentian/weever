@@ -1,6 +1,8 @@
-﻿package cn.people.weever.model;
+package cn.people.weever.model;
 
 import com.google.gson.annotations.SerializedName;
+
+
 
 import java.io.Serializable;
 
