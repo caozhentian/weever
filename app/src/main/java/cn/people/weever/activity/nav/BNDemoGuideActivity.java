@@ -30,8 +30,15 @@ import java.util.List;
 
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.application.WeeverApplication;
+import cn.people.weever.dialog.ICancelOK;
+import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.fragment.NavFooterFragment;
+import cn.people.weever.map.TraceService;
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.RouteOperateEvent;
+
+import static com.baidu.mapapi.BMapManager.getContext;
 
 
 /**
@@ -87,7 +94,17 @@ public class BNDemoGuideActivity extends BaseActivity {
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                OKCancelDlg.createCancelOKDlg(getContext(), "确定退出导航吗", new ICancelOK() {
+                    @Override
+                    public void cancel() {
+
+                    }
+
+                    @Override
+                    public void ok() {
+                        finish() ;
+                    }
+                });
             }
         });
         tv_title.setText("导航");

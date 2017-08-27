@@ -253,6 +253,7 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/dim5"
+                        android:background="@color/t999999"
                         android:gravity="right|center">
                         <Spinner
                             android:id="@+id/spn_member"
@@ -365,7 +366,7 @@
                         android:gravity="center"
 
                         android:text="15"
-                        android:textSize="18sp"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -402,7 +403,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="100"
-                        android:textSize="18sp"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -439,7 +440,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="35"
-                        android:textSize="18sp"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -476,7 +477,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="0"
-                        android:textSize="18sp"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
