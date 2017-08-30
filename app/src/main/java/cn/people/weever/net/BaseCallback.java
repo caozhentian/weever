@@ -36,7 +36,9 @@ public class BaseCallback<T> implements Callback<BaseModel<T>> {
             ActivityExitManage.getCurBaseFragment().setApiOperationCode(mApiOperationCode);
         }
         //通知网络请求开始 UI层收到可展现进度条
-        postEvent(new NetRequestPreEvent(apiOperationCode));
+        if(apiOperationCode != OrderApiService.TO_ORDER_TYPE_MEMBERS_NET_REQUST) {
+            postEvent(new NetRequestPreEvent(apiOperationCode));
+        }
     }
 
 

@@ -94,7 +94,7 @@ public class BNDemoGuideActivity extends BaseActivity {
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OKCancelDlg.createCancelOKDlg(getContext(), "确定退出导航吗", new ICancelOK() {
+                OKCancelDlg.createCancelOKDlg(BNDemoGuideActivity.this, "确定退出导航吗", new ICancelOK() {
                     @Override
                     public void cancel() {
 

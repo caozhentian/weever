@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -88,6 +91,8 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
     protected OrderService mOrderService ;
 
     private List<Company> mCompanies ;
+
+    private Company  mCompany  ;
 
     public static final Intent newIntent(Context context, BaseOrder baseOrder) {
         Intent intent = new Intent(context, OrderClearingBaseActivity.class);
@@ -180,6 +185,15 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
         }
     }
 
+    private void updateMemerInfo(){
+        mTvMember.setText(mCompany.getCompanyNum());
+        tv_member_name.setText(mCompany.getCompanyName());
+        //mTvPreDiscount.setText(mBaseOrder.getPreDiscount() + "  RMB");
+        float per = Float.parseFloat(mCompany.getPercent().replace("%" , "")) * 0.01f ;
+        mTvPostDiscount.setText(Math.ceil(mBaseOrder.getPreDiscount() * per) + "  RMB");
+        mTvPercentDiscount.setText(mCompany.getPercent() );
+    }
+
     private void toCompute(){
         if(mBaseOrder == null){
             return ;
@@ -205,7 +219,8 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
             Amount amount = new Amount(sType , sCost) ;
             amountList.add(amount) ;
         }
-        orderSubmitInfo.setAmountList(amountList);
+        orderSubmitInfo.setAmountList(amountList) ;
+        orderSubmitInfo.setCompany(mCompany)    ;
         mOrderService.submit(orderSubmitInfo);
     }
 
@@ -269,6 +284,29 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
 
     public void processCompanyEvent(@Nullable BaseModel baseModel){
         mCompanies = (List<Company>) baseModel.getData();
+        mCompany   = mCompanies.get(0) ;
+        updateMemerInfo() ;
+        List<String>  names = new LinkedList<>() ;
+        for( Company company :mCompanies){
+            names.add(company.getCompanyName()) ;
+        }
+
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, names);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //绑定 Adapter到控件
+        mSpnMember .setAdapter(adapter);
+        mSpnMember.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int pos, long id) {
+                mCompany = mCompanies.get(pos) ;
+                updateMemerInfo() ;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+        });
     }
 
 }
