@@ -65,6 +65,8 @@ public class BNDemoGuideActivity extends BaseActivity {
     // 是否使用通用接口
     private boolean useCommonInterface = true;
 
+    private boolean isNavEnd;
+
     public static final Intent newIntent(Context packageContext , BNRoutePlanNode bNRoutePlanNode,
                                          BaseOrder baseOrder){
         Intent intent = new Intent(packageContext , BNDemoGuideActivity.class) ;
@@ -94,25 +96,29 @@ public class BNDemoGuideActivity extends BaseActivity {
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OKCancelDlg.createCancelOKDlg(BNDemoGuideActivity.this, "确定退出导航吗", new ICancelOK() {
-                    @Override
-                    public void cancel() {
-
-                    }
-
-                    @Override
-                    public void ok() {
-                        if(useCommonInterface) {
-                            if(mBaiduNaviCommonModule != null) {
-                                mBaiduNaviCommonModule.onDestroy();
-                            }
-                        } else {
-                            BNRouteGuideManager.getInstance().onDestroy();
-                        }
-                        BNEventHandler.getInstance().disposeDialog();
-                        finish() ;
-                    }
-                });
+                if(isNavEnd){
+                    finish();
+                    return ;
+                }
+                if(mBaiduNaviCommonModule != null) {
+                    mBaiduNaviCommonModule.onBackPressed(true);
+                    //finish() ;
+                } ;
+//                OKCancelDlg.createCancelOKDlg(BNDemoGuideActivity.this, "确定退出导航吗", new ICancelOK() {
+//                    @Override
+//                    public void cancel() {
+//
+//                    }
+//
+//                    @Override
+//                    public void ok() {
+//
+//                        if(mBaiduNaviCommonModule != null) {
+//                            mBaiduNaviCommonModule.onBackPressed(true);
+//                            //finish() ;
+//                        } ;
+//                    }
+//                });
             }
         });
         tv_title.setText("导航");
@@ -351,12 +357,15 @@ public class BNDemoGuideActivity extends BaseActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+
     private OnNavigationListener mOnNavigationListener = new OnNavigationListener() {
 
         @Override
         public void onNaviGuideEnd() {
             //退出导航
             Logger.i(TAG, "navi 导航结束");
+            isNavEnd = true ;
             if(mBaseOrder != null){
 
                 showSingleChoiceDialog() ;
