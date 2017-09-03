@@ -102,6 +102,14 @@ public class BNDemoGuideActivity extends BaseActivity {
 
                     @Override
                     public void ok() {
+                        if(useCommonInterface) {
+                            if(mBaiduNaviCommonModule != null) {
+                                mBaiduNaviCommonModule.onDestroy();
+                            }
+                        } else {
+                            BNRouteGuideManager.getInstance().onDestroy();
+                        }
+                        BNEventHandler.getInstance().disposeDialog();
                         finish() ;
                     }
                 });
