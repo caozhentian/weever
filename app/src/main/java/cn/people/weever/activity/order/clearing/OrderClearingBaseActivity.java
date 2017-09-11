@@ -243,7 +243,7 @@ public  class OrderClearingBaseActivity extends SubcribeCreateDestroyActivity {
     private int getAmountType(Spinner spinner){
         String typeStr = (String) spinner.getSelectedItem();
         int   acountType = Amount.AMOUNT_TYPE_CRASH ;
-        switch (typeStr){
+        switch (typeStr.substring(0 ,2)){
             case "现金":
                 acountType = Amount.AMOUNT_TYPE_CRASH ;
                 break ;
