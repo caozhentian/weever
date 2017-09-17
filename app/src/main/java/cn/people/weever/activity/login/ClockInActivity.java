@@ -148,9 +148,9 @@ public class ClockInActivity extends SubcribeCreateDestroyActivity {
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_CLOCK_IN){
             PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",mCarNum);
             //先停止
-            TraceService.getInstance(WeeverApplication.getInstance()).stopTrace();
+            //TraceService.getInstance(WeeverApplication.getInstance()).stopTrace();
             TraceService.getInstance(WeeverApplication.getInstance()).startTrace(null);
-            TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(mCarNum)  ;
+            //TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(mCarNum)  ;
             showToast(baseModel.getMessage());
             finish();
         }

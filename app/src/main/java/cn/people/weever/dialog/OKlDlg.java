@@ -1,3 +1,5 @@
+package cn.people.weever.dialog;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.Gravity;

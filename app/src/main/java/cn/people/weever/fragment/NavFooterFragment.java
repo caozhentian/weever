@@ -150,7 +150,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             mBaseOrder = (BaseOrder) getArguments().getSerializable(ARG_PARAM1);
             //启动trace
             String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
-            if(!TextUtils.isEmpty(entityName)){
+            if(mBaseOrder !=null && !TextUtils.isEmpty(entityName)){
                 TraceService.getInstance(WeeverApplication.getInstance()).startTrace(null);
             }
         }

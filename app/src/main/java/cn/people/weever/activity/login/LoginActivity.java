@@ -154,9 +154,9 @@ public class LoginActivity extends SubcribeCreateDestroyActivity {
             if(!TextUtils.isEmpty(driver.getCardNum())){
                 PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",driver.getCardNum());
                 //先停止
-                TraceService.getInstance(this).stopTrace();
+                //TraceService.getInstance(this).stopTrace();
                 TraceService.getInstance(this).startTrace(null);
-                TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(driver.getCardNum())  ;
+                //TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(driver.getCardNum())  ;
             }
             finish() ;
         }

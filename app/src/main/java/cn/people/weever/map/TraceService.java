@@ -90,19 +90,19 @@ public class TraceService {
         return mSequenceGenerator.incrementAndGet();
     }
 
-    public  String getEntityName() {
-        if(TextUtils.isEmpty(entityName)){
-            entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
-        }
-       return entityName;
-       // return  "myTrace" ;
-    }
-
-    public  void setEntityName(String entityName) {
-        this.entityName = entityName;
-        PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",entityName);
-        mTrace.setEntityName(entityName);
-    }
+//    public  String getEntityName() {
+//        if(TextUtils.isEmpty(entityName)){
+//            entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
+//        }
+//       return entityName;
+//       // return  "myTrace" ;
+//    }
+//
+//    public  void setEntityName(String entityName) {
+//        this.entityName = entityName;
+//        PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",entityName);
+//        mTrace.setEntityName(entityName);
+//    }
 
     public void startTrace(OnTraceListener traceListener){
         if(IS_START_TRACE){
@@ -124,7 +124,8 @@ public class TraceService {
                     Logger.d(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                     Log.e("ABC",String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
                     IS_START_TRACE = true ;
-                    ToastUtil.showToast("开启轨迹服务成功");
+                    String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
+                    ToastUtil.showToast(entityName + "开启轨迹服务成功");
                 }
                 else{
                     //Logger.e(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));
@@ -146,7 +147,8 @@ public class TraceService {
             public void onStartGatherCallback(int errorNo, String message) {
                 Logger.d(String.format("onStartGatherCallback, errorNo:%d, message:%s ", errorNo, message));
                 if (StatusCodes.SUCCESS == errorNo || StatusCodes.GATHER_STARTED == errorNo) {
-                    ToastUtil.showToast("开启采集轨迹");
+                    String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
+                    ToastUtil.showToast(entityName + "开启采集轨迹");
                 }
                 else{
                     ToastUtil.showToast("无法开启采集轨迹" + errorNo + message);
