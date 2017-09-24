@@ -120,6 +120,7 @@
             android:name=".activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
         <activity
             android:name=".activity.car.TrackQueryActivity"

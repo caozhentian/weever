@@ -65,7 +65,7 @@ public class StartExitAppManager {
             @Override
             public void ok() {
                 ActivityExitManage.finishAll();
-                TraceService.getInstance(context).stopTrace();
+                TraceService.getInstance(WeeverApplication.getInstance()).stopTrace();
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         });

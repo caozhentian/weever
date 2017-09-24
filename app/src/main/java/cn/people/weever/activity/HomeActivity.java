@@ -2,7 +2,9 @@ package cn.people.weever.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -100,6 +102,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         Intent intent = new Intent(packageContext ,HomeActivity.class ) ;
         return intent ;
     }
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,6 +148,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         initView();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -205,6 +209,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -360,7 +365,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_PUNCH_OUT){
             showToast(baseModel.getMessage());
             //停止Trace 跟踪
-            TraceService.getInstance(this).stopTrace();
+            TraceService.getInstance(WeeverApplication.getInstance()).stopTrace();
             PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",null);
             txt_car_num.setText(null);
         }
@@ -370,7 +375,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
                 PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",driver.getCardNum());
                 //先停止
                 //TraceService.getInstance(this).stopTrace();
-                TraceService.getInstance(this).startTrace(null);
+                TraceService.getInstance(WeeverApplication.getInstance()).startTrace(null);
                 //TraceService.getInstance(WeeverApplication.getInstance()).setEntityName(driver.getCardNum())  ;
             }
         }
