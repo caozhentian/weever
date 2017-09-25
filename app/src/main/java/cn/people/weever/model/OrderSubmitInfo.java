@@ -20,6 +20,7 @@ public class OrderSubmitInfo {
 	//会员信息
 	@SerializedName("company")
 	private Company mCompany ;
+	
     public String getOrderId() {
         return mOrderId;
     }
