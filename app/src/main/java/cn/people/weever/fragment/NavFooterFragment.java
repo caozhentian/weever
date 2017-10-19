@@ -329,11 +329,11 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             return ;
         }
         if(  !mBooleanOperate[1] ){
-            showToast("请先点击等待按钮");
+            showToast("请先点击暂停按钮");
             return ;
         }
         if( mBooleanOperate[3]){
-            showToast("不能执行再出发操作");
+            showToast("不能执行开始操作");
             return ;
         }
 //        TripNode tripNode  = new TripNode() ;
@@ -354,7 +354,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             return ;
         }
         if(  mBooleanOperate[1] && !mBooleanOperate[2]){
-            showToast("请先点击再出发按钮");
+            showToast("请先点击开始按钮");
             return ;
         }
         OKCancelDlg.createCancelOKDlg(getContext(), "确定结算吗", new ICancelOK() {

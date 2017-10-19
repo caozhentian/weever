@@ -12,10 +12,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Arrays;
 
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.event.OrderStatusChangeEvent;
 
 
 public class MyOrdersActivity extends BaseActivity {
@@ -82,6 +87,13 @@ public class MyOrdersActivity extends BaseActivity {
         setContentView(R.layout.activity_my_orders);
         initView()  ;
         initData()  ;
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -99,5 +111,8 @@ public class MyOrdersActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessage(OrderStatusChangeEvent event) {
+        mViewPager.setCurrentItem(1);
+    }
 }

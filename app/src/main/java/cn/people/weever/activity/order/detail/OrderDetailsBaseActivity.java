@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.model.LatLng;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,6 +28,7 @@ import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
+import cn.people.weever.event.OrderStatusChangeEvent;
 import cn.people.weever.model.Address;
 import cn.people.weever.model.BaseOrder;
 import cn.people.weever.net.BaseModel;
@@ -265,6 +268,9 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         }
         setViewByBaseOrder();
 //        EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
+        if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TAKE_NET_REQUST){
+            EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
+        }
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TAKE_NET_REQUST
                 || baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_CANCEL_NET_REQUST){
             finish();

@@ -139,7 +139,7 @@
                 android:layout_weight="1"
                 android:visibility="visible"
                 android:layout_marginRight="@dimen/dim5"
-                android:text="等待"/>
+                android:text="暂停"/>
 
             <Button
                 android:id="@+id/btnReturn"
@@ -157,7 +157,7 @@
                 android:layout_marginRight="@dimen/dim5"
                 android:layout_weight="1"
                 android:visibility="visible"
-                android:text="再出发"/>
+                android:text="开始"/>
 
             <Button
                 android:id="@+id/btnCompute"
