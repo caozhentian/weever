@@ -13,9 +13,10 @@ public class UpdateService extends BaseService{
 
     public UpdateService(IApiOperationCode iApiOperationCode) {
         super(iApiOperationCode);
+        mUpdateApkRespository = new UpdateApkRespository() ;
     }
 
     public void getUpdateApkInfo() {
-        mUpdateApkRespository.getUpdateApkInfo();
+        //mUpdateApkRespository.getUpdateApkInfo();
     }
 }

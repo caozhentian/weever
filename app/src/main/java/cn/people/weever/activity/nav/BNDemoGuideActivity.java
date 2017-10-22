@@ -337,15 +337,15 @@ public class BNDemoGuideActivity extends BaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("选择操作");
         //builder.setIcon(R.mipmap.ic_launcher);
-        String[] single_list = {"直接返回" ,"结算" ,"停留在当前界面" } ;
+        String[] single_list = {"返回" ,"结算" ,"停留在当前界面" } ;
         builder.setSingleChoiceItems(single_list, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(which == 0){
-                    finish();
+               if(which == 0){
+                      finish();
                 }
                 else if(which == 1){
-                      mNavFooterFragment.compute();
+                    mNavFooterFragment.compute();
                 }
                 else{
 
@@ -367,7 +367,6 @@ public class BNDemoGuideActivity extends BaseActivity {
             Logger.i(TAG, "navi 导航结束");
             isNavEnd = true ;
             if(mBaseOrder != null){
-
                 showSingleChoiceDialog() ;
             }
             else {
@@ -380,6 +379,12 @@ public class BNDemoGuideActivity extends BaseActivity {
             
             if (actionType == 0) {
                 //导航到达目的地 自动退出
+                if(mBaseOrder != null){
+                    showSingleChoiceDialog() ;
+                }
+                else{
+                    
+                }
                 Logger.i(TAG, "notifyOtherAction actionType = " + actionType + ",导航到达目的地！");
             }
 

@@ -18,7 +18,7 @@ public class CustomProgressDialog extends Dialog {
 		View view=inflater.inflate(R.layout.progressdialog_layout, null);
 		//dialog添加视图
 		setContentView(view);
-		//setCanceledOnTouchOutside(false) ;
+		setCanceledOnTouchOutside(false) ;
 	}
 	public void cancel(){
 		dismiss();
