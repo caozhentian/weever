@@ -293,7 +293,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             @Override
             public void ok() {
 
-                TraceService.getInstance(WeeverApplication.getInstance()).startGather(traceListener);
+                //TraceService.getInstance(WeeverApplication.getInstance()).startGather(traceListener);
                 operate(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE) ;
             }
         });
@@ -365,7 +365,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
             @Override
             public void ok() {
-                TraceService.getInstance(WeeverApplication.getInstance()).stopGather(traceListener);
+                //TraceService.getInstance(WeeverApplication.getInstance()).stopGather(traceListener);
                 operate(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE) ;
             }
         });

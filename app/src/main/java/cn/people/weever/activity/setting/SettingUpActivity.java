@@ -119,7 +119,7 @@ public class SettingUpActivity extends SubcribeCreateDestroyActivity implements 
 
     protected<T> void dealSuccess(BaseModel baseModel){
         StartExitAppManager.exitLogin();
-        //startActivity(LoginActivity.newIntent(SettingUpActivity.this));
+        startActivity(LoginActivity.newIntent(SettingUpActivity.this));
     }
 
     @Override

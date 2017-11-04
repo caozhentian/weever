@@ -151,6 +151,8 @@ public class TraceService {
                 //IS_START_TRACE = true ;
                 String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
                 ToastUtil.showToast(entityName + "开启轨迹服务成功");
+                //采集数据
+                TraceService.getInstance(WeeverApplication.getInstance()).startGather(null);
             }
             else{
                 //Logger.e(String.format("onStartTraceCallback, errorNo:%d, message:%s ", errorNo, message));

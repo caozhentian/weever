@@ -3,6 +3,8 @@ package cn.people.weever.application;
 import android.app.Application;
 import android.util.DisplayMetrics;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 import cn.people.weever.BuildConfig;
 import cn.people.weever.common.util.PreferencesUtil;
 import cn.people.weever.db.DaoManager;
@@ -30,6 +32,7 @@ public class WeeverApplication extends Application {
         if(BuildConfig.DEBUG){
             //Stetho.initializeWithDefaults(this);
         }
+        CrashReport.initCrashReport(getApplicationContext(), "fbbc7f80fe", true);
         sWeeverApplication = this ;
         getScreenSize() ;
         StartExitAppManager.initApp(this);

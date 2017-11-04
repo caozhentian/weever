@@ -365,6 +365,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         if(baseModel.getApiOperationCode() == DriverApiService.TO_USER_PUNCH_OUT){
             showToast(baseModel.getMessage());
             //停止Trace 跟踪
+            TraceService.getInstance(WeeverApplication.getInstance()).stopGather(null);
             TraceService.getInstance(WeeverApplication.getInstance()).stopTrace();
             PreferencesUtil.setPreferences(WeeverApplication.getInstance(),"CAR_KEY",null);
             txt_car_num.setText(null);
