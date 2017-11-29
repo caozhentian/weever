@@ -141,7 +141,7 @@ public class BNDemoGuideActivity extends BaseActivity {
             view = BNRouteGuideManager.getInstance().onCreate(this,mOnNavigationListener);
         }
 
-        initFragment();
+        //initFragment();
         LinearLayout llContent= (LinearLayout) findViewById(R.id.ll_nav_content) ;
 
         if (view != null) {

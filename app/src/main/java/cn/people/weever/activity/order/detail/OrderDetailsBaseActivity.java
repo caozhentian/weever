@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.people.weever.R;
+import cn.people.weever.activity.HomeActivity;
 import cn.people.weever.activity.SubcribeCreateDestroyActivity;
 import cn.people.weever.activity.order.clearing.AirportConverorOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.DayHalfOrderClearingActivity;
@@ -228,8 +229,8 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     }
 
     private void start() {
-        //startActivity(HomeActivity.newIntent(this, mBaseOrder));
-        routeplanToNavi() ;
+        startActivity(HomeActivity.newIntent(this, mBaseOrder));
+        //routeplanToNavi() ;
         finish();
 
     }

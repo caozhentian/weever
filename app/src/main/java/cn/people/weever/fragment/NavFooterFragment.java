@@ -195,7 +195,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             mLlOperate.setVisibility(View.GONE);
         }
         else{
-            mLlSrcDestAddress.setVisibility(View.GONE);
+            mLlSrcDestAddress.setVisibility(View.VISIBLE);
             mRadioGroup.setVisibility(View.GONE);
             mLlOperate.setVisibility(View.VISIBLE);
         }

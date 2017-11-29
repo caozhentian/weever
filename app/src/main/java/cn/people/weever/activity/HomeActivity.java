@@ -186,7 +186,13 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         txt_car_num    = (TextView) headerLayout.findViewById(R.id.txt_car_num);
         txt_car_num.setText(PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY"));
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
-      initFragment() ;
+        if(mBaseOrder != null){
+            srcLating = new LatLng( mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude() ,
+                    mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude()) ;
+            destLating = new LatLng( mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude() ,
+                    mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude()) ;
+        }
+        initFragment() ;
     }
 
     private void initFragment(){
