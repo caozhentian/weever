@@ -471,7 +471,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 mBooleanOperate[3] = true ;
                 // mBtnCompute.setEnabled(false);
                 mBaseOrder = null ;
-                getActivity().finish();
+                //getActivity().finish();
             }
         }
     }

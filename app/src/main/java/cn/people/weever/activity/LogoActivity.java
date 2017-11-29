@@ -35,13 +35,14 @@ public class LogoActivity extends SubcribeCreateDestroyActivity {
         if(WeeverApplication.getCurUser() == null) { //需要登录
             Logger.d("登录") ;
             startActivity(LoginActivity.newIntent(this));
-            finish();
+
         }
         else{ //自动登录
             startActivity(HomeActivity.newIntent(this));
             Logger.d("自动登录") ;
             //mDriverService.autoLogin();
         }
+        finish();
     }
 
     public void dealSuccess(@Nullable BaseModel baseModel){

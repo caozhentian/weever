@@ -145,7 +145,8 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        initView();
+        mBaseOrder = (BaseOrder) intent.getSerializableExtra(ARG_BASE_ORDER);
+        initFragment();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
@@ -185,19 +186,18 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         txt_telphone.setText(WeeverApplication.getCurUser().getUserName());
         txt_car_num    = (TextView) headerLayout.findViewById(R.id.txt_car_num);
         txt_car_num.setText(PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY"));
+        Bundle bundle = getIntent().getExtras();
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
+        initFragment() ;
+    }
+
+    private void initFragment(){
         if(mBaseOrder != null){
             srcLating = new LatLng( mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude() ,
                     mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude()) ;
             destLating = new LatLng( mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude() ,
                     mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude()) ;
         }
-        initFragment() ;
-    }
-
-    private void initFragment(){
-        Bundle bundle = getIntent().getExtras();
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();

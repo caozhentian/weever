@@ -2,6 +2,8 @@ package cn.people.weever.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java8.util.Optional;
+
 /**
  * Created by ztcao on 2017/4/6.
  */
@@ -47,5 +49,9 @@ public class Car extends WeeverBean {
 
     public void setDescription(String description) {
         mDescription = description;
+    }
+
+    public Optional<String> getDescriptionAsOptional(){
+        return Optional.ofNullable(mDescription) ;
     }
 }

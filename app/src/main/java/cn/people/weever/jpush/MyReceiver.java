@@ -65,8 +65,12 @@ public class MyReceiver extends BroadcastReceiver {
 				//如果Task栈不存在MainActivity实例，则在栈顶创建
 				logoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				Intent orderIntent = new Intent(context, MyOrdersActivity.class);
-				Intent[] intents = {logoIntent , orderIntent};
+				orderIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				Intent[] intents = {orderIntent};
 				context.startActivities(intents);
+//				Intent orderIntent = new Intent(context, MyOrdersActivity.class);
+//				Intent[] intents = {logoIntent , orderIntent};
+//				context.startActivities(intents);
 			}
 			else{// app 进程 需要重启
 				Intent launchIntent = context.getPackageManager().
