@@ -91,6 +91,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
     private TextView txt_name ;
     private TextView txt_telphone ;
     private TextView txt_car_num;
+    private boolean isFirstLocation = true;
 
 
     public static final Intent newIntent(Context packageContext, BaseOrder baseOrder){
@@ -318,14 +319,17 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
             mBaiduMap.setMyLocationData(locData);
             LatLng ll = new LatLng(location.getLatitude(),
                     location.getLongitude());
-            srcLating = ll;
-            List<Poi> poiList = location.getPoiList() ;
-            //使用街道
-            if(poiList != null && poiList.size() > 1) {
-                Poi poi = poiList.get(0);
-                if(!isSelectSrcAddress ) {
-                    mNavFooterFragment.setLocationSrc(poi.getName());
+            if(isFirstLocation) {
+                srcLating = ll;
+                List<Poi> poiList = location.getPoiList();
+                //使用街道
+                if (poiList != null && poiList.size() > 1) {
+                    Poi poi = poiList.get(0);
+                    if (!isSelectSrcAddress) {
+                        mNavFooterFragment.setLocationSrc(poi.getName());
+                    }
                 }
+                isFirstLocation = false ;
             }
 
             MapStatus.Builder builder = new MapStatus.Builder();

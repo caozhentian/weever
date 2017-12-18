@@ -36,6 +36,7 @@ import cn.people.weever.application.ActivityExitManage;
 import cn.people.weever.application.WeeverApplication;
 import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.PreferencesUtil;
+import cn.people.weever.config.OrderStatus;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.map.LocationService;
@@ -222,6 +223,8 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 destLating = new LatLng(mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude(),
                         mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
             }
+            //自动计费
+            operate(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE) ;
         }
     }
     @OnClick({R.id.btnStart, R.id.btnWait, R.id.btnRestart, R.id.btnCompute})
@@ -450,6 +453,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
              if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE){
                  mBooleanOperate[0] = true ;
                  //mBtnStart.setEnabled(false);
+                 OrderStatus.ORDER_STATSU_RUNNING = true ;
             }
             else if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE){
                  mBooleanOperate[1] = true ;
@@ -471,6 +475,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 mBooleanOperate[3] = true ;
                 // mBtnCompute.setEnabled(false);
                 mBaseOrder = null ;
+                OrderStatus.ORDER_STATSU_RUNNING = false ;
                 //getActivity().finish();
             }
         }

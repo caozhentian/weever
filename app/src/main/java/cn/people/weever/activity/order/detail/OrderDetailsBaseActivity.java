@@ -27,6 +27,8 @@ import cn.people.weever.activity.order.clearing.FixedTimeOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.PickupOrderClearingActivity;
 import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.NavUtils;
+import cn.people.weever.common.util.ToastUtil;
+import cn.people.weever.config.OrderStatus;
 import cn.people.weever.dialog.ICancelOK;
 import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.event.OrderStatusChangeEvent;
@@ -229,6 +231,10 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     }
 
     private void start() {
+        if( OrderStatus.ORDER_STATSU_RUNNING){
+            ToastUtil.showToast("订单正在执行中，不能操作");
+            return ;
+        }
         startActivity(HomeActivity.newIntent(this, mBaseOrder));
         //routeplanToNavi() ;
         finish();
