@@ -1,10 +1,14 @@
 package cn.people.weever.activity.order.detail;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,12 +29,13 @@ import cn.people.weever.activity.order.clearing.DayHalfOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.DayOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.FixedTimeOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.PickupOrderClearingActivity;
-import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.common.util.ToastUtil;
 import cn.people.weever.config.OrderStatus;
 import cn.people.weever.dialog.ICancelOK;
+import cn.people.weever.dialog.IOK;
 import cn.people.weever.dialog.OKCancelDlg;
+import cn.people.weever.dialog.OKlDlg;
 import cn.people.weever.event.OrderStatusChangeEvent;
 import cn.people.weever.model.Address;
 import cn.people.weever.model.BaseOrder;
@@ -99,6 +104,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     protected BaseOrder mBaseOrder;
 
     private OrderService mOrderService;
+    private boolean take;
 
     public static final Intent newIntent(Context context, BaseOrder baseOrder) {
         Intent intent = new Intent(context, DayOrderDetailsActivity.class);
@@ -121,13 +127,29 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     public void initData() {
         NavUtils.initNavi(this);
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE);
+        if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
+            registerReceiver(mHomeKeyEventReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+        }
         mOrderService = new OrderService();
         mOrderService.getDetails(mBaseOrder);
     }
 
     @Override
     public void initView() {
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (!take && mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
+            showToast("请首先完成 接单操作,否则后续其它操作异常");
+
+        }
     }
 
     protected void setViewByBaseOrder() {
@@ -146,6 +168,8 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         mTvExpireTimeCose.setText(mBaseOrder.getActualRideTime() + " 分钟");
         if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
             mLlTake.setVisibility(View.VISIBLE);
+            //设置相关的按钮不能用
+            forbiddenUser() ;
         } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDER) {
             mLlStart.setVisibility(View.VISIBLE);
         } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY) {
@@ -168,6 +192,33 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         setOtherDetailInfo() ;
     }
 
+    //接单界面 禁止用户操作
+    private void forbiddenUser() {
+
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+    }
+
+    @Override public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.KEYCODE_MENU) { return true; } return false;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_HOME:
+            case KeyEvent.KEYCODE_BACK:
+                if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
+                    accept() ;
+                    return true;
+                }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,9 +228,23 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         initData();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
+            unregisterReceiver(mHomeKeyEventReceiver);
+        }
+    }
+
     @OnClick(R.id.img_back)
     public void onViewClicked() {
-        finish();
+        if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
+            showToast("请首先完成 接单操作,否则后续其它操作异常");
+            startActivity(newIntent(OrderDetailsBaseActivity.this, mBaseOrder));
+        }
+        else{
+            finish();
+        }
     }
 
     @OnClick({R.id.btn_take,R.id.btn_cancel , R.id.btn_start, R.id.btn_settlent})
@@ -276,6 +341,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         setViewByBaseOrder();
 //        EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TAKE_NET_REQUST){
+            take = true ;
             EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
         }
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TAKE_NET_REQUST
@@ -288,5 +354,32 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     protected void setOtherDetailInfo(){
 
+    }
+
+    private BroadcastReceiver mHomeKeyEventReceiver = new BroadcastReceiver() {
+        String SYSTEM_REASON = "reason";
+        String SYSTEM_HOME_KEY = "homekey";
+        String SYSTEM_HOME_KEY_LONG = "recentapps";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if ( action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) { // 监听home键和菜单键
+                String reason = intent.getStringExtra(SYSTEM_REASON);
+                if(reason.equals(SYSTEM_HOME_KEY) || reason.equals(SYSTEM_HOME_KEY_LONG)) {
+                    showToast("请首先完成 接单操作,否则后续其它操作异常");
+                    startActivity(newIntent(OrderDetailsBaseActivity.this, mBaseOrder));
+                }
+            }
+        }
+    };
+
+    public void accept(){
+        OKlDlg.createOKDlg(this, "请尽快完成接单操作,否则无法进行后续的其它操作", new IOK() {
+            @Override
+            public void ok() {
+                finish();
+            }
+        });
     }
 }

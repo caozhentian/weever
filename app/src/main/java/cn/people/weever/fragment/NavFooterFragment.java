@@ -224,6 +224,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                         mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
             }
             //自动计费
+            ActivityExitManage.setCurBaseFragment( this)  ;
             operate(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE) ;
         }
     }
@@ -448,20 +449,22 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     protected  void dealSuccess(@Nullable BaseModel baseModel){
 
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST){
-            showToast("操作成功");
+            showToast("计费操作成功");
             RouteOperateEvent routeOperateEvent = (RouteOperateEvent) baseModel.getData();
              if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE){
                  mBooleanOperate[0] = true ;
-                 //mBtnStart.setEnabled(false);
+                 mBtnStart.setVisibility(View.GONE);
                  OrderStatus.ORDER_STATSU_RUNNING = true ;
             }
             else if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE){
+                 showToast("暂停操作成功");
                  mBooleanOperate[1] = true ;
                  //mBtnWait.setEnabled(false);
             }
             else if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE){
                  mBooleanOperate[1] = false ;
                  mBooleanOperate[2] = false ;
+                 showToast("开始操作成功");
                  //mBtnRestart.setEnabled(true);
                  //mBtnWait.setEnabled(true);
             }
