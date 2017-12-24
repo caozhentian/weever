@@ -20,7 +20,9 @@ import java.util.Arrays;
 
 import cn.people.weever.R;
 import cn.people.weever.activity.BaseActivity;
+import cn.people.weever.activity.order.detail.OrderDetailsBaseActivity;
 import cn.people.weever.event.OrderStatusChangeEvent;
+import cn.people.weever.model.BaseOrder;
 
 
 public class MyOrdersActivity extends BaseActivity {
@@ -30,6 +32,12 @@ public class MyOrdersActivity extends BaseActivity {
 
     public static final Intent newIntent(Context packageContext){
         Intent intent    =  new  Intent(packageContext , MyOrdersActivity.class) ;
+        return intent   ;
+    }
+
+    public static final Intent newIntent(Context packageContext  , BaseOrder baseOrder){
+        Intent intent    =  new  Intent(packageContext , MyOrdersActivity.class) ;
+        intent.putExtra("key" , baseOrder);
         return intent   ;
     }
     /**
@@ -50,6 +58,10 @@ public class MyOrdersActivity extends BaseActivity {
     @Override
     public void initData() {
 
+        BaseOrder baseOrder = (BaseOrder) getIntent().getSerializableExtra("key");
+        if(baseOrder != null){
+            startActivity(OrderDetailsBaseActivity.newIntent(this , baseOrder));
+        }
     }
 
     @Override

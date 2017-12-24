@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
@@ -16,8 +17,10 @@ import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.people.weever.activity.LogoActivity;
+import cn.people.weever.activity.order.detail.OrderDetailsBaseActivity;
 import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.common.util.SystemUtils;
+import cn.people.weever.model.BaseOrder;
 
 /**
  * 自定义接收器
@@ -38,50 +41,17 @@ public class MyReceiver extends BroadcastReceiver {
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
             Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
             //send the Registration Id to your server...
-                        
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
         	Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
         	processCustomMessage(context, bundle);
-        
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
-        	
+			processNotification(context , bundle) ;
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
-
-			if(SystemUtils.isAppAlive(context)) { //app 进程存活
-				//如果存活的话，就直接启动DetailActivity，但要考虑一种情况，就是app的进程虽然仍然在
-				//但Task栈已经空了，比如用户点击Back键退出应用，但进程还没有被系统回收，如果直接启动
-				//DetailActivity,再按Back键就不会返回MainActivity了。所以在启动
-				//DetailActivity前，要先启动MainActivity。
-				Logger.i("NotificationReceiver", "the app process is alive");
-				//打开自定义的Activity
-				Intent logoIntent = new Intent(context, LogoActivity.class);
-				//Intent mainIntent = new Intent(context, HomeActivity.class);
-				//将MainAtivity的launchMode设置成SingleTask, 或者在下面flag中加上Intent.FLAG_CLEAR_TOP,
-				//如果Task栈中有MainActivity的实例，就会把它移到栈顶，把在它之上的Activity都清理出栈，
-				//如果Task栈不存在MainActivity实例，则在栈顶创建
-				logoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				Intent orderIntent = new Intent(context, MyOrdersActivity.class);
-				orderIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				Intent[] intents = {orderIntent};
-				context.startActivities(intents);
-//				Intent orderIntent = new Intent(context, MyOrdersActivity.class);
-//				Intent[] intents = {logoIntent , orderIntent};
-//				context.startActivities(intents);
-			}
-			else{// app 进程 需要重启
-				Intent launchIntent = context.getPackageManager().
-						getLaunchIntentForPackage("com.liangzili.notificationlaunch");
-				launchIntent.setFlags(
-						Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-//				Bundle args = new Bundle();
-//				args.putString(OrderApiService.ARG_NAME_NOTIFICATION_ORDER , OrderApiService.ARG_VALUE_NOTIFICATION_ORDER);
-				context.startActivity(launchIntent);
-			}
-        	
+			processNotification(context , bundle) ;
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
             //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
@@ -92,6 +62,49 @@ public class MyReceiver extends BroadcastReceiver {
         } else {
         	Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
         }
+	}
+
+	private void processNotification(Context context , Bundle bundle) {
+		if(SystemUtils.isAppAlive(context)) { //app 进程存活
+			//如果存活的话，就直接启动DetailActivity，但要考虑一种情况，就是app的进程虽然仍然在
+			//但Task栈已经空了，比如用户点击Back键退出应用，但进程还没有被系统回收，如果直接启动
+			//DetailActivity,再按Back键就不会返回MainActivity了。所以在启动
+			//DetailActivity前，要先启动MainActivity。
+			Logger.i("NotificationReceiver", "the app process is alive");
+			//打开自定义的Activity
+			//Intent logoIntent = new Intent(context, LogoActivity.class);
+			//Intent mainIntent = new Intent(context, HomeActivity.class);
+			//将MainAtivity的launchMode设置成SingleTask, 或者在下面flag中加上Intent.FLAG_CLEAR_TOP,
+			//如果Task栈中有MainActivity的实例，就会把它移到栈顶，把在它之上的Activity都清理出栈，
+			//如果Task栈不存在MainActivity实例，则在栈顶创建
+			//logoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+			//Intent[] intents = {orderIntent};
+			String orderJson = bundle.getString(JPushInterface.EXTRA_EXTRA) ;
+			if(!TextUtils.isEmpty(orderJson)) {
+				BaseOrder baseOrder = new Gson().fromJson(orderJson, BaseOrder.class);
+				baseOrder.setStatus(BaseOrder.ORDER_STAUS_APPOINTMENT);
+				//Intent orderIntent = OrderDetailsBaseActivity.newIntent(context ,baseOrder) ;
+				Intent orderIntent = new Intent(context, MyOrdersActivity.class);
+				orderIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				orderIntent.putExtra("key" , baseOrder) ;
+				context.startActivity(orderIntent);
+			}
+			else{
+				Intent orderIntent = new Intent(context, MyOrdersActivity.class);
+				orderIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				context.startActivity(orderIntent);
+			}
+		}
+		else{// app 进程 需要重启
+			Intent launchIntent = context.getPackageManager().
+					getLaunchIntentForPackage("com.liangzili.notificationlaunch");
+			launchIntent.setFlags(
+					Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+//				Bundle args = new Bundle();
+//				args.putString(OrderApiService.ARG_NAME_NOTIFICATION_ORDER , OrderApiService.ARG_VALUE_NOTIFICATION_ORDER);
+			context.startActivity(launchIntent);
+		}
 	}
 
 	// 打印所有的 intent extra 数据

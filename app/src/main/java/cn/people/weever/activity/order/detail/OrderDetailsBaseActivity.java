@@ -29,6 +29,7 @@ import cn.people.weever.activity.order.clearing.DayHalfOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.DayOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.FixedTimeOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.PickupOrderClearingActivity;
+import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.common.util.ToastUtil;
 import cn.people.weever.config.OrderStatus;
@@ -105,6 +106,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
     private OrderService mOrderService;
     private boolean take;
+    private boolean isFindQuerySuccess;
 
     public static final Intent newIntent(Context context, BaseOrder baseOrder) {
         Intent intent = new Intent(context, DayOrderDetailsActivity.class);
@@ -128,7 +130,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         NavUtils.initNavi(this);
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE);
         if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
-            registerReceiver(mHomeKeyEventReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+            //registerReceiver(mHomeKeyEventReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
         }
         mOrderService = new OrderService();
         mOrderService.getDetails(mBaseOrder);
@@ -146,10 +148,10 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (!take && mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
-            showToast("请首先完成 接单操作,否则后续其它操作异常");
-
-        }
+//        if (isFindQuerySuccess && !take && mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
+//            showToast("请首先完成 接单操作,否则后续其它操作异常");
+//            startActivity(newIntent(this , mBaseOrder));
+//        }
     }
 
     protected void setViewByBaseOrder() {
@@ -232,17 +234,18 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
-            unregisterReceiver(mHomeKeyEventReceiver);
+            //unregisterReceiver(mHomeKeyEventReceiver);
         }
     }
 
     @OnClick(R.id.img_back)
     public void onViewClicked() {
-        if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
+        if (isFindQuerySuccess && mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
             showToast("请首先完成 接单操作,否则后续其它操作异常");
             startActivity(newIntent(OrderDetailsBaseActivity.this, mBaseOrder));
         }
         else{
+            //startActivity(MyOrdersActivity.newIntent(this));
             finish();
         }
     }
@@ -300,9 +303,19 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
             ToastUtil.showToast("订单正在执行中，不能操作");
             return ;
         }
-        startActivity(HomeActivity.newIntent(this, mBaseOrder));
-        //routeplanToNavi() ;
-        finish();
+        OKCancelDlg.createCancelOKDlg(this, "点击出发，自动开始计费，确定出发吗？", new ICancelOK() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void ok() {
+                startActivity(HomeActivity.newIntent(OrderDetailsBaseActivity.this, mBaseOrder));
+                finish();
+            }
+        });
+
 
     }
     private void routeplanToNavi() {
@@ -338,6 +351,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         if(baseModel.getData() instanceof  BaseOrder) {
             mBaseOrder = (BaseOrder) baseModel.getData();
         }
+        isFindQuerySuccess = true ;
         setViewByBaseOrder();
 //        EventBus.getDefault().postSticky(new OrderStatusChangeEvent());
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_TAKE_NET_REQUST){
