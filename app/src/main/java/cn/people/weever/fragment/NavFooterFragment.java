@@ -62,6 +62,8 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
     public static final String OPERATE_STATUS = "OPERATE_STATUS";
+    public static final String ORDER_VALUE = "ORDER_VALUE";
+    public static final String ORDER_RUNNING = "ORDER_RUNNING";
     @BindView(R.id.edtSrc)
     TextView mEdtSrc;
     @BindView(R.id.edtDest)
@@ -110,6 +112,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     private OnTraceListener traceListener = null;
 
     private boolean[] mBooleanOperate = new boolean[4] ;
+    private boolean isViewInit;
 
     public NavFooterFragment() {
         // Required empty public constructor
@@ -117,9 +120,11 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
 
     public static NavFooterFragment newInstance(BaseOrder baseOrder) {
         NavFooterFragment fragment = new NavFooterFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, baseOrder);
-        fragment.setArguments(args);
+        if(baseOrder != null) {
+            Bundle args = new Bundle();
+            args.putSerializable(ARG_PARAM1, baseOrder);
+            fragment.setArguments(args);
+        }
         return fragment;
     }
 
@@ -128,6 +133,8 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         super.onCreate(savedInstanceState);
         if(savedInstanceState != null){
             mBooleanOperate = savedInstanceState.getBooleanArray( OPERATE_STATUS );
+            mBaseOrder       = (BaseOrder) savedInstanceState.getSerializable(ORDER_VALUE) ;
+            OrderStatus.ORDER_STATSU_RUNNING = savedInstanceState.getBoolean(ORDER_RUNNING)  ;
         }
     }
 
@@ -142,22 +149,21 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_nav_footer, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initVar();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        isViewInit = true ;
+        initVar();
     }
 
     private void initVar(){
         if (getArguments() != null) {
             mBaseOrder = (BaseOrder) getArguments().getSerializable(ARG_PARAM1);
-            //启动trace
-            String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
-            if(mBaseOrder !=null && !TextUtils.isEmpty(entityName)){
-                TraceService.getInstance(WeeverApplication.getInstance()).startTrace(null);
-            }
         }
         setOrder(mBaseOrder) ;
-        mOrderService = new OrderService() ;
-
     }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(RouteOperateEvent routeOperateEvent) {
@@ -189,7 +195,17 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         unbinder.unbind();
     }
 
+
     public void setOrder(BaseOrder baseOrder){
+        //启动trace
+        mBaseOrder = baseOrder ;
+        if(!isViewInit){
+            return ;
+        }
+        String entityName = PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY") ;
+        if(mBaseOrder !=null && !TextUtils.isEmpty(entityName)){
+            TraceService.getInstance(WeeverApplication.getInstance()).startTrace(null);
+        }
         if(mBaseOrder == null){
             mLlSrcDestAddress.setVisibility(View.VISIBLE);
             mRadioGroup.setVisibility(View.GONE);
@@ -224,8 +240,29 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                         mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude());
             }
             //自动计费
-            ActivityExitManage.setCurBaseFragment( this)  ;
-            operate(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE) ;
+            if(!mBooleanOperate[0]) {
+                ActivityExitManage.setCurBaseFragment(this);
+                operate(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE);
+            }
+        }
+        mOrderService = new OrderService() ;
+        if(mBooleanOperate[1]){
+            mBtnWait.setTextColor(getResources().getColor(R.color.red));
+        }
+        else{
+            mBtnWait.setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+        if(mBooleanOperate[2]){
+            mBtnRestart.setTextColor(getResources().getColor(R.color.red));
+        }
+        else{
+            mBtnRestart.setTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+        if(mBooleanOperate[3]){
+            mBtnCompute.setTextColor(getResources().getColor(R.color.red));
+        }
+        else{
+            mBtnCompute.setTextColor(getResources().getColor(R.color.colorPrimary));
         }
     }
     @OnClick({R.id.btnStart, R.id.btnWait, R.id.btnRestart, R.id.btnCompute})
@@ -316,11 +353,6 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             showToast("不能执行等待操作");
             return ;
         }
-//        TripNode tripNode  = new TripNode() ;
-//        tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
-//        mRouteOperateEvent.setTripNode(tripNode);
-//        mRouteOperateEvent.setOperateType(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE);
-//        mOrderService.routeOperateOrder(mRouteOperateEvent);
         operate(RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE) ;
     }
 
@@ -449,9 +481,10 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     protected  void dealSuccess(@Nullable BaseModel baseModel){
 
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST){
-            showToast("计费操作成功");
+
             RouteOperateEvent routeOperateEvent = (RouteOperateEvent) baseModel.getData();
              if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE){
+                 showToast("计费操作成功");
                  mBooleanOperate[0] = true ;
                  mBtnStart.setVisibility(View.GONE);
                  OrderStatus.ORDER_STATSU_RUNNING = true ;
@@ -459,14 +492,17 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             else if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_WAITTING_OPERATE_TYPE){
                  showToast("暂停操作成功");
                  mBooleanOperate[1] = true ;
-                 //mBtnWait.setEnabled(false);
+                 mBtnWait.setTextColor(getResources().getColor(R.color.red));
+                 mBtnRestart.setTextColor(getResources().getColor(R.color.colorPrimary));
+                 mBtnCompute.setTextColor(getResources().getColor(R.color.colorPrimary));
             }
             else if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_RESTART_OPERATE_TYPE){
                  mBooleanOperate[1] = false ;
                  mBooleanOperate[2] = false ;
                  showToast("开始操作成功");
-                 //mBtnRestart.setEnabled(true);
-                 //mBtnWait.setEnabled(true);
+                 mBtnWait.setTextColor(getResources().getColor(R.color.colorPrimary));
+                 mBtnRestart.setTextColor(getResources().getColor(R.color.red));
+                 mBtnCompute.setTextColor(getResources().getColor(R.color.colorPrimary));
             }
             else if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE){
                 startActivity(OrderClearingBaseActivity.newIntent(getContext() , mBaseOrder));
@@ -480,6 +516,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 mBaseOrder = null ;
                 OrderStatus.ORDER_STATSU_RUNNING = false ;
                 //getActivity().finish();
+                 mBtnWait.setTextColor(getResources().getColor(R.color.colorPrimary));
+                 mBtnRestart.setTextColor(getResources().getColor(R.color.colorPrimary));
+                 mBtnCompute.setTextColor(getResources().getColor(R.color.red));
             }
         }
     }
@@ -499,5 +538,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBooleanArray(OPERATE_STATUS, mBooleanOperate);
+        outState.putSerializable(ORDER_VALUE , mBaseOrder);
+        outState.putBoolean(ORDER_RUNNING , OrderStatus.ORDER_STATSU_RUNNING);
     }
 }

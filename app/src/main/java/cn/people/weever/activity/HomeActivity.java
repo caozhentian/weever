@@ -68,6 +68,7 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
 
     private static final int accuracyCircleFillColor = 0xAAFFFF88;
     private static final int accuracyCircleStrokeColor = 0xAA00FF00;
+    public static final String KEY = "KEY";
     public NavLocationListener myListener = new NavLocationListener();
 
     // 定位相关
@@ -117,6 +118,9 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        if(savedInstanceState != null) {
+            mBaseOrder = (BaseOrder) savedInstanceState.getSerializable(KEY);
+        }
         initView();
         initData();
 
@@ -188,7 +192,9 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         txt_car_num    = (TextView) headerLayout.findViewById(R.id.txt_car_num);
         txt_car_num.setText(PreferencesUtil.getStringPreferences(WeeverApplication.getInstance() , "CAR_KEY"));
         Bundle bundle = getIntent().getExtras();
-        mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
+        if(mBaseOrder == null) {
+            mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_BASE_ORDER);
+        }
         initFragment() ;
     }
 
@@ -209,9 +215,11 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
             fragmentTransaction.commit();
         }
         else{
-            mNavFooterFragment =  NavFooterFragment.newInstance(mBaseOrder);
-            fragmentTransaction.replace(R.id.fl_nav_footer , mNavFooterFragment) ;
-            fragmentTransaction.commit();
+//            mNavFooterFragment =  NavFooterFragment.newInstance(mBaseOrder);
+//            fragmentTransaction.replace(R.id.fl_nav_footer , mNavFooterFragment) ;
+//            fragmentTransaction.commit();
+            mNavFooterFragment = (NavFooterFragment) fragmentManager.findFragmentById(R.id.fl_nav_footer);
+            mNavFooterFragment.setOrder(mBaseOrder);
         }
 
     }
@@ -393,4 +401,9 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KEY, mBaseOrder);
+    }
 }

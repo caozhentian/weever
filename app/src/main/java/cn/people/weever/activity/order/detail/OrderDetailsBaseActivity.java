@@ -213,12 +213,21 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_HOME:
             case KeyEvent.KEYCODE_BACK:
-                if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
-                    accept() ;
-                    return true;
-                }
+//                if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
+//                    showToast("请首先完成 接单操作,否则后续其它操作异常");
+//                    return true;
+//                }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
+            showToast("请首先完成 接单操作,否则后续其它操作异常");
+            return ;
+        }
+        super.onBackPressed();
     }
 
     @Override

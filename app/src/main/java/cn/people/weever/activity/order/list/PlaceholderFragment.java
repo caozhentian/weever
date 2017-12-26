@@ -135,13 +135,17 @@ public class PlaceholderFragment extends SubscribeResumePauseBaseFragment {
     public void dealSuccess(@Nullable BaseModel baseModel){
         if(baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_LIST_NET_REQUST){
             List<BaseOrder> baseOrderList = (List<BaseOrder>) baseModel.getData();
+
+            if(baseOrderList == null || baseOrderList.size() == 0){
+                return ;
+            }
+            if(baseOrderList.get(0).getStatus() != mOrderStatus) {
+                return ;
+            }
             if(mQueryModel != null && mQueryModel.isFirstPage()){
                 mBaseOrderList.clear();
             }
-            if(baseOrderList == null || baseOrderList.size() == 0){
-                //return ;
-            }
-            mBaseOrderList.addAll(baseOrderList) ;
+            mBaseOrderList.addAll(baseOrderList);
             if(mOrderAdapter != null) {
                 mOrderAdapter.notifyDataSetChanged();
             }
