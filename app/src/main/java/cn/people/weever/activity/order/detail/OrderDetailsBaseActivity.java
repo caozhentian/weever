@@ -1,10 +1,12 @@
 package cn.people.weever.activity.order.detail;
 
+import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
@@ -131,6 +133,28 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         mBaseOrder = (BaseOrder) getIntent().getSerializableExtra(ARG_ORDER_BASE);
         if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_APPOINTMENT) {
             //registerReceiver(mHomeKeyEventReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+            //点亮屏幕
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            //键盘锁管理器对象
+
+            KeyguardManager km= (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+
+            //这里参数”unLock”作为调试时LogCat中的Tag
+
+            KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
+
+            kl.disableKeyguard();  //解锁
+
+
+            PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+            boolean isScreenOn = pm.isScreenOn();
+            if(isScreenOn==false)
+            {
+                PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.ON_AFTER_RELEASE,"MyLock");
+                wl.acquire(10000);
+                PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"MyCpuLock");
+                wl_cpu.acquire(10000);
+            }
         }
         mOrderService = new OrderService();
         mOrderService.getDetails(mBaseOrder);
