@@ -7,6 +7,6 @@ public class IpConfig {
 
 	//public final static String BASIC_URL = "http://show.tv.com:8016/";
 	//public final static String BASIC_URL = "http://211.149.188.205:8085/api/";
-    //public final static String BASIC_URL = "http://www.xazhihe.cn:8084/api/";
-    public final static String BASIC_URL = "http://118.126.66.174:8084/api/";
+    public final static String BASIC_URL = "http://www.xazhihe.cn:8084/api/";
+    //public final static String BASIC_URL = "http://118.126.66.174:8084/api/";
 }

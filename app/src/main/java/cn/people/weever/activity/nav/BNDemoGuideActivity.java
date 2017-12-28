@@ -56,7 +56,7 @@ public class BNDemoGuideActivity extends BaseActivity {
     private BaiduNaviCommonModule mBaiduNaviCommonModule = null;
     private BaseOrder mBaseOrder ;
 
-    private NavFooterFragment mNavFooterFragment ;
+   // private NavFooterFragment mNavFooterFragment ;
 
     /*
      * 对于导航模块有两种方式来实现发起导航。 1：使用通用接口来实现 2：使用传统接口来实现
@@ -72,7 +72,7 @@ public class BNDemoGuideActivity extends BaseActivity {
         Intent intent = new Intent(packageContext , BNDemoGuideActivity.class) ;
         Bundle bundle = new Bundle();
         bundle.putSerializable(ROUTE_PLAN_NODE, bNRoutePlanNode);
-        bundle.putSerializable(BASE_ORDER, baseOrder);
+        //bundle.putSerializable(BASE_ORDER, baseOrder);
         intent.putExtras(bundle);
         return intent ;
     }
@@ -168,14 +168,14 @@ public class BNDemoGuideActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         mBaseOrder =  (BaseOrder) bundle.getSerializable(BASE_ORDER);
         if(mBaseOrder != null){
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
-                FragmentTransaction fragmentTransaction = fragmentManager
-                        .beginTransaction();
-                mNavFooterFragment = NavFooterFragment.newInstance(mBaseOrder) ;
-                fragmentTransaction.add(R.id.fl_nav_footer , mNavFooterFragment) ;
-                fragmentTransaction.commit();
-            }
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
+//                FragmentTransaction fragmentTransaction = fragmentManager
+//                        .beginTransaction();
+//                mNavFooterFragment = NavFooterFragment.newInstance(mBaseOrder) ;
+//                fragmentTransaction.add(R.id.fl_nav_footer , mNavFooterFragment) ;
+//                fragmentTransaction.commit();
+//            }
         }
 
 
@@ -345,7 +345,7 @@ public class BNDemoGuideActivity extends BaseActivity {
                       finish();
                 }
                 else if(which == 1){
-                    mNavFooterFragment.compute();
+                    //mNavFooterFragment.compute();
                 }
                 else{
 

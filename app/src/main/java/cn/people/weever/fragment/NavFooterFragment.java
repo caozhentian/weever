@@ -246,6 +246,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             }
         }
         mOrderService = new OrderService() ;
+        if(mBooleanOperate[0]){
+            mBtnStart.setVisibility(View.GONE);
+        }
         if(mBooleanOperate[1]){
             mBtnWait.setTextColor(getResources().getColor(R.color.red));
         }

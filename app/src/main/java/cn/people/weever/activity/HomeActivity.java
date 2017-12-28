@@ -33,6 +33,7 @@ import com.baidu.mapapi.model.LatLng;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -202,14 +203,15 @@ public class HomeActivity extends SubcribeCreateDestroyActivity implements Navig
         if(mBaseOrder != null){
             srcLating = new LatLng( mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude() ,
                     mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude()) ;
-            destLating = new LatLng( mBaseOrder.getPlanboardingTripNode().getAddress().getLatitude() ,
-                    mBaseOrder.getPlanboardingTripNode().getAddress().getLongitude()) ;
+            mSrcAddress =  mBaseOrder.getPlanboardingTripNode().getAddress().getMPlaceName();
+            destLating = new LatLng( mBaseOrder.getPlanDropOffTripNode().getAddress().getLatitude() ,
+                    mBaseOrder.getPlanDropOffTripNode().getAddress().getLongitude()) ;
+            mDestAddress = mBaseOrder.getPlanDropOffTripNode().getAddress().getMAddress() ;
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
         if(fragmentManager.findFragmentById(R.id.fl_nav_footer) == null){
-
             mNavFooterFragment =  NavFooterFragment.newInstance(mBaseOrder);
             fragmentTransaction.add(R.id.fl_nav_footer , mNavFooterFragment) ;
             fragmentTransaction.commit();
