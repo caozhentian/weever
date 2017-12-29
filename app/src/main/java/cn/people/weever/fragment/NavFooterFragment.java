@@ -249,6 +249,9 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
         if(mBooleanOperate[0]){
             mBtnStart.setVisibility(View.GONE);
         }
+        else{
+            mBtnStart.setVisibility(View.VISIBLE);
+        }
         if(mBooleanOperate[1]){
             mBtnWait.setTextColor(getResources().getColor(R.color.red));
         }
@@ -514,7 +517,10 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 mRadioBtnDayUse.setChecked(false)      ;
                 mRadioBtnTransfer.setChecked(false)    ;
                 mRadioBtnHalfDayUse.setChecked(false)  ;
-                mBooleanOperate[3] = true ;
+                mBooleanOperate[0] = false ;
+                mBooleanOperate[1] = false ;
+                mBooleanOperate[2] = false ;
+                mBooleanOperate[3] = false ;
                 // mBtnCompute.setEnabled(false);
                 mBaseOrder = null ;
                 OrderStatus.ORDER_STATSU_RUNNING = false ;
