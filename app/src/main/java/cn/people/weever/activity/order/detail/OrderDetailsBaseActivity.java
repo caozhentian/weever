@@ -16,9 +16,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.Poi;
 import com.baidu.mapapi.model.LatLng;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,8 +34,10 @@ import cn.people.weever.activity.order.clearing.AirportConverorOrderClearingActi
 import cn.people.weever.activity.order.clearing.DayHalfOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.DayOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.FixedTimeOrderClearingActivity;
+import cn.people.weever.activity.order.clearing.OrderClearingBaseActivity;
 import cn.people.weever.activity.order.clearing.PickupOrderClearingActivity;
 import cn.people.weever.activity.order.list.MyOrdersActivity;
+import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.common.util.ToastUtil;
 import cn.people.weever.config.OrderStatus;
@@ -40,8 +46,12 @@ import cn.people.weever.dialog.IOK;
 import cn.people.weever.dialog.OKCancelDlg;
 import cn.people.weever.dialog.OKlDlg;
 import cn.people.weever.event.OrderStatusChangeEvent;
+import cn.people.weever.map.LocationService;
+import cn.people.weever.map.TLocationListener;
 import cn.people.weever.model.Address;
 import cn.people.weever.model.BaseOrder;
+import cn.people.weever.model.RouteOperateEvent;
+import cn.people.weever.model.TripNode;
 import cn.people.weever.net.BaseModel;
 import cn.people.weever.net.OrderApiService;
 import cn.people.weever.service.OrderService;
@@ -94,15 +104,21 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
     @BindView(R.id.btn_cancel)
     Button mBtnCancel;
     @BindView(R.id.btn_start)
-    Button mBtnStart;
+    Button mBtnStart ;
+    @BindView(R.id.btn_finish_order)
+    Button mBtnFinishOrder ;
     @BindView(R.id.btn_settlent)
     Button mBtnSettlent;
     @BindView(R.id.ll_take)
     LinearLayout mLlTake;
     @BindView(R.id.ll_start)
     LinearLayout mLlStart;
+    @BindView(R.id.ll_finish_order)
+    LinearLayout mLlFinishOrder ;
     @BindView(R.id.ll_settlent)
     LinearLayout mLlSettlent;
+    @BindView(R.id.ll_finished)
+    LinearLayout mLlFinished;
 
     protected BaseOrder mBaseOrder;
 
@@ -198,11 +214,15 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
             forbiddenUser() ;
         } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDER) {
             mLlStart.setVisibility(View.VISIBLE);
-        } else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY) {
+        }
+        else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDERING ) {
+            mLlFinishOrder.setVisibility(View.VISIBLE);
+        }
+        else if (mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY) {
             mLlSettlent.setVisibility(View.VISIBLE);
         }
         else if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_FINISH){
-
+            mLlFinished.setVisibility(View.VISIBLE);
         }
         if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY ||
                 mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_FINISH){
@@ -283,7 +303,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
         }
     }
 
-    @OnClick({R.id.btn_take,R.id.btn_cancel , R.id.btn_start, R.id.btn_settlent})
+    @OnClick({R.id.btn_take,R.id.btn_cancel , R.id.btn_start, R.id.btn_finish_order , R.id.btn_settlent})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_take:
@@ -295,10 +315,27 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
             case R.id.btn_start:
                 start();
                 break;
+            case R.id.btn_finish_order:
+                finishOrder() ;
+                break ;
             case R.id.btn_settlent:
                 settlent();
                 break;
         }
+    }
+
+    private void finishOrder() {
+        OKCancelDlg.createCancelOKDlg(this, "确定结算吗", new ICancelOK() {
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public void ok() {
+                operate(RouteOperateEvent.TO_ORDER_TO_SETTLEMENT_OPERATE_TYPE) ;
+            }
+        });
     }
 
     private void take() {
@@ -395,6 +432,11 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
                 || baseModel.getApiOperationCode() == OrderApiService.TO_ORDER_CANCEL_NET_REQUST){
             finish();
         }
+        else if(baseModel.getApiOperationCode() ==  OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST){
+            OrderStatus.ORDER_STATSU_RUNNING = false ;
+            startActivity(OrderClearingBaseActivity.newIntent(this , mBaseOrder));
+            finish() ;
+        }
 
 
     }
@@ -428,5 +470,48 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
                 finish();
             }
         });
+    }
+
+
+    private void operate(int type){
+        {
+            TripNode tripNode  = new TripNode() ;
+            tripNode.setTime(DatetimeUtil.getCurrentDayTimeMillis()/1000);
+            final RouteOperateEvent mRouteOperateEvent = new RouteOperateEvent();
+            mRouteOperateEvent.setOrderId(mBaseOrder.getOrderId());
+            mRouteOperateEvent.setTripNode(tripNode);
+            mRouteOperateEvent.setOperateType(type);
+            LocationService.getLocationService(this).start();
+            LocationService.getLocationService(this).registerListener(new TLocationListener() {
+                @Override
+                public void process(BDLocation location) {
+                    TripNode tripNode  = mRouteOperateEvent.getTripNode() ;
+                    Address address = new Address() ;
+                    List<Poi> poiList = location.getPoiList() ;
+                    if(poiList != null && poiList.size() > 0) {
+                        address.setPlaceName(poiList.get(0).getName());
+                        address.setLatitude(location.getLatitude());
+                        address.setLongitude(location.getLongitude());
+                        tripNode.setAddress(address);
+                    }
+                    else{
+                        mRouteOperateEvent.setTripNode(tripNode);
+                    }
+                    mOrderService.routeOperateOrder(mRouteOperateEvent);
+                    LocationService.getLocationService(OrderDetailsBaseActivity.this).stop();
+                    LocationService.getLocationService(OrderDetailsBaseActivity.this).unregisterListener(this);
+                }
+
+                @Override
+                public void processFirstLoc(BDLocation location) {
+
+                }
+
+                @Override
+                public void processLocFail(BDLocation location) {
+                    mOrderService.routeOperateOrder(mRouteOperateEvent);
+                }
+            }) ;
+        }
     }
 }

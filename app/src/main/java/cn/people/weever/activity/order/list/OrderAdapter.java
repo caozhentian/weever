@@ -19,9 +19,6 @@ import cn.people.weever.model.BaseOrder;
 
 public class OrderAdapter extends BaseListAdapter<BaseOrder> {
 
-
-
-
     protected OrderAdapter(Context context, List<BaseOrder> list) {
         super(context, list);
     }

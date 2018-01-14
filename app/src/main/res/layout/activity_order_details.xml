@@ -381,6 +381,20 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_finish_order"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim48"
+        android:gravity="bottom"
+        android:visibility="gone">
+        <Button
+            android:id="@+id/btn_finish_order"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="去结算"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/ll_settlent"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dim48"
@@ -392,6 +406,19 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="结算"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_finished"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim48"
+        android:gravity="bottom"
+        android:visibility="gone">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="已完成"/>
     </LinearLayout>
 
 </LinearLayout>

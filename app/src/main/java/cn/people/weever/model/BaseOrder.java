@@ -320,6 +320,8 @@ public class BaseOrder extends WeeverBean {
                 return "预约中" ;
             case ORDER_STAUS_ORDER:
                 return "待执行" ;
+            case ORDER_STAUS_ORDERING:
+                return "执行中" ;
             case ORDER_STAUS_PAY:
                 return "待付款" ;
             default:
