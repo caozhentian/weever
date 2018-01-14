@@ -225,7 +225,6 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
             mLlFinished.setVisibility(View.VISIBLE);
         }
         if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_PAY ||
-                mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDERING ||
                 mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_FINISH){
             if (mBaseOrder.getActualBoardingTripNode() != null) {
                 mTvActualStartDate.setText(mBaseOrder.getActualBoardingTripNode().getDateStr());
@@ -234,6 +233,12 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
             if(mBaseOrder.getActualDropOffTripNode() != null){
                 mTvActualEndDate.setText(mBaseOrder.getActualDropOffTripNode().getDateStr());
                 mTvActualEndAddress.setText(mBaseOrder.getActualDropOffTripNode().getAddress().getPlaceName());
+            }
+        }
+        if(mBaseOrder.getStatus() == BaseOrder.ORDER_STAUS_ORDERING ){
+            if (mBaseOrder.getActualBoardingTripNode() != null) {
+                mTvActualStartDate.setText(mBaseOrder.getActualBoardingTripNode().getDateStr());
+                mTvActualStartAddress.setText(mBaseOrder.getActualBoardingTripNode().getAddress().getPlaceName());
             }
         }
         setOtherDetailInfo() ;
