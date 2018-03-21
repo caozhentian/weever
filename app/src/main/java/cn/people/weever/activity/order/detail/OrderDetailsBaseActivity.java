@@ -4,7 +4,6 @@ import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.v7.widget.Toolbar;
@@ -36,7 +35,6 @@ import cn.people.weever.activity.order.clearing.DayOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.FixedTimeOrderClearingActivity;
 import cn.people.weever.activity.order.clearing.OrderClearingBaseActivity;
 import cn.people.weever.activity.order.clearing.PickupOrderClearingActivity;
-import cn.people.weever.activity.order.list.MyOrdersActivity;
 import cn.people.weever.common.util.DatetimeUtil;
 import cn.people.weever.common.util.NavUtils;
 import cn.people.weever.common.util.ToastUtil;
@@ -387,8 +385,7 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
 
             @Override
             public void ok() {
-                startActivity(HomeActivity.newIntent(OrderDetailsBaseActivity.this, mBaseOrder));
-                finish();
+                operate(RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE) ;
             }
         });
 
@@ -439,9 +436,15 @@ public class OrderDetailsBaseActivity extends SubcribeCreateDestroyActivity {
             finish();
         }
         else if(baseModel.getApiOperationCode() ==  OrderApiService.TO_ORDER_ROUTE_OPERATE_NET_REQUST){
-            OrderStatus.ORDER_STATSU_RUNNING = false ;
-            startActivity(OrderClearingBaseActivity.newIntent(this , mBaseOrder));
-            finish() ;
+            RouteOperateEvent routeOperateEvent = (RouteOperateEvent) baseModel.getData();
+            if(routeOperateEvent.getOperateType() == RouteOperateEvent.TO_ORDER_CHARGING_OPERATE_TYPE) { //计费
+                startActivity(HomeActivity.newIntent(OrderDetailsBaseActivity.this, mBaseOrder));
+            }
+            else{
+                OrderStatus.ORDER_STATSU_RUNNING = false ;
+                startActivity(OrderClearingBaseActivity.newIntent(this , mBaseOrder));
+            }
+            finish();
         }
 
 

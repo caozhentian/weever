@@ -136,6 +136,7 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
             mBaseOrder       = (BaseOrder) savedInstanceState.getSerializable(ORDER_VALUE) ;
             OrderStatus.ORDER_STATSU_RUNNING = savedInstanceState.getBoolean(ORDER_RUNNING)  ;
         }
+        mBooleanOperate[0] = true ;
     }
 
     @Override
@@ -517,7 +518,6 @@ public class NavFooterFragment extends SubscribeResumePauseBaseFragment {
                 mRadioBtnDayUse.setChecked(false)      ;
                 mRadioBtnTransfer.setChecked(false)    ;
                 mRadioBtnHalfDayUse.setChecked(false)  ;
-                mBooleanOperate[0] = false ;
                 mBooleanOperate[1] = false ;
                 mBooleanOperate[2] = false ;
                 mBooleanOperate[3] = false ;
