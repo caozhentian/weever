@@ -17,7 +17,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 21
         versionCode 100
-        versionName "1.2.1"
+        versionName "1.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -45,13 +45,13 @@ dependencies {
     })
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/eventbus-3.0.0.jar')
-    compile files('libs/baidumapapi_base_v4_2_1.jar')
-    compile files('libs/baidumapapi_map_v4_2_1.jar')
-    compile files('libs/baidumapapi_cloud_v4_2_1.jar')
+//    compile files('libs/baidumapapi_base_v4_2_1.jar')
+//    compile files('libs/baidumapapi_map_v4_2_1.jar')
+//    compile files('libs/baidumapapi_cloud_v4_2_1.jar')
     // add library
+
     //compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     compile files('libs/bos-android-sdk-1.0.2.jar')
-
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -62,7 +62,6 @@ dependencies {
     compile 'com.orhanobut:logger:2.1.1'
     compile 'com.tencent.bugly:crashreport:2.6.5'
     compile 'com.android.support:support-v4:25.3.1'
-
     compile 'net.sourceforge.streamsupport:streamsupport:1.5.6'
     compile 'net.sourceforge.streamsupport:streamsupport-cfuture:1.5.6'
     compile 'net.sourceforge.streamsupport:streamsupport-atomic:1.5.6'
@@ -70,4 +69,6 @@ dependencies {
     compile 'net.sourceforge.streamsupport:streamsupport-literal:1.5.6'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile files('libs/BaiduTraceSDK_v3_0_7.jar')
+    compile files('libs/bos-android-sdk-1.0.3.jar')
 }

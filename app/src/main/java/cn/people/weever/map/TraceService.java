@@ -143,6 +143,11 @@ public class TraceService {
 
     private OnTraceListener mOnTraceListener = new  OnTraceListener() {
         @Override
+        public void onBindServiceCallback(int i, String s) {
+
+        }
+
+        @Override
         public void onStartTraceCallback(int errorNo, String message) {
             if (StatusCodes.SUCCESS == errorNo || StatusCodes.START_TRACE_NETWORK_CONNECT_FAILED <= errorNo) {
                 RegisterPowerService.registerPowerReceiver();
@@ -206,5 +211,11 @@ public class TraceService {
         @Override
         public void onPushCallback(byte messageType, PushMessage pushMessage) {
 
-        }};
+        }
+
+        @Override
+        public void onInitBOSCallback(int i, String s) {
+
+        }
+    };
 }

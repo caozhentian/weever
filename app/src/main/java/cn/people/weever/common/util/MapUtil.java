@@ -18,8 +18,8 @@ import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.utils.CoordinateConverter;
-import com.baidu.trace.api.track.SortType;
 import com.baidu.trace.model.CoordType;
+import com.baidu.trace.model.SortType;
 import com.baidu.trace.model.TraceLocation;
 
 import java.util.List;

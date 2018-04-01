@@ -22,11 +22,11 @@ import com.baidu.trace.api.track.HistoryTrackRequest;
 import com.baidu.trace.api.track.HistoryTrackResponse;
 import com.baidu.trace.api.track.LatestPointResponse;
 import com.baidu.trace.api.track.OnTrackListener;
-import com.baidu.trace.api.track.SortType;
 import com.baidu.trace.api.track.SupplementMode;
 import com.baidu.trace.api.track.TrackPoint;
 import com.baidu.trace.model.Point;
 import com.baidu.trace.model.ProcessOption;
+import com.baidu.trace.model.SortType;
 import com.baidu.trace.model.StatusCodes;
 import com.baidu.trace.model.TransportMode;
 
